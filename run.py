@@ -190,6 +190,8 @@ EXECUTORS = {
     "opencode": lambda model: f"opencode run --model {model}",
 }
 
+DEAD_RE = re.compile(r"spend limit|usage limit|rate limit|quota|not logged in|Please run /login|API Error", re.I)
+
 JUDGE_DEFAULT = "claude -p --model sonnet --strict-mcp-config --disallowedTools Bash,Edit,Write,WebFetch,WebSearch"
 
 # ------------------------------------------------------------------ workspace + evidence
@@ -267,8 +269,9 @@ def run_one(ev, cmd, judge_cmd, skill_text):
     after = snapshot(ws)
     row = {"id": ev["id"], "pillar": ev["pillar"], "kind": ev["kind"], "seconds": round(secs, 1), "rc": rc,
            "reply": reply[-4000:], "files": sorted(k for k in after if seed.get(k) != after[k])}
-    if rc == -1:
-        row.update(pass_=False, detail=err, dead=True)
+    if rc != 0 or DEAD_RE.search(reply[-600:]):
+        # the executor did not finish (timeout, crash, quota wall): ungradeable, not a zero
+        row.update(pass_=False, detail=(err or reply[-200:]).strip()[:200], dead=True)
     elif "grader" in ev:
         ok, detail = grade_deterministic(ev, reply)
         row.update(pass_=ok, detail=detail)
@@ -359,7 +362,7 @@ def main():
     os.makedirs(RESULTS_DIR, exist_ok=True)
     out_path = os.path.join(RESULTS_DIR, re.sub(r"[^a-z0-9+._-]", "-", a.name.lower()) + ".json")
     prev = json.load(open(out_path)) if a.resume and os.path.exists(out_path) else None
-    rows = {r["id"]: r for r in (prev or {}).get("rows", [])}
+    rows = {r["id"]: r for r in (prev or {}).get("rows", []) if not r.get("dead") and not r.get("ungraded")}
     todo = [e for e in evals if e["id"] not in rows]
     print(f"{a.name}: {len(todo)} evals to run, {len(rows)} kept, concurrency {a.concurrency}\n  executor: {cmd}\n  judge:    {a.judge_cmd}")
 
@@ -382,7 +385,9 @@ def main():
             flag = "PASS" if r["pass"] else ("DEAD" if r.get("dead") else ("????" if r.get("ungraded") else "fail"))
             print(f"  {flag}  {r['id']:44} {r['seconds']:6.0f}s  {r.get('detail', '')[:100]}")
     doc = json.load(open(out_path))
+    dead = sum(1 for r in doc["rows"] if r.get("dead") or r.get("ungraded"))
     print(f"\n{a.name}: {doc['total']['pass']}/{doc['total']['total']}  " + "  ".join(f"{p} {v['pass']}/{v['total']}" for p, v in doc["pillars"].items()))
+    if dead: print(f"  {dead} evals dead or ungraded (executor or judge did not finish) — rerun with --resume; they are not counted as fails on the site")
     print(f"wrote {os.path.relpath(out_path, ROOT)}; run `python3 build.py` to refresh the site index")
 
 if __name__ == "__main__":
