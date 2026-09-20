@@ -1,6 +1,6 @@
 # ethevals
 
-How much Ethereum does your AI actually know?
+How much does your AI actually know about Ethereum?
 
 A static site plus an eval suite that scores LLMs, agents, skills and harnesses on
 four pillars of Ethereum knowledge: **concepts**, **transactions**, **building**, **security**.
