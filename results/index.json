@@ -1,7 +1,39 @@
 {
- "generated": "2026-09-20T21:36:12+00:00",
- "manifest": "cdb4dd24b5cf",
+ "generated": "2026-09-20T22:50:59+00:00",
+ "manifest": "80a747a07ab9",
  "runs": [
+  {
+   "name": "fable-5.1+ethskills",
+   "model": "fable",
+   "harness": "claude code",
+   "skill": "https://ethskills.com/SKILL.md",
+   "started": "2026-09-20T22:33:35+00:00",
+   "manifest": "80a747a07ab9",
+   "pillars": {
+    "concepts": {
+     "pass": 20,
+     "total": 20
+    },
+    "transactions": {
+     "pass": 18,
+     "total": 20
+    },
+    "building": {
+     "pass": 17,
+     "total": 20
+    },
+    "security": {
+     "pass": 19,
+     "total": 20
+    }
+   },
+   "total": {
+    "pass": 74,
+    "total": 80
+   },
+   "file": "results/fable-5.1+ethskills.json",
+   "evals_run": 80
+  },
   {
    "name": "fable-5.1",
    "model": "fable",
