@@ -14,6 +14,8 @@ grader:
     expect: '0'
   - type: bigint
     expect: 0
+  - type: regex
+    pattern: ^(0|0x0+)\b|bytes32\(0\)|zero
 reference: 'Answer: 0'
 source_quote: |
   // ❌ blockhash(block.number) is ALWAYS zero for the current block

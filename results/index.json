@@ -1,6 +1,6 @@
 {
- "generated": "2026-09-20T21:05:29+00:00",
- "manifest": "d79092755fae",
+ "generated": "2026-09-20T21:36:12+00:00",
+ "manifest": "cdb4dd24b5cf",
  "runs": [
   {
    "name": "fable-5.1",
@@ -8,10 +8,10 @@
    "harness": "claude code",
    "skill": null,
    "started": "2026-09-20T21:03:46+00:00",
-   "manifest": "9d5e88084860",
+   "manifest": "cdb4dd24b5cf",
    "pillars": {
     "concepts": {
-     "pass": 19,
+     "pass": 20,
      "total": 20
     },
     "transactions": {
@@ -19,20 +19,20 @@
      "total": 20
     },
     "building": {
-     "pass": 0,
+     "pass": 14,
      "total": 20
     },
     "security": {
-     "pass": 0,
+     "pass": 18,
      "total": 20
     }
    },
    "total": {
-    "pass": 36,
+    "pass": 69,
     "total": 80
    },
    "file": "results/fable-5.1.json",
-   "evals_run": 40
+   "evals_run": 80
   },
   {
    "name": "haiku-4.5",
@@ -40,31 +40,31 @@
    "harness": "claude code",
    "skill": null,
    "started": "2026-09-20T21:03:44+00:00",
-   "manifest": "9d5e88084860",
+   "manifest": "cdb4dd24b5cf",
    "pillars": {
     "concepts": {
      "pass": 17,
      "total": 20
     },
     "transactions": {
-     "pass": 1,
+     "pass": 13,
      "total": 20
     },
     "building": {
-     "pass": 0,
+     "pass": 5,
      "total": 20
     },
     "security": {
-     "pass": 0,
+     "pass": 12,
      "total": 20
     }
    },
    "total": {
-    "pass": 18,
+    "pass": 47,
     "total": 80
    },
    "file": "results/haiku-4.5.json",
-   "evals_run": 23
+   "evals_run": 80
   }
  ]
 }

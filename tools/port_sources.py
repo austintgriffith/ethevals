@@ -111,6 +111,8 @@ def main():
             doc["kind"] = "quiz"
             doc["prompt"] = Lit(t["prompt"].rstrip() + "\n")
             doc["grader"] = t["grader"]
+            if sid == "concepts-k-03":  # "0 (bytes32(0), the zero hash)" is right; the bigint option calls it ambiguous
+                doc["grader"] = {"type": "any_of", "options": t["grader"]["options"] + [{"type": "regex", "pattern": r"^(0|0x0+)\b|bytes32\(0\)|zero"}]}
             if t.get("reference"): doc["reference"] = t["reference"]
             if t.get("checks"):
                 # a bare quoted 64-hex fixture trips private-key scanners; phrase it as an answer line

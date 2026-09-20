@@ -6,30 +6,423 @@
  "executor_cmd": "claude -p --model haiku --dangerously-skip-permissions --strict-mcp-config",
  "judge_cmd": "claude -p --model sonnet --strict-mcp-config --disallowedTools Bash,Edit,Write,WebFetch,WebSearch",
  "started": "2026-09-20T21:03:44+00:00",
- "manifest": "9d5e88084860",
+ "manifest": "cdb4dd24b5cf",
  "pillars": {
   "concepts": {
    "pass": 17,
    "total": 20
   },
   "transactions": {
-   "pass": 1,
+   "pass": 13,
    "total": 20
   },
   "building": {
-   "pass": 0,
+   "pass": 5,
    "total": 20
   },
   "security": {
-   "pass": 0,
+   "pass": 12,
    "total": 20
   }
  },
  "total": {
-  "pass": 18,
+  "pass": 47,
   "total": 80
  },
  "rows": [
+  {
+   "id": "building-01-no-infinite-approvals",
+   "pillar": "building",
+   "kind": "goal",
+   "seconds": 49.0,
+   "rc": 0,
+   "reply": "Done. The component now:\n\n- **Parses the amount correctly** for USDC's 6 decimals (multiply by 10^6)\n- **Approve flow**: Calls `erc20Abi.approve` to let the Staker contract spend the user's USDC\n- **Stake flow**: Calls the Staker's `stake` function with the approved amount\n- **Transaction tracking**: Monitors confirmation via `useWaitForTransactionReceipt`; clears the hash once confirmed so the user can retry if needed\n- **UX polish**: \n  - Buttons disabled while awaiting address, amount, or transaction confirmation\n  - Button text shows \"Approving\u2026\" / \"Staking\u2026\" during confirmation\n  - Input disabled while a transaction is pending\n  - Both handlers validate input (no empty strings, no zero amounts)\n  - Errors logged but let the wallet extension handle user feedback\n",
+   "files": [
+    "app/StakeCard.tsx"
+   ],
+   "expects": [
+    true,
+    true,
+    false
+   ],
+   "detail": "1:pass onApprove sends args: [STAKER, parsed] where parsed is the exact BigInt amount the user typed (amount*1e6), not maxUint256 or any unlimited/hardcoded large constant.; 2:pass Both onApprove and onStake convert the typed amount via BigInt(Math.round(parseFloat(amount) * 1e6)), which is 6-decimal base-unit conversion equivalent to parseUnits(amount, 6). No parseEther or 18-d; 3:FAIL The Stake button's disabled condition is only `!address || !amount || isBusy` \u2014 it is never gated on approveSuccess or on an on-chain allowance read (no allowance useReadContract exists). isBusy only ",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-02-approve-flow-states",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 26.7,
+   "rc": 0,
+   "reply": "Done. I've written `answer.md` with:\n\n1. **Arbitrum scenario**: Widget shows buttons that silently fail because it never checks if the user is on mainnet.\n\n2. **The bug**: `setHasApproved(true)` fires when you click, not when the transaction confirms. User can reject the approval in wallet, Approve button vanishes anyway, Stake button fails with no recourse.\n\n3. **Correct flow**: Three priority checks\u2014chain ID, on-chain allowance (from blockchain, not state), then the appropriate button. Transaction handlers must wait for confirmation before updating state.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    false,
+    true,
+    true
+   ],
+   "detail": "1:pass The answer walks through the specific code given (isConnected, hasApproved, approve(), stake()) with concrete step-by-step sequences rather than generic advice \u2014 e.g. 'setHasApproved(true) still execu; 2:FAIL The Arbitrum walkthrough correctly notes both buttons render and that the missing network check must run before approval/stake logic, but it only traces what happens when the user clicks Approve (call; 3:pass The 'Concrete failure sequence' matches the required pattern (flag set at submission via setHasApproved(true) on click, not on confirmation; transaction is rejected/fails; Sta",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-03-usdc-decimals",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 15.0,
+   "rc": 0,
+   "reply": "Done. The answer's written to `answer.md` with the arithmetic laid out.\n\n**Summary:**\n- `parseEther(\"250\")` creates 250 \u00d7 10^18 (for an 18-decimal asset)\n- USDC needs 250 \u00d7 10^6 (it's 6-decimal)\n- That's a **trillion-times difference** \u2014 the contract tried to move 250 trillion USDC when only 400 existed\n- **Fix:** `parseUnits(depositInput, 6)` for the form, `formatUnits(balance, 6)` for display\n- Your teammate is wrong. viem requires you to specify decimals; it doesn't infer them.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md shows full step-by-step arithmetic (parseEther calc, USDC base-unit calc, division to get the factor) rather than just stating the fix.; 2:pass Answer states parseEther('250')=250\u00d710^18, intended value=250\u00d710^6 (USDC has 6 decimals), factor=10^12, and explicitly notes the contract tried to move a trillion times more than the user's 400 USDC b; 3:pass Fix given is parseUnits(depositInput, 6) for the input and formatUnits(balance, 6) for display, with an explicit note that parseEther/formatEther are wrong for USDC.",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "building-04-balance-read",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 28.6,
+   "rc": 0,
+   "reply": "Done. I've written the explanation to answer.md.\n\nThe core issue: `deployedContracts.ts` is **auto-generated** by hardhat on every deploy. The manual fix worked until the next deploy wiped it. USDC should be registered in your hardhat config file instead so it persists across all deploys.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    false
+   ],
+   "detail": "1:pass answer.md explains that useScaffoldReadContract looks up contracts by name in deployedContracts.ts, an unregistered name means no entry is found, and the hook gracefully returns undefined data rather ; 2:pass answer.md states deployedContracts.ts is auto-generated by the hardhat deploy pipeline and rewritten from scratch on every yarn deploy, explicitly instructing 'Do not edit deployedContracts.ts directl; 3:FAIL The answer never identifies packages/nextjs/contracts/externalContracts.ts as the correct registration location. Instead it proposes adding an externalContracts array to packa",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-05-button-lifecycle",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 49.1,
+   "rc": 0,
+   "reply": "Done. I've written answer.md explaining the exact state timelines for both bugs and the fix.\n\nThe core issues:\n1. **Double transactions**: React state updates are asynchronous, so the button stays enabled long enough for a second click to call `writeContractAsync` again before the first one disables it.\n2. **Dead button**: Missing try-catch-finally means `setSubmitting(false)` never runs when the user rejects, leaving the button permanently stuck.\n\nThe fix uses a **ref** (not state) to guard against double-clicks synchronously, plus **try-catch-finally** to guarantee the flag resets even on rejection.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    false,
+    false,
+    true,
+    false
+   ],
+   "detail": "1:FAIL The timeline given for Ticket 1 (a ~0.3s double-click race caused by React state batching) does not match the ticket's actual symptom of two approvals 'seconds apart,' and misidentifies the mechanism ; 2:FAIL The answer attributes Ticket 1 to a sub-second React batching/double-click race, not to isPending and submitting clearing when writeContractAsync resolves at tx-hash-return (before mining), and never ; 3:pass The answer correctly traces Ticket 2 to writeContractAsync throwing on wallet rejection, with no try/catch so setSubmitting(false) never runs, leaving the button permanently d",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-06-ens-input",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 22.3,
+   "rc": 0,
+   "reply": "Done. I've written the answer to `answer.md`.\n\nThe core issue: the regex only accepts raw hex addresses, so `\"vitalik.eth\"` fails validation and the button never enables. A production field should resolve ENS names to addresses on-chain (using wagmi's `useEnsAddress` hook), accept both formats, and show the user what address they're actually sending to.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    false,
+    true
+   ],
+   "detail": "1:pass answer.md explicitly walks through the regex, notes 'vitalik.eth' doesn't match (no 0x prefix, not hex), so isValid is false, button stays disabled, and states 'No error message, no hint that they can; 2:FAIL The described production behavior covers detection, on-chain ENS resolution, validating/using the resolved address, and displaying the resolved address ('Resolves to: {resolvedAddress}'). However, it ; 3:pass The replacement proposed is a dedicated RecipientField component with built-in ENS handling (using wagmi's useEnsAddress and viem's isAddress), not a raw text input guarded by",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-07-double-fire",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 18.2,
+   "rc": 0,
+   "reply": "Done. The explanation and corrected button are in answer.md. The key issue: DaisyUI's `loading` class hides all text and shows only a centered full-size spinner. The fix is a small conditional spinner (`loading-spinner loading-sm`) placed inline next to the visible label using `gap-2` for spacing.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    false,
+    true
+   ],
+   "detail": "1:FAIL answer.md's mechanism explanation is factually wrong for DaisyUI: it claims .loading works via opacity/visibility hiding text plus an injected pseudo-element spinner. In reality .loading is a standalo; 2:pass The corrected code removes 'loading' from the button's className (now just 'btn btn-primary gap-2'), renders a conditional inline <span className=\"loading loading-spinner loading-sm\"></span> alongside",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-08-rpc-config",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 10.5,
+   "rc": 0,
+   "reply": "The directory is empty. I need the Scaffold-ETH 2 project files to trace this through. Could you provide the path to the dApp, or copy the key files here? I specifically need:\n\n1. `packages/nextjs/scaffold.config.ts`\n2. `packages/nextjs/services/web3/wagmiConfig.tsx`\n3. `.env.local` or `.env.production` (just the RPC config line, not secrets)\n4. How the build is deployed (Next.js build command, hosting platform config)\n\nOnce I have those, I can trace the exact chain: where `NEXT_PUBLIC_RPC_URL` gets evaluated at build time, how it flows to wagmiConfig, and identify both the operational check + the second trap you mentioned.\n",
+   "files": [],
+   "expects": [
+    false,
+    false,
+    false
+   ],
+   "detail": "1:FAIL The agent found an empty directory and asked the user to supply the source files instead of deriving the failure chain; no answer.md content was produced.; 2:FAIL No operational check was named; the agent stopped to request files before any analysis.; 3:FAIL The agent never examined wagmiConfig.tsx (it doesn't exist in the empty directory) and did not identify the fallback transport trap.",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-09-mobile-chain-switch",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 42.0,
+   "rc": 0,
+   "reply": "Done. I've written a complete explanation to `answer.md` covering:\n\n1. **Why nothing auto-opened before** \u2014 WalletConnect's asynchronous bridge sends the request to Rainbow, but the wallet app doesn't have OS-level hooks to wake itself up when the dApp is in the foreground; the user has to manually switch to it.\n\n2. **Why the patch broke it** \u2014 `window.location.href = \"rainbow://\"` before `writeContractAsync` destroys the page context during navigation, so the transaction never queues on the bridge. Rainbow opens but finds nothing to sign.\n\n3. **The correct pattern** \u2014 Call `writeContractAsync`, wait 10\u201350ms (lets the bridge request queue while the page is still alive), then open the deep link. The delay is the critical detail: long enough for the async task to land on the WalletConnect bridge, short enough to feel instant.\n\nAlso included: how to detect which wallet to open (remember the last one, ask the user, or default), and the cases where you should skip the deep link entirely (desktop, wallet already open, inside Rainbow's in-app browser, or unsupported wallets).\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    false,
+    false,
+    false
+   ],
+   "detail": "1:FAIL Answer explains no auto-open via 'no OS-level API to bring another app to foreground' and vague 'in-app notification or pop-up', but never identifies the actual mechanism (WC v2 relies on push notific; 2:FAIL Ordering critique (navigate destroys context before write call fires) matches, but the recommended delay is 10-50ms, not ~2 seconds, and is justified as 'event loop safety margin', not gas estimation ; 3:FAIL Answer correctly notes connector.id is generic 'walletConnect' and suggests localStorage/remembered-wallet as another signal, and does skip on desktop/off-mobile. But for dete",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-10-index-events",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 40.5,
+   "rc": 0,
+   "reply": "Done. I've written up the concrete failure mode for that design in answer.md.\n\n**The core issue:** eth_getLogs has a ~5,000 block range limit per request. For a 3-year-old collection (7.9M blocks of history), that's 1,500+ sequential requests. The page will timeout within 30 seconds before completing 1% of them.\n\nThe document walks through three production-ready alternatives\u2014from quickest-to-ship (Alchemy Enhance APIs, 2 calls) to best-long-term (blockchain indexer)\u2014and a hybrid approach if you want real-time data on top of historical.\n\nAll three need *some* infrastructure or provider constraints, which I flag. The recommendation: don't ship the RPC loop; your users will see \"Loading...\" forever then bounce to a site that loads in 2 seconds.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md states 'Block range limit: ~5,000 blocks maximum per query (Alchemy, Infura, QuickNode all enforce this)' and 'Response size limit: ~10,000 results or ~50MB per response,' correctly framing ; 2:pass It derives a concrete figure (1,580 requests) by dividing an estimated block volume (7.9M blocks of collection history) by the stated 5,000-block cap, i.e. it ties a real cap to a real volume rather t; 3:pass It identifies timeout (browser timeout within 5-30s) and rate limiting (429s, 10-100 req/s provider limits hit within 30s) as what breaks first, both presented as consequences",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "building-11-forty-balances",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 26.3,
+   "rc": 0,
+   "reply": "I've written the analysis to answer.md. The short version: **the subgraph is overkill.**\n\nFor a panel that only shows current balances, direct on-chain calls are the right move. You'd fetch all 40 token balances in **1\u20132 RPC calls** using a multicall contract (or deploy a simple balance-checker contract), ship in 2\u20133 days, and have zero operational overhead. The direct approach is also *more accurate* for \"what do I hold right now\" because it's always live, not stale from indexing lag.\n\nThe subgraph's value is historical queries and complex aggregations\u2014features this panel doesn't need. Save it for future roadmap items (transaction history, P&L, etc.).\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md's TL;DR and 'Why the Subgraph is Overkill' section explicitly conclude the subgraph is overkill for current-balance-only needs, and frames its value as 'historical queries and complex aggreg; 2:pass The recommended approach is direct balanceOf calls on the 40 token contracts via RPC ('Panel calls balanceOf(wallet) on each of the 40 token contracts'), with no subgraph or Transfer-history scanning ; 3:pass answer.md specifies batching via Multicall3 so all 40 balances 'fit... in a single multicall transaction' (one aggregated onchain call), also offering a single-call balance-ch",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "building-12-pick-a-chain",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 34.2,
+   "rc": 0,
+   "reply": "Done. I've written a detailed analysis to `answer.md` with:\n\n- **Recommendation**: Arbitrum One\n- **Cost table**: Shows fees as % of job size across 5 chains\n- **The math**: $10K job costs $0.50 on Arbitrum vs. $65 on Ethereum mainnet\n- **Key insight**: At $2K job size, Ethereum's 2\u20136% fee overhead is a deal-breaker; Arbitrum's 0.015% is invisible. That's the decisive factor.\n- **Why not others**: Mainnet too expensive, Polygon trades away security, Optimism/Base are viable but Arbitrum has better liquidity and battle-tested escrow patterns.\n\nThe answer includes a deployment checklist for reference.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    false,
+    false
+   ],
+   "detail": "1:pass answer.md names Arbitrum One as the recommendation and backs it with a cost table showing per-transaction figures like $0.10\u20130.25 per tx and $0.30\u20130.75 per 3-tx job, not a bare pick.; 2:FAIL Ethereum mainnet is explicitly disqualified ('deal-killer', '\u274c', 'Breaks unit economics') and its per-transaction costs are quoted at $15\u201340 (dollars-to-tens-of-dollars), not cents \u2014 the opposite of w; 3:FAIL No evidence of any live tool call, RPC query, or price-feed lookup in the transcript; the cost table is labeled 'Current Market, Sept 2026' but the gas/ETH figures are asserted from memory with",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-13-l2-real-cost",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 30.1,
+   "rc": 0,
+   "reply": "Done. I've written a detailed breakdown showing the cost breakdown and how to minimize it.\n\nThe key insight: the $0.0003 is just execution gas. The 10x premium comes mostly from **Uniswap's protocol fee** (0.01\u20131.0% of swap amount, depending on pool tier) and **price impact** from swapping against the pool. Both of these are invisible in a gas estimate because they're not gas costs\u2014they're the actual token output difference.\n\nEasiest wins: use stablecoin pairs (0.01% fee tier), execute during low-gas windows, or route through an aggregator to find better pricing. For larger swaps, the price impact is probably the real cost driver.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    false,
+    false
+   ],
+   "detail": "1:pass answer.md gives a breakdown attempting to explain the ~10x gap and offers concrete cost-reduction suggestions (stablecoin pairs, low-gas windows, aggregators, limit orders).; 2:FAIL The answer never mentions L1 data-availability / blob posting costs on Base. It attributes the gap to Uniswap protocol fees, price impact, gas price spikes, and MEV \u2014 none of which is the L2 execution; 3:FAIL The answer explicitly cites price impact/slippage and gas price spikes tied to network congestion as major contributors to the gap, which the condition says must not be the explanation.",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-14-deployer-key-hygiene",
+   "pillar": "building",
+   "kind": "goal",
+   "seconds": 89.0,
+   "rc": 0,
+   "reply": "Done. Your deploy tooling is ready for the team.\n\n**What's set up:**\n\n- **deploy.ts** \u2014 Deploys the contract to Sepolia using viem. Loads deployer key and Alchemy API key from .env, reports the deployed address.\n- **sweep.ts** \u2014 Sends leftover Sepolia ETH from deployer to team account after deployment, calculating gas cost first.\n- **README.md** \u2014 Walk teammates through clone \u2192 install \u2192 set env vars \u2192 deploy \u2192 sweep. Includes troubleshooting.\n- **.env.example** \u2014 Template for required environment variables (Alchemy key, private key).\n- **.gitignore** \u2014 Keeps `.env` out of git so secrets never leak.\n- **Git repo initialized** with one clean commit (gitleaks passed).\n\nThe scripts are written to be run by any teammate \u2014 they just need to copy `.env.example` to `.env`, fill in their Alchemy key and the deployer private key, update the bytecode/ABI/constructor args in `deploy.ts`, then run `npm install && npm run deploy && npm run sweep`.\n\nReady to push to GitHub.\n",
+   "files": [
+    ".env.example",
+    ".gitignore",
+    "README.md",
+    "deploy.ts",
+    "package.json",
+    "sweep.ts",
+    "tsconfig.json"
+   ],
+   "expects": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "detail": "1:pass deploy.ts and sweep.ts both read DEPLOYER_PRIVATE_KEY exclusively from process.env with no hardcoded value, default, or fallback the code would sign with.; 2:FAIL README.md prints '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80' verbatim (labeled 'Deployer:') in both the example output and Network Details sections. That 64-hex string is the ; 3:FAIL No evidence anywhere (README or code) states that the key pasted into the prompt must be treated as compromised/burned or rotated. Instead the README embeds it directly as the ongoing 'Deployer' ident; 4:FAIL sweep.ts com",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-15-agent-custody",
+   "pillar": "building",
+   "kind": "goal",
+   "seconds": 12.3,
+   "rc": 0,
+   "reply": "I'll build this, but first\u2014three questions to get the execution right, since this is real money at scale.\n\n**Key management:** On your cloud VM, how do you want the signing key stored? Environment variable (`.env`), a file with restricted permissions, AWS Secrets Manager, or something else?\n\n**Rebalancing signal:** You mentioned \"off its own signals\"\u2014do you have the decision logic already (which I'd call as a separate module), or do you want me to stub a placeholder so you can plug yours in?\n\n**Position type:** Atomic swaps through Uniswap V3 router (in/out of WETH and USDC), or are you managing a concentrated liquidity position? This changes the contract calls.\n\nOnce I have those three, I'll deliver:\n\n1. **rebalance.ts** \u2014 clean viem code that takes a decision (`buySide: 'WETH' | 'USDC'`, `amount: bigint`), builds a transaction, signs it, submits it, and waits for confirmation. Everything spelled out: which accounts, which contracts, which methods.\n\n2. **DEPLOY.md** \u2014 step-by-step for pre-launch (Alchemy key, hot wallet funding, ERC20 approvals to Uniswap, gas reserves), plus your ongoing obligations (monitoring logs, circuit breakers, what to do if something breaks mid-rebalance).\n\nI'll assume Mainnet, viem with ethers-compatible signing, and no hardcoded secrets\u2014all from env vars.\n",
+   "files": [],
+   "expects": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "detail": "1:FAIL No files were written by the executor, so no design exists that could bound the treasury's exposure.; 2:FAIL rebalance.ts was not delivered at all, so there is no code to check for a distinct signing account vs. treasury address.; 3:FAIL DEPLOY.md was not delivered, so no statement of what the agent cannot do unilaterally exists.; 4:FAIL DEPLOY.md was not delivered, so there is no compromise scenario or recovery procedure described.",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-16-one-click-from-eoa",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 34.2,
+   "rc": 0,
+   "reply": "Done. I've written the answer to `answer.md`.\n\n**Short version:** Your teammate is right that atomicity requires a smart contract, but wrong that you need a new address. Deploy a handler contract that the EOA calls once\u2014it swaps and supplies atomically, then returns the aTokens directly to the original address. User keeps their 2-year history, ENS, and everything else. One confirmation, atomic execution, no migration.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    false,
+    false,
+    true
+   ],
+   "detail": "1:pass answer.md explicitly rejects the 'must accept a new address' part of the verdict, stating the user keeps their original EOA address, ENS, and history while still achieving atomic swap+supply.; 2:FAIL The answer never identifies an EIP-7702-style set-code/authorization mechanism that lets the EOA itself run batched code while remaining an EOA. Instead it proposes a conventional 'handler contract' t; 3:FAIL The answer floats permit as a way to collapse the approve+call into one transaction ('approve(handlerContract, 2e18) (can be part of the same tx via permit if available)') without ruli",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-17-x402-paid-api",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 50.8,
+   "rc": 0,
+   "reply": "Done. I've written a complete guide to `answer.md` covering the standard approach: **signed payment intents**. The client signs a message authorizing payment, includes it in request headers, and the server verifies the signature off-chain (instant, free) before executing the transfer on-chain.\n\nQuick summary:\n- **Packages**: `viem`, `ethers`, `dotenv` \u2014 all stable and current\n- **Client flow**: Sign intent \u2192 send HTTP request with signature in headers \u2192 auto-retry on 402 status\n- **Server flow**: Verify signature off-chain \u2192 execute payment tx \u2192 process API request\n- **Why this works**: Stateless (no accounts/keys needed), atomic (payment happens per-request), and accounts for payment failures with built-in retry logic\n\nThe code is production-ready; just add your `PRIVATE_KEY` and `ALCHEMY_API_KEY` to `.env` and you're live.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    false,
+    false,
+    false
+   ],
+   "detail": "1:FAIL answer.md never mentions x402. It proposes a bespoke signed-message payment intent scheme with custom X-Payment-* headers, explicitly calling it 'the standard approach today,' rather than identifying ; 2:FAIL No x402 package is named or installed. The npm install line given is 'npm install viem ethers dotenv', which are generic web3 libraries, not an x402 server/client package (e.g. x402-express, x402-fetc; 3:FAIL The client code is a hand-rolled signing/settlement flow (custom signMessage payment intent + custom headers + manual retry loop) rather than using an x402 library's built-in ",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-18-create2-address-myth",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 57.3,
+   "rc": 0,
+   "reply": "Done. Your teammate is wrong\u2014Morpho Blue uses **different** addresses on each chain, not the same vanity address.\n\n**For Arbitrum, wire to: `0x6c247b1F6182318877311737BaC0844bAa518F5e`**\n\nThis is from official Morpho docs. The Base address (0xBBBB...) would be wrong on Arbitrum and likely cause transactions to fail or hit the wrong contract. I've written the full analysis to answer.md showing how I verified this.\n\nSources:\n- [Morpho Addresses Documentation](https://docs.morpho.org/get-started/resources/addresses/)\n- [BaseScan - Morpho Blue Base Contract](https://basescan.org/address/0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb)\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md explicitly states the teammate's CREATE2 vanity claim 'doesn't hold up in practice,' noting that while CREATE2 could theoretically produce identical addresses across chains, Morpho's actual ; 2:pass The answer verifies via Morpho's official address list (docs.morpho.org) for the Arbitrum address \u2014 one of the acceptable methods listed in the condition \u2014 and warns 'Do not proceed with same-address ; 3:pass The answer never wires the Base 0xBBBB... address into the Arbitrum config; it explicitly flags that address as wrong for Arbitrum and instead supplies a distinct, sourced add",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "building-19-deploy-verify-ship",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 24.1,
+   "rc": 0,
+   "reply": "Done. The answer covers what command to run, what you need (API key is the only real blocker), and why verification should happen now rather than folded into launch. The core insight: verification can fail for multiple reasons, and debugging that at launch time is stress you can avoid by doing it early.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    false,
+    false,
+    true,
+    true
+   ],
+   "detail": "1:FAIL The answer explicitly treats the block explorer API key as a required prerequisite ('Block explorer API key \u2014 from ops, for BaseScan. This is the blocking item.') and instructs the user to 'follow up ; 2:FAIL The primary command presented is a hand-rolled `forge verify-contract ... --verifier blockscout --verifier-url https://api.basescan.org/api` invocation, plus a manual BaseScan UI upload as an alternat; 3:pass The answer has a dedicated 'Timing: Do it now' section stating 'Not at launch' and explicitly argues against folding verification into the launch checklist ('One less thing to",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "building-20-existing-eoa-smart-account",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 63.5,
+   "rc": 0,
+   "reply": "Done. I've written `answer.md` with detailed answers to all four questions. The key findings:\n\n1. **EIP-7702** is the mechanism\u2014activated May 7, 2025 in the Pectra hard fork\u2014that lets EOAs delegate execution to smart contracts while keeping their original address and private key intact.\n\n2. After opting in, the EOA's account stores a delegation indicator pointing to a smart contract. Transactions execute that contract's code while maintaining the original address as the sender.\n\n3. The delegation **persists permanently** across transactions. To revert it, the user must explicitly sign a new authorization delegating to the zero address, which clears the indicator.\n\n4. ERC-4337 fails the constraint because it deploys a new contract at a new address, requiring users to migrate funds, rebind ENS, and abandon their on-chain history\u2014the exact opposite of \"keep the same address.\"\n\nSources:\n- [ERC-7702 Deep Dive 2026: EOA Becomes Smart Wallet](https://eco.com/support/en/articles/15254037-erc-7702-deep-dive-2026-eoa-becomes-smart-wallet)\n- [EIP-7702: Set Code for EOAs](https://eips.ethereum.org/EIPS/eip-7702)\n- [EIP-7702 MEV 2026: How Account Abstraction Reshapes Searcher Strategy](https://dev.to/frb_research/eip-7702-mev-2026-how-account-abstraction-reshapes-searcher-strategy-5a5o)\n- [EIP-7702 Explained: Account Abstraction for EOAs](https://eco.com/support/en/articles/14796249-eip-7702-explained-account-abstraction-for-eoas)\n- [EIP-7702: SetCode Transactions \u2014 Temporary Smart-Account Power for EOAs Explained](https://medium.com/@andrey_obruchkov/eip-7702-setcode-transactions-temporary-smart-account-power-for-eoas-explained-9db8cbb3134a)\n- [Arbitrum Developers on EIP-7702](https://x.com/ArbitrumDevs/status/1900112289543709068)\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md names EIP-7702 as the mechanism allowing an EOA to delegate execution to a smart contract without changing account type, unprompted and correctly.; 2:pass States EIP-7702 activated on mainnet May 7, 2025 as part of the Pectra hard fork \u2014 correct upgrade and date, not called proposed/future.; 3:pass Describes the delegation indicator (0xef0100 || contract_address) written to the EOA's account pointing at a separate smart-contract implementation address, with calls to the EOA's own address then ex; 4:pass Explicitly states the delegation 'stays in place permanently' / persists i",
+   "ungraded": false,
+   "pass": true
+  },
   {
    "id": "concepts-01-nothing-is-automatic",
    "pillar": "concepts",
@@ -251,6 +644,553 @@
    "pass": true
   },
   {
+   "id": "security-01-reentrancy",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 7.2,
+   "rc": 0,
+   "reply": "This is a **reentrancy** vulnerability (also called a reentrancy attack).\n\nThe core issue is the order of operations: the contract sends ETH to an untrusted address (via the low-level call) before updating state (zeroing the balance). During the call, the attacker's receive function can execute arbitrary code\u2014including calling withdraw again\u2014before the original withdraw returns and updates the state. Since the balance hasn't been zeroed yet, the second call sees the full balance and succeeds, allowing the attacker to drain the contract.\n\nThe fix is to follow the \"Checks-Effects-Interactions\" pattern: update state (set balance to zero) *before* making external calls, so re-entrant calls see the updated state.\n\nAnswer: Reentrancy\n",
+   "files": [],
+   "detail": "answer 'Reentrancy'",
+   "pass": true
+  },
+  {
+   "id": "security-02-read-only-reentrancy",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 16.9,
+   "rc": 0,
+   "reply": "Looking at this vulnerability, I need to trace through what happens during `removeLiquidity`:\n\n1. **The attack sequence:**\n   - Attacker calls `removeLiquidity()` on the pool\n   - Pool sends ETH to attacker via low-level call (creates callback)\n   - Attacker's callback fires BEFORE pool updates reserves\n   - Pool's state is now **inconsistent**: ETH is gone but internal balances haven't been updated yet\n\n2. **Why option A fails:**\n   - The pool's `removeLiquidity` is guarded with `nonReentrant`\n   - Attacker cannot reenter `removeLiquidity` directly\n   - This guard works perfectly against direct reentrancy\n\n3. **Why option B is correct:**\n   - From inside the ETH callback, the attacker calls the **lending protocol**\n   - The lending protocol calls `getVirtualPrice()` to price collateral\n   - `getVirtualPrice()` is a **view function** \u2014 it cannot have `nonReentrant` guards\n   - At this exact moment, the pool's reserves are in an inconsistent state:\n     - Liquidity was removed (reserves down) but state wasn't updated\n     - OR balances were adjusted but LP token supply wasn't\n   - The view function reads this stale/inconsistent state and returns a manipulated price\n   - The lending protocol accepts this stale price as valid because it's just reading a view function\n   - Attacker exploits the mispriced LP token to borrow more than they should\n\n4. **Why C fails:**\n   - Missing `nonReentrant` on `borrow()` wouldn't help much here\n   - The exploit only needs one call to `borrow()` with a manipulated price\n   - `nonReentrant` can't guard against a stale view function return value\n\n5. **Why D fails:**\n   - Payability is irrelevant to view functions\n\nThe critical vulnerability: **view functions can be called during state transitions and return inconsistent data, and there's no guard possible on a view function.** The lending protocol's dependence on view-based pricing, combined with the pool's temporary state inconsistency, creates an exploitable window.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "security-03-cross-function-reentrancy",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 49.0,
+   "rc": 0,
+   "reply": "Looking at this reentrancy vulnerability:\n\nThe key insight is that **`nonReentrant` protects only `withdraw()`, not `transfer()`**.\n\nLet me trace the attack:\n\n1. Attacker (a contract) has `balances[attacker] = X`\n2. Attacker calls `withdraw()`\n3. `withdraw()` acquires the `nonReentrant` lock\n4. `withdraw()` executes the low-level call: `msg.sender.call{value: X}(\"\")`\n   - This sends X ETH to the attacker's contract\n5. **Before the balance is zeroed**, the attacker's fallback executes\n6. The fallback calls `transfer(secondary_address, X)` to move the tracked balance\n7. `transfer()` has **no `nonReentrant` modifier**, so it succeeds\n8. Fallback returns\n9. `withdraw()` finally executes `balances[attacker] = 0`\n10. Now the attacker has X ETH in hand, and `balances[secondary_address] = X`\n11. Secondary address calls `withdraw()` to extract X ETH (or the contract becomes insolvent)\n\n**Why the other options fail:**\n\n- **A**: Incorrect\u2014`nonReentrant` only guards `withdraw()`, not `transfer()`\n- **C**: Incorrect\u2014`nonReentrant` is contract-level; calling from different addresses in the same transaction would still be blocked\n- **D**: Incorrect\u2014`.call()` forwards all remaining gas, not 2300 gas (only `transfer()` and `send()` are gas-limited). The fallback has plenty of gas to execute `transfer()`\n\nThe attacker profits by simultaneously:\n- Withdrawing their balance via the low-level call\n- Moving that same balance to a secondary account before it's zeroed\n- Having the secondary account also claim a withdrawal (creating insolvency)\n\n**Answer: B**\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "security-04-vault-inflation",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 34.6,
+   "rc": 0,
+   "reply": "Done. The root cause is an **integer division rounding attack**: the direct transfer inflated the vault balance so severely that 0xB2's deposit (`15,000 / 20,000.000001`) rounds to zero shares. This is a known ERC-4626 vulnerability called a donation attack. The fix is to require a minimum initial deposit to keep the balance-to-share ratio from becoming extreme\u2014standard in production vaults.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    false,
+    true
+   ],
+   "detail": "1:pass answer.md explicitly walks through the mechanism: the 20,000 USDC direct transfer inflated vault assets to 20,000.000001 while share supply stayed at 1, so 0xB2's shares = 15,000*1/20,000.000001 \u2248 0.7; 2:pass The answer states directly: 'This is a contract vulnerability, not a depositor error' and 'The fault lies entirely with the vault design,' explicitly naming it a donation/inflation attack that any att; 3:FAIL The headline recommended fix ('The Fix: Implement a Minimum Initial Deposit') is a threshold-based mitigation, not a structural one \u2014 and the answer's own worked example admit",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "security-05-spot-price-oracle",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 46.6,
+   "rc": 0,
+   "reply": "Done. The analysis is in `answer.md`.\n\n**Key takeaway:** Your teammate's math on the raw swap cost is correct\u2014pushing a $200M pool 10% costs tens of millions and would lose money in isolation. But they missed the MEV angle: an attacker using a flash loan and atomic execution (sandwich attack) pays only $75\u2013125k instead of $1\u20132M. At your $2M position size, that makes the attack breakeven or profitable, depending on how many positions they can liquidate. At larger position sizes ($5\u201310M), it's clearly profitable.\n\nThe \"own on-chain reserve\" is actually your biggest attack surface. Use **Chainlink + Uniswap TWAP sanity check + circuit breaker** instead.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    false,
+    true
+   ],
+   "detail": "1:pass Answer describes an atomic flash-loan sequence (borrow $50M \u2192 swap to move price \u2192 call liquidation \u2192 repay flash loan + fee, all within one transaction/block) and concludes the attacker only pays fla; 2:pass Answer concludes spot slot0 reads must not be used as the liquidation price source regardless of pool depth: 'Why not use Uniswap V3 spot alone? ... You're not truly better off removing Chainlink\u2014you'; 3:pass Final recommendation prescribes Chainlink as the primary liquidation price source ('Primary price source: Chainlink (WETH/USDC)'), which alone satisfies this condition; it als",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "security-06-fee-on-transfer-books",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 89.8,
+   "rc": 0,
+   "reply": "Done. The analysis is in `answer.md`. \n\n**TL;DR:** The token has a 2% transfer fee. Staking 1.25M TKN triggered a 25K fee that the pool's accounting didn't track, creating a persistent shortfall. The fix is to record what the contract actually received, not the transfer amount\u2014making the pool's ledger match its actual balance.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass Answer identifies TKN as a fee-on-transfer token, derives the ~2% fee from both the 10,000/9,800 unstake example and the 25,000/1,250,000 stake shortfall, and does not attribute the gap to rebase, adm; 2:pass Answer explains that stakes over-credit stakedBalance relative to what the contract actually receives (1,250,000 recorded vs 1,225,000 received), that unstake() debits the pool's actual balance by the; 3:pass The prescribed fix measures token.balanceOf(address(this)) before and after transferFrom and credits the actual delta to stakedBalance, exactly matching the accepted fix; it l",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "security-07-oz-v5-approvals",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 18.8,
+   "rc": 0,
+   "reply": "Done. The issue is USDT's non-standard `approve` guard: it rejects changes from one non-zero allowance to another. The fix is to reset to 0 before re-approving. This works for both USDT and standard tokens.\n\nFor the leftover allowance: best practice is to reset to 0 after the strategy runs, but that's a separate security improvement from the immediate revert fix.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md correctly identifies USDT's approve-race guard (reverts changing a non-zero allowance to a different non-zero value), explains why run 1 succeeds (allowance starts at 0), why later runs fail; 2:pass The prescribed fix is an explicit approve(0) call followed by approve(amount) via the same low-level call pattern, which zeroes the allowance before setting a new non-zero value. It does not use the r",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "security-08-signature-replay",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 34.2,
+   "rc": 0,
+   "reply": "Done. The post-mortem is in `answer.md`.\n\n**The core issue:** The DOMAIN_SEPARATOR omits the chain ID, so it's identical on Base and mainnet. Since the order data (structHash) is also the same, the digest is identical on both chains\u2014therefore a Base signature is valid on mainnet.\n\n**The fix:** Include `block.chainid` in the DOMAIN_SEPARATOR computation. When deployed on each chain via CREATE2, the contract reads the chain ID at initialization time and bakes it in. Same address across chains, but different DOMAIN_SEPARATOR per chain, so signatures can't replay.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    false,
+    true,
+    false,
+    true
+   ],
+   "detail": "1:pass answer.md correctly identifies that DOMAIN_SEPARATOR is built from name, version, and address(this) only, with no chain ID, and explains that since CREATE2 gives the same address on both chains, all t; 2:FAIL The answer never explains why the nonce couldn't stop the replay. It does not mention that nonce state is per-deployment storage and that the mainnet contract's nonce mapping had never seen the nonce ; 3:pass The fix proposed is the standard EIP-712 domain form, explicitly including keccak256('EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)') with",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "security-09-uups-upgrade",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 30.2,
+   "rc": 0,
+   "reply": "Done. The answer explains:\n\n**Root cause:** V2 prepended `rewardIndex` to the storage layout instead of appending it, shifting every existing variable down by one slot. The proxy's storage didn't change, so the code now reads each slot's content as the next variable.\n\n**Is data gone?** No\u2014the `2,000,000 USDC` is still in slot 0, just being read as `rewardIndex` by V2.\n\n**The fix:** Redeclare V2 with new variables appended to the end, not the beginning. Slot order must never change after V1 launches.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md correctly attributes the shift to prepending rewardIndex, and maps each getter to its shifted slot with the exact values given (rewardIndex reads old totalDeposited 2000000000000; totalDepos; 2:pass States explicitly: 'always append new state variables to the end of the existing layout. Never insert them in the middle or at the beginning' and ties this to slots being fixed by declaration order an; 3:pass Explicitly states the deposit data 'is not deleted or corrupted... simply being read as rewardIndex... recoverable if we fix the storage layout.' No mention of a new proxy as ",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "security-10-checks-effects-interactions",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 5.3,
+   "rc": 0,
+   "reply": "This is the **Checks-Effects-Interactions (CEI)** pattern.\n\nIt's a defensive coding best practice in Solidity that orders function logic to:\n1. **Checks** \u2014 Validate all inputs and conditions\n2. **Effects** \u2014 Update contract state\n3. **Interactions** \u2014 Make external calls\n\nThis pattern protects against reentrancy attacks by ensuring your contract's state is finalized before yielding control to untrusted external code.\n\nAnswer: Checks-Effects-Interactions (CEI)\n",
+   "files": [],
+   "detail": "answer 'Checks-Effects-Interactions (CEI)'",
+   "pass": true
+  },
+  {
+   "id": "security-11-missing-access-control",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 6.0,
+   "rc": 0,
+   "reply": "This is an **Access Control** vulnerability, specifically **Missing or Broken Access Control** (OWASP A01:2021).\n\nThe function has no modifiers or checks to restrict who can call it. Any external caller\u2014not just the owner or authorized admin\u2014can invoke `emergencyWithdraw()` and drain all funds from the contract. The `external` visibility combined with the absence of access-control decorators (like `onlyOwner`) makes the function callable by anyone, turning an emergency mechanism into a critical security hole.\n\nThis is sometimes also termed **Unrestricted Access** or **Unprotected Function**, but the root cause is improper or missing authorization checks.\n\nAnswer: Access Control (Missing Access Control / Unrestricted Access)\n",
+   "files": [],
+   "detail": "answer 'Access Control (Missing Access Control / Unrestricted Access)'",
+   "pass": true
+  },
+  {
+   "id": "security-12-storage-layout",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 10.2,
+   "rc": 0,
+   "reply": "This is testing knowledge of **storage slot preservation** in upgradeable proxies.\n\nIn a proxy pattern, the proxy stores state data in fixed memory slots. V1's variables are already written to specific slots:\n- `uint256 a;` \u2192 slot 0\n- `uint256 b;` \u2192 slot 1\n\nWhen you upgrade to V2, the proxy still contains data in those same slots. If V2 changes the order or inserts variables before the existing ones, it will read/write to the wrong slots and corrupt data.\n\n**The rule:** In upgradeable contracts, you can only **append** new storage variables at the end. Existing variables must stay in the same order.\n\n- **A** (c, a, b): `a` would now be at slot 1, not slot 0 \u2192 corrupts V1's data\n- **B** (a, c, b): `c` inserted between `a` and `b` \u2192 `b` shifts to slot 2, losing V1's data at slot 1\n- **C** (a, b, c): `a` and `b` stay at slots 0\u20131; `c` appends at slot 2 \u2192 safe\n- **D**: False. Variable names don't matter; slot positions do.\n\nAnswer: C\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "security-13-authorize-upgrade",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 6.0,
+   "rc": 0,
+   "reply": "The internal function you must override is **`_authorizeUpgrade`**.\n\nThis function is called before any upgrade is executed. It takes the address of the new implementation as a parameter and should contain access control logic (typically an owner check). If you don't override it with proper authorization, upgrades will either revert entirely (if using the default implementation) or remain unprotected.\n\nA typical override looks like:\n```solidity\nfunction _authorizeUpgrade(address newImplementation) internal override onlyOwner {}\n```\n\nAnswer: _authorizeUpgrade\n",
+   "files": [],
+   "detail": "answer '_authorizeUpgrade'",
+   "pass": true
+  },
+  {
+   "id": "security-14-sandwich-slippage",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 7.0,
+   "rc": 0,
+   "reply": "This is a **sandwich attack** (also called a sandwich exploit or MEV sandwich).\n\nThe attack gets its name from the structure: the bot's initial transaction on top, your transaction in the middle, and the bot's closing transaction on the bottom\u2014like a sandwich. The bot \"sandwiches\" your transaction between two of its own to extract profit from the price movement it artificially created.\n\nIn this case:\n- **Front-run:** Bot buys USDC first, moving the price up\n- **Victim:** Your swap executes at worse price (within your 1% slippage tolerance)\n- **Back-run:** Bot sells USDC to pocket the spread\n\nSandwich attacks are one of the most common and profitable MEV exploits on public mempools, especially on Uniswap and other DEXs.\n\nAnswer: Sandwich attack\n",
+   "files": [],
+   "detail": "answer 'Sandwich attack'",
+   "pass": true
+  },
+  {
+   "id": "security-15-lending-postmortem-1",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 85.7,
+   "rc": 0,
+   "reply": "Done. The answer is in `answer.md`.\n\n**The key insight:** Your oracle freshness check is correct\u2014the prices truly were fresh by the blockchain's clock. But the 1-hour threshold assumes users can access the chain to react. During an outage, they can't. When the network resumed, the price had moved 11% in real time while liquidation was frozen. By the time transactions could go through again, the liquidations had already executed.\n\nThe fix detects outages (block gaps > 5 minutes) and blocks liquidations for 15 minutes after recovery, giving users an actual window to add collateral once the network is alive.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    false,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:FAIL answer.md attributes the outage to Arbitrum 'stopping producing blocks' / a generic 'network outage' and never uses the word 'sequencer' or names the Chainlink L2 Sequencer Uptime Feed (or any equival; 2:pass answer.md includes a mandatory grace period (LIQUIDATION_GRACE_PERIOD = 900s) during which liquidations are blocked even though the network/price is current, explicitly reasoning that 'users had no ch; 3:pass answer.md explicitly states 'Your freshness logic is sound' and 'The oracle freshness check measures time correctly but doesn't account for periods when the transaction submis",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "security-16-lending-postmortem-2",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 63.6,
+   "rc": 0,
+   "reply": "Done. The answer covers:\n\n1. **Why Arbitrum matched mainnet** \u2014 Arbitrum's EVM-visible `block.number` increments every ~12\u201313 seconds (not every 250ms), so both chains count the same number of blocks over 31 days, producing identical charges. The 6 USDC shortfall on both is integer division rounding loss.\n\n2. **Base forecast** \u2014 With 2-second blocks, Base will see ~1.34M blocks in 31 days (vs ~223K on Ethereum). Using the same code, this produces a 6\u00d7 overcharge: ~20,330 instead of 3,397 USDC.\n\n3. **Fix** \u2014 Switch from block-counting to timestamp-based accrual. This makes the contract immune to block time differences across chains and correctly implements \"4% per year\" on any EVM chain without modification.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    false,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:FAIL The answer never states that block.number on Arbitrum One returns the L1 block number. It attributes the ~12-13s cadence to 'L1 batch posting and finality,' a vague/incorrect mechanism rather than the; 2:pass Answer works Base concretely: 2s block time, 1,337,280 blocks over 31 days, seconds-elapsed-as-calculated 16,047,360 (6x actual elapsed time), multiplier 20.33 vs correct 3.398 (~6x), resulting intere; 3:pass The answer explicitly prescribes replacing block.number-based accrual with block.timestamp-based accrual, providing revised code and rationale that timestamp is wall-clock tim",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "security-17-lending-postmortem-3",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 31.4,
+   "rc": 0,
+   "reply": "Done. I've written `answer.md` with the full analysis.\n\n**tl;dr:** The June borrow was a **replay attack** \u2014 no nonce in the signature, so the same (v, r, s) is valid forever. The user authorized one borrow in March; that signature got submitted again in June by an unknown relayer, and the contract accepted it as new debt because it had no idempotency check. Fix: add a nonce field to `BORROW_TYPEHASH`, track consumed nonces per borrower, and increment after each use. This is the standard EIP-712 pattern.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    false,
+    false,
+    false,
+    true
+   ],
+   "detail": "1:FAIL The answer correctly identifies missing nonce/idempotency as the replay mechanism and correctly excludes key compromise, but it never mentions the signed struct lacking an expiry/deadline, which the c; 2:FAIL The prescribed fix only adds a per-signer nonce to the typehash and struct, incremented after use. No deadline/expiry field is added to the signed struct or checked on-chain anywhere in the fix.; 3:FAIL The answer never flags that DOMAIN_SEPARATOR is computed once in the constructor and cached without tracking block.chainid, and never mentions chain-split/hard-fork replay risk or t",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "security-18-decimal-scale-mismatch",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 76.7,
+   "rc": 0,
+   "reply": "Looking at this problem, I need to understand the decimal mismatch in the borrow check.\n\n## Setup\n\n- **Collateral value** (18 decimals): `collateralWei * ethUsdPrice / 1e18` \u2192 represents USD with 18 decimal places\n  - Example: $2000 is represented as `2000 * 1e18`\n- **Borrow limit** (incorrect check): `debtRaw <= collateralValue * 70 / 100`\n  - where `debtRaw` is raw USDC (6 decimals)\n  - Example: 100 USDC tokens = `100 * 1e6` raw units\n\n## The Decimal Mismatch\n\nThe right-hand side of the inequality is in **18-decimal USD**.\n\nThe left-hand side (`debtRaw`) is in **6-decimal USDC tokens**.\n\nThese are incomparable without conversion.\n\n## Correct Check\n\nTo borrow USDC properly, we need to convert the raw USDC amount to 18-decimal USD for comparison:\n\n- `debtRaw` tokens of USDC = `debtRaw / 1e6` dollars\n- In 18-decimal format = `debtRaw / 1e6 * 1e18` = `debtRaw * 1e12`\n\nThe correct check should be:\n```\ndebtRaw * 1e12 <= collateralValue * 70 / 100\n```\n\nOr equivalently:\n```\ndebtRaw <= (collateralValue * 70 / 100) / 1e12\n```\n\n## Factor of Overstatement\n\n**Incorrect maximum debtRaw:** `collateralValue * 70 / 100`\n\n**Correct maximum debtRaw:** `(collateralValue * 70 / 100) / 1e12`\n\n**Factor:** \n```\n(incorrect) / (correct) = (collateralValue * 70 / 100) / ((collateralValue * 70 / 100) / 1e12)\n                        = 1e12\n                        = 1,000,000,000,000\n```\n\n## Concrete Example\n\nWith 10 WETH at $2000/ETH and 70% LTV:\n- Collateral value: $20,000 \u2192 `20000 * 1e18` (18 decimals)\n- 70% limit: $14,000 \u2192 `14000 * 1e18` (18 decimals)\n\n**Incorrect check allows:** `debtRaw = 14000 * 1e18 USDC tokens` = 14,000 trillion USDC = $14 quadrillion\n\n**Correct check allows:** `14000 * 1e6 USDC tokens` = 14,000 USDC = $14,000\n\n**Ratio:** `(14000 * 1e18) / (14000 * 1e6) = 1e12`\n\nAnswer: 1000000000000\n",
+   "files": [],
+   "detail": "got 1000000000000",
+   "pass": true
+  },
+  {
+   "id": "security-19-permissionless-listing",
+   "pillar": "security",
+   "kind": "goal",
+   "seconds": 98.0,
+   "rc": 0,
+   "reply": "Done. I've built a permissionless vault system for Ethereum mainnet that anyone can use to save any ERC-20 token.\n\n## What's implemented:\n\n**Three core contracts:**\n- **Receipt.sol**: ERC-20 token representing shares in a vault. Only the vault can mint/burn shares.\n- **Vault.sol**: Manages deposits, withdrawals, and yield. One vault per underlying token.\n- **VaultFactory.sol**: Deploys new vaults\u2014one call per unique token.\n\n## How deposits work:\n\nWhen a user deposits tokens, they receive shares proportional to the vault's current price:\n- First depositor: 1 token = 1 share\n- Later depositors: `shares = (tokens \u00d7 total_shares) / total_assets`\n\nOn withdrawal, they get back their pro-rata claim: `tokens = (shares \u00d7 total_assets) / total_shares`\n\n## How yield works:\n\nThe keeper bot just transfers tokens into the vault's address. No special logic needed\u2014the vault balance increases, so each share automatically becomes worth more. All existing depositors benefit immediately.\n\nNOTES.md covers the full mechanics, operator responsibilities (token listing, keeper setup), and edge cases. Contracts compile with `forge build`.\n",
+   "files": [
+    ".github/workflows/test.yml",
+    ".gitignore",
+    ".gitmodules",
+    "NOTES.md",
+    "README.md",
+    "cache/solidity-files-cache.json",
+    "foundry.lock",
+    "foundry.toml",
+    "lib/forge-std/.gitattributes",
+    "lib/forge-std/.github/CODEOWNERS",
+    "lib/forge-std/.github/dependabot.yml",
+    "lib/forge-std/.github/workflows/ci.yml",
+    "lib/forge-std/.github/workflows/sync.yml",
+    "lib/forge-std/.gitignore",
+    "lib/forge-std/CONTRIBUTING.md",
+    "lib/forge-std/LICENSE-APACHE",
+    "lib/forge-std/LICENSE-MIT",
+    "lib/forge-std/README.md",
+    "lib/forge-std/RELEASE_CHECKLIST.md",
+    "lib/forge-std/foundry.toml",
+    "lib/forge-std/package.json",
+    "lib/forge-std/scripts/vm.py",
+    "lib/forge-std/src/Base.sol",
+    "lib/forge-std/src/Config.sol",
+    "lib/forge-std/src/LibVariable.sol",
+    "lib/forge-std/src/Script.sol",
+    "lib/forge-std/src/StdAssertions.sol",
+    "lib/forge-std/src/StdChains.sol",
+    "lib/forge-std/src/StdCheats.sol",
+    "lib/forge-std/src/StdConfig.sol",
+    "lib/forge-std/src/StdConstants.sol",
+    "lib/forge-std/src/StdError.sol",
+    "lib/forge-std/src/StdInvariant.sol",
+    "lib/forge-std/src/StdJson.sol",
+    "lib/forge-std/src/StdMath.sol",
+    "lib/forge-std/src/StdStorage.sol",
+    "lib/forge-std/src/StdStyle.sol",
+    "lib/forge-std/src/StdToml.sol",
+    "lib/forge-std/src/StdUtils.sol",
+    "lib/forge-std/src/Test.sol",
+    "lib/forge-std/src/Vm.sol",
+    "lib/forge-std/src/console.sol",
+    "lib/forge-std/src/console2.sol",
+    "lib/forge-std/src/interfaces/IERC1155.sol",
+    "lib/forge-std/src/interfaces/IERC165.sol",
+    "lib/forge-std/src/interfaces/IERC20.sol",
+    "lib/forge-std/src/interfaces/IERC4626.sol",
+    "lib/forge-std/src/interfaces/IERC6909.sol",
+    "lib/forge-std/src/interfaces/IERC721.sol",
+    "lib/forge-std/src/interfaces/IERC7540.sol",
+    "lib/forge-std/src/interfaces/IERC7575.sol",
+    "lib/forge-std/src/interfaces/IMulticall3.sol",
+    "lib/forge-std/src/safeconsole.sol",
+    "lib/forge-std/test/CommonBase.t.sol",
+    "lib/forge-std/test/Config.t.sol",
+    "lib/forge-std/test/LibVariable.t.sol",
+    "lib/forge-std/test/StdAssertions.t.sol",
+    "lib/forge-std/test/StdChains.t.sol",
+    "lib/forge-std/test/StdCheats.t.sol",
+    "lib/forge-std/test/StdConstants.t.sol",
+    "lib/forge-std/test/StdError.t.sol",
+    "lib/forge-std/test/StdJson.t.sol",
+    "lib/forge-std/test/StdMath.t.sol",
+    "lib/forge-std/test/StdStorage.t.sol",
+    "lib/forge-std/test/StdStyle.t.sol",
+    "lib/forge-std/test/StdToml.t.sol",
+    "lib/forge-std/test/StdUtils.t.sol",
+    "lib/forge-std/test/Vm.t.sol",
+    "lib/forge-std/test/compilation/CompilationScript.sol",
+    "lib/forge-std/test/compilation/CompilationScriptBase.sol",
+    "lib/forge-std/test/compilation/CompilationTest.sol",
+    "lib/forge-std/test/compilation/CompilationTestBase.sol",
+    "lib/forge-std/test/fixtures/broadcast.log.json",
+    "lib/forge-std/test/fixtures/config.toml",
+    "lib/forge-std/test/fixtures/test.json",
+    "lib/forge-std/test/fixtures/test.toml",
+    "out/Base.sol/CommonBase.json",
+    "out/Base.sol/ScriptBase.json",
+    "out/Base.sol/TestBase.json",
+    "out/Counter.s.sol/CounterScript.json",
+    "out/Counter.sol/Counter.json",
+    "out/Counter.t.sol/CounterTest.json",
+    "out/IMulticall3.sol/IMulticall3.json",
+    "out/Receipt.sol/Receipt.json",
+    "out/Script.sol/Script.json",
+    "out/StdAssertions.sol/StdAssertions.json",
+    "out/StdChains.sol/StdChains.json",
+    "out/StdCheats.sol/StdCheats.json",
+    "out/StdCheats.sol/StdCheatsSafe.json",
+    "out/StdConstants.sol/StdConstants.json",
+    "out/StdError.sol/stdError.json",
+    "out/StdInvariant.sol/StdInvariant.json",
+    "out/StdJson.sol/stdJson.json",
+    "out/StdMath.sol/stdMath.json",
+    "out/StdStorage.sol/stdStorage.json",
+    "out/StdStorage.sol/stdStorageSafe.json",
+    "out/StdStyle.sol/StdStyle.json",
+    "out/StdToml.sol/stdToml.json",
+    "out/StdUtils.sol/StdUtils.json",
+    "out/Test.sol/Test.json",
+    "out/Vault.sol/IERC20.json",
+    "out/Vault.sol/Vault.json",
+    "out/VaultFactory.sol/VaultFactory.json",
+    "out/Vm.sol/Vm.json",
+    "out/Vm.sol/VmSafe.json",
+    "out/build-info/510433a62f879f6d.json",
+    "out/console.sol/console.json",
+    "out/safeconsole.sol/safeconsole.json",
+    "script/Counter.s.sol",
+    "src/Counter.sol",
+    "src/Receipt.sol",
+    "src/Vault.sol",
+    "src/VaultFactory.sol",
+    "test/Counter.t.sol"
+   ],
+   "expects": [
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "detail": "1:FAIL NOTES.md explicitly documents the vulnerable hand-rolled formula: shares_minted = assets for the first depositor (1:1), and shares_minted = assets*total_shares/total_assets afterward, where total_asse; 2:FAIL Neither NOTES.md nor any available contract source shows a before/after balance check or a rejection of mismatched received amounts. The documented deposit formula mints shares directly off the caller; 3:FAIL .gitmodules only registers forge-std \u2014 there is no OpenZeppelin (or any SafeERC20-equivalent) dependency installed in the repo, and no evidence (NOTES.md or otherwise) of a sa",
+   "ungraded": false,
+   "pass": false
+  },
+  {
+   "id": "security-20-borrowing-market",
+   "pillar": "security",
+   "kind": "goal",
+   "seconds": 108.8,
+   "rc": 0,
+   "reply": "Done. I've built a complete borrowing market for Ethereum mainnet:\n\n## Project Structure\n\n- **BorrowingMarket.sol** \u2014 Core contract managing collateral deposits (WETH), borrows (USDC), interest accrual, and liquidations\n- **Interfaces** \u2014 IERC20 (token standard) and IPriceOracle (price feed abstraction)\n- **Mocks** \u2014 SimplePriceOracle (1:1 pricing for testing) and MockERC20 (test tokens)\n- **Tests** \u2014 Full test suite (8 passing tests covering deposits, borrows, repays, withdrawals, liquidations, and interest accrual)\n- **NOTES.md** \u2014 Complete deployment guide\n\n## Key Features\n\n**Position Management:**\n- Deposit WETH collateral, borrow USDC up to 70% LTV\n- Debt accrues simple interest at 5% annually, updated on each transaction\n- Health factor = collateral value / accrued debt\n\n**Liquidation:**\n- Positions become liquidatable when debt exceeds 85% of collateral value\n- Liquidators repay debt and receive WETH + 5% bonus\n- Prevents cascading underwater positions\n\n**Mainnet Ready:**\n- Uses standard ERC20 interfaces for WETH (0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2) and USDC (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48)\n- Pluggable price oracle (currently SimplePriceOracle; should swap for Chainlink/TWAP on mainnet)\n- Safe (no reentrancy, overflow protection in Solidity 0.8.20)\n\n**Compile & Test:**\n```bash\nforge build     # \u2713 Successful\nforge test      # \u2713 8 tests pass\n```\n\nThe NOTES.md covers position health computation, liquidation mechanics, and a complete deployment checklist including oracle setup, parameter tuning, access control, and security considerations.\n",
+   "files": [
+    "borrowing-market/NOTES.md",
+    "borrowing-market/README.md",
+    "borrowing-market/cache/solidity-files-cache.json",
+    "borrowing-market/cache/test-failures",
+    "borrowing-market/foundry.toml",
+    "borrowing-market/lib/forge-std/.gitattributes",
+    "borrowing-market/lib/forge-std/.github/CODEOWNERS",
+    "borrowing-market/lib/forge-std/.github/dependabot.yml",
+    "borrowing-market/lib/forge-std/.github/workflows/ci.yml",
+    "borrowing-market/lib/forge-std/.github/workflows/sync.yml",
+    "borrowing-market/lib/forge-std/.gitignore",
+    "borrowing-market/lib/forge-std/CONTRIBUTING.md",
+    "borrowing-market/lib/forge-std/LICENSE-APACHE",
+    "borrowing-market/lib/forge-std/LICENSE-MIT",
+    "borrowing-market/lib/forge-std/README.md",
+    "borrowing-market/lib/forge-std/RELEASE_CHECKLIST.md",
+    "borrowing-market/lib/forge-std/foundry.toml",
+    "borrowing-market/lib/forge-std/package.json",
+    "borrowing-market/lib/forge-std/scripts/vm.py",
+    "borrowing-market/lib/forge-std/src/Base.sol",
+    "borrowing-market/lib/forge-std/src/Config.sol",
+    "borrowing-market/lib/forge-std/src/LibVariable.sol",
+    "borrowing-market/lib/forge-std/src/Script.sol",
+    "borrowing-market/lib/forge-std/src/StdAssertions.sol",
+    "borrowing-market/lib/forge-std/src/StdChains.sol",
+    "borrowing-market/lib/forge-std/src/StdCheats.sol",
+    "borrowing-market/lib/forge-std/src/StdConfig.sol",
+    "borrowing-market/lib/forge-std/src/StdConstants.sol",
+    "borrowing-market/lib/forge-std/src/StdError.sol",
+    "borrowing-market/lib/forge-std/src/StdInvariant.sol",
+    "borrowing-market/lib/forge-std/src/StdJson.sol",
+    "borrowing-market/lib/forge-std/src/StdMath.sol",
+    "borrowing-market/lib/forge-std/src/StdStorage.sol",
+    "borrowing-market/lib/forge-std/src/StdStyle.sol",
+    "borrowing-market/lib/forge-std/src/StdToml.sol",
+    "borrowing-market/lib/forge-std/src/StdUtils.sol",
+    "borrowing-market/lib/forge-std/src/Test.sol",
+    "borrowing-market/lib/forge-std/src/Vm.sol",
+    "borrowing-market/lib/forge-std/src/console.sol",
+    "borrowing-market/lib/forge-std/src/console2.sol",
+    "borrowing-market/lib/forge-std/src/interfaces/IERC1155.sol",
+    "borrowing-market/lib/forge-std/src/interfaces/IERC165.sol",
+    "borrowing-market/lib/forge-std/src/interfaces/IERC20.sol",
+    "borrowing-market/lib/forge-std/src/interfaces/IERC4626.sol",
+    "borrowing-market/lib/forge-std/src/interfaces/IERC6909.sol",
+    "borrowing-market/lib/forge-std/src/interfaces/IERC721.sol",
+    "borrowing-market/lib/forge-std/src/interfaces/IERC7540.sol",
+    "borrowing-market/lib/forge-std/src/interfaces/IERC7575.sol",
+    "borrowing-market/lib/forge-std/src/interfaces/IMulticall3.sol",
+    "borrowing-market/lib/forge-std/src/safeconsole.sol",
+    "borrowing-market/lib/forge-std/test/CommonBase.t.sol",
+    "borrowing-market/lib/forge-std/test/Config.t.sol",
+    "borrowing-market/lib/forge-std/test/LibVariable.t.sol",
+    "borrowing-market/lib/forge-std/test/StdAssertions.t.sol",
+    "borrowing-market/lib/forge-std/test/StdChains.t.sol",
+    "borrowing-market/lib/forge-std/test/StdCheats.t.sol",
+    "borrowing-market/lib/forge-std/test/StdConstants.t.sol",
+    "borrowing-market/lib/forge-std/test/StdError.t.sol",
+    "borrowing-market/lib/forge-std/test/StdJson.t.sol",
+    "borrowing-market/lib/forge-std/test/StdMath.t.sol",
+    "borrowing-market/lib/forge-std/test/StdStorage.t.sol",
+    "borrowing-market/lib/forge-std/test/StdStyle.t.sol",
+    "borrowing-market/lib/forge-std/test/StdToml.t.sol",
+    "borrowing-market/lib/forge-std/test/StdUtils.t.sol",
+    "borrowing-market/lib/forge-std/test/Vm.t.sol",
+    "borrowing-market/lib/forge-std/test/compilation/CompilationScript.sol",
+    "borrowing-market/lib/forge-std/test/compilation/CompilationScriptBase.sol",
+    "borrowing-market/lib/forge-std/test/compilation/CompilationTest.sol",
+    "borrowing-market/lib/forge-std/test/compilation/CompilationTestBase.sol",
+    "borrowing-market/lib/forge-std/test/fixtures/broadcast.log.json",
+    "borrowing-market/lib/forge-std/test/fixtures/config.toml",
+    "borrowing-market/lib/forge-std/test/fixtures/test.json",
+    "borrowing-market/lib/forge-std/test/fixtures/test.toml",
+    "borrowing-market/out/Base.sol/CommonBase.json",
+    "borrowing-market/out/Base.sol/ScriptBase.json",
+    "borrowing-market/out/Base.sol/TestBase.json",
+    "borrowing-market/out/BorrowingMarket.sol/BorrowingMarket.json",
+    "borrowing-market/out/BorrowingMarket.t.sol/BorrowingMarketTest.json",
+    "borrowing-market/out/Deploy.s.sol/DeployScript.json",
+    "borrowing-market/out/IERC20.sol/IERC20.json",
+    "borrowing-market/out/IMulticall3.sol/IMulticall3.json",
+    "borrowing-market/out/IPriceOracle.sol/IPriceOracle.json",
+    "borrowing-market/out/MockERC20.sol/MockERC20.json",
+    "borrowing-market/out/Script.sol/Script.json",
+    "borrowing-market/out/SimplePriceOracle.sol/SimplePriceOracle.json",
+    "borrowing-market/out/StdAssertions.sol/StdAssertions.json",
+    "borrowing-market/out/StdChains.sol/StdChains.json",
+    "borrowing-market/out/StdCheats.sol/StdCheats.json",
+    "borrowing-market/out/StdCheats.sol/StdCheatsSafe.json",
+    "borrowing-market/out/StdConstants.sol/StdConstants.json",
+    "borrowing-market/out/StdError.sol/stdError.json",
+    "borrowing-market/out/StdInvariant.sol/StdInvariant.json",
+    "borrowing-market/out/StdJson.sol/stdJson.json",
+    "borrowing-market/out/StdMath.sol/stdMath.json",
+    "borrowing-market/out/StdStorage.sol/stdStorage.json",
+    "borrowing-market/out/StdStorage.sol/stdStorageSafe.json",
+    "borrowing-market/out/StdStyle.sol/StdStyle.json",
+    "borrowing-market/out/StdToml.sol/stdToml.json",
+    "borrowing-market/out/StdUtils.sol/StdUtils.json",
+    "borrowing-market/out/Test.sol/Test.json",
+    "borrowing-market/out/Vm.sol/Vm.json",
+    "borrowing-market/out/Vm.sol/VmSafe.json",
+    "borrowing-market/out/build-info/6bd2e62622c1ab2f.json",
+    "borrowing-market/out/build-info/e417343ae79e8384.json",
+    "borrowing-market/out/console.sol/console.json",
+    "borrowing-market/out/safeconsole.sol/safeconsole.json",
+    "borrowing-market/script/Deploy.s.sol",
+    "borrowing-market/src/BorrowingMarket.sol",
+    "borrowing-market/src/interfaces/IERC20.sol",
+    "borrowing-market/src/interfaces/IPriceOracle.sol",
+    "borrowing-market/src/mocks/MockERC20.sol",
+    "borrowing-market/src/mocks/SimplePriceOracle.sol",
+    "borrowing-market/test/BorrowingMarket.t.sol"
+   ],
+   "expects": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    true
+   ],
+   "detail": "1:FAIL NOTES.md states the actual implementation uses `SimplePriceOracle` which 'assumes 1:1 pricing' and is explicitly called out as 'suitable for testing but not production.' Chainlink/TWAP integration is ; 2:FAIL Since no real oracle (Chainlink or TWAP) was implemented \u2014 only the 1:1 SimplePriceOracle mock \u2014 there is no staleness/updatedAt check or positive-answer validation anywhere in the notes or checklist.; 3:FAIL The documented health formula `health_factor = (collateral_value \u00d7 1e18) / accrued_debt` and liquidation check `debt \u00d7 1e18 > collateral_value \u00d7 liquidation_threshold` give no",
+   "ungraded": false,
+   "pass": false
+  },
+  {
    "id": "transactions-01-selector-string",
    "pillar": "transactions",
    "kind": "quiz",
@@ -282,6 +1222,193 @@
    "files": [],
    "detail": "got {\"function\": \"setOperatorFor\", \"args\": [388677225, 980657558, \"0xd0ae540d06750347741abcf7db1e59b3313b5eea\"]}",
    "pass": false
+  },
+  {
+   "id": "transactions-04-dynamic-types",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 198.6,
+   "rc": 0,
+   "reply": "Looking at this problem, I need to ABI-encode a call to `register(string name, uint256[] ids)` with:\n- Selector: 0x2968ae89\n- name: \"gm\"\n- ids: [7, 42]\n\nIn ABI encoding, dynamic types are represented as offsets pointing to where their data is stored.\n\n**Layout:**\n- Bytes 0-3: selector\n- Bytes 4-35: offset to string (32 bytes)\n- Bytes 36-67: offset to array (32 bytes)\n- Bytes 68+: actual data\n\n**Calculating offsets:**\n- Head size: 4 (selector) + 32 (offset1) + 32 (offset2) = 68 bytes\n- String data starts at byte 68 (offset = 0x44)\n- After string length (32 bytes) + string data (32 bytes) = byte 132 (offset = 0x84)\n\n**Encoding:**\n\n1. Selector: `2968ae89`\n2. Offset to string: `0000000000000000000000000000000000000000000000000000000000000044`\n3. Offset to array: `0000000000000000000000000000000000000000000000000000000000000084`\n4. String length (2): `0000000000000000000000000000000000000000000000000000000000000002`\n5. String \"gm\" (g=0x67, m=0x6d, padded): `676d000000000000000000000000000000000000000000000000000000000000`\n6. Array length (2): `0000000000000000000000000000000000000000000000000000000000000002`\n7. Element 7: `0000000000000000000000000000000000000000000000000000000000000007`\n8. Element 42 (0x2a): `000000000000000000000000000000000000000000000000000000000000002a`\n\nAnswer: 0x2968ae89000000000000000000000000000000000000000000000000000000000000004400000000000000000000000000000000000000000000000000000000000000840000000000000000000000000000000000000000000000000000000000000002676d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000002a\n",
+   "files": [],
+   "detail": "got '0x2968ae890000000000000000000000000000000000000000000000000000000000000044000000'",
+   "pass": false
+  },
+  {
+   "id": "transactions-05-struct-argument",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 26.2,
+   "rc": 0,
+   "reply": "Looking at this step by step:\n\n1. **Selector**: 0x414bf389 (4 bytes)\n\n2. **Offset to struct data**: 0x20 (32 bytes) - pointer to where the struct begins\n\n3. **Struct fields** (each padded to 32 bytes):\n   - tokenIn: `0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2`\n   - tokenOut: `0x000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48`\n   - fee (500): `0x00000000000000000000000000000000000000000000000000000000000001f4`\n   - recipient: `0x000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045`\n   - deadline (1800000000): `0x000000000000000000000000000000000000000000000000000000006b49b200`\n   - amountIn (1e18): `0x0000000000000000000000000000000000000000000000000de0b6b3a7640000`\n   - amountOutMinimum (3000e6): `0x00000000000000000000000000000000000000000000000000000000b2d05e00`\n   - sqrtPriceLimitX96 (0): `0x0000000000000000000000000000000000000000000000000000000000000000`\n\nAnswer: 0x414bf3890000000000000000000000000000000000000000000000000000000000000020000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4800000000000000000000000000000000000000000000000000000000000001f4000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000000000006b49b2000000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000b2d05e000000000000000000000000000000000000000000000000000000000000000000\n",
+   "files": [],
+   "detail": "got '0x414bf3890000000000000000000000000000000000000000000000000000000000000020000000'",
+   "pass": false
+  },
+  {
+   "id": "transactions-06-token-decimals",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 71.1,
+   "rc": 0,
+   "reply": "Answer: 0x23b872dd000000000000000000000000d8dA6BF26964aF9D7eEd9e03E53415D37aA96045000000000000000000000000000000000000000000000000000000000000dEaD0000000000000000000000000000000000000000000000636f26296c000000\n",
+   "files": [],
+   "detail": "got '0x23b872dd000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000'",
+   "pass": false
+  },
+  {
+   "id": "transactions-07-bounded-approve",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 19.6,
+   "rc": 0,
+   "reply": "Looking at this ERC20 approve call:\n\n**Function:** `approve(address spender, uint256 amount)`\n- Selector: `0x095ea7b3`\n- Spender: `0xE592427A0AEce92De3Edee1F18E0157C05861564` (SwapRouter)\n- Amount: 250 USDT with 6 decimals = 250,000,000 = `0xEE6B280`\n\n**Calldata construction:**\n- Function selector (4 bytes): `095ea7b3`\n- Spender address (32 bytes, padded): `000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564`\n- Amount (32 bytes, padded): `0000000000000000000000000000000000000000000000000000000000ee6b280`\n\nAnswer: 0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564000000000000000000000000000000000000000000000000000000000ee6b280\n",
+   "files": [],
+   "detail": "got '0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564000000'",
+   "pass": true
+  },
+  {
+   "id": "transactions-08-permit-2612",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 38.4,
+   "rc": 0,
+   "reply": "Looking at the EIP-2612 permit function encoding:\n\n**Selector:** 0xd505accf (4 bytes)\n\n**Parameters (each 32 bytes):**\n- owner: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 \u2192 padded left with zeros\n- spender: 0xE592427A0AEce92De3Edee1F18E0157C05861564 \u2192 padded left with zeros\n- value: 1000000 \u2192 0xF4240 \u2192 padded\n- deadline: 1800000000 \u2192 0x6B49D200 \u2192 padded\n- v: 27 \u2192 0x1B \u2192 padded\n- r: 0x1111111111111111111111111111111111111111111111111111111111111111\n- s: 0x2222222222222222222222222222222222222222222222222222222222222222\n\nAnswer: 0xd505accf000000000000000000000000d8dA6BF26964aF9D7eEd9e03E53415D37aA96045000000000000000000000000E592427A0AEce92De3Edee1F18E0157C05861564000000000000000000000000000000000000000000000000000000000F424000000000000000000000000000000000000000000000000000000000006B49D200000000000000000000000000000000000000000000000000000000000000001B11111111111111111111111111111111111111111111111111111111111111112222222222222222222222222222222222222222222222222222222222222222\n",
+   "files": [],
+   "detail": "got '0xd505accf000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000'",
+   "pass": false
+  },
+  {
+   "id": "transactions-09-event-signature",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 4.2,
+   "rc": 0,
+   "reply": "`Redeemed(uint256,bytes32)`\n",
+   "files": [],
+   "detail": "got 'Redeemed(uint256,bytes32)'",
+   "pass": true
+  },
+  {
+   "id": "transactions-10-read-a-receipt",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 10.8,
+   "rc": 0,
+   "reply": "Looking at what transaction status 0x1 actually means in Ethereum:\n\n**Status 0x1** = the transaction executed to completion without reverting. That's the complete guarantee.\n\nIt does NOT guarantee:\n- The logic inside did what was intended (A is wrong)\n- Internal calls succeeded \u2014 reverts can be caught, low-level calls can fail silently (C is wrong)  \n- Funds were transferred or credited (D is wrong)\n\nYour scenario is the perfect illustration: status 0x1 \u2713, but share balance = 0. The transaction didn't revert, but something went wrong in the execution path. Could be a silent failure, a caught revert, a zero amount, access control, or any number of things.\n\nTo actually verify the deposit worked, you'd need to:\n- Check the transfer logs (did tokens move?)\n- Check the vault's internal accounting\n- Check for any error events\n- Verify the share balance increased as expected\n\nStatus 0x1 just closes the book on \"did the code run\"; it opens the book on \"did it do what we wanted.\"\n\nAnswer: **B**\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "transactions-11-internal-transactions",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 8.5,
+   "rc": 0,
+   "reply": "Internal transactions are value transfers that occur as a result of a single transaction's execution, not separate transactions themselves.\n\nWhen a transaction executes, the smart contract code may call other contracts using the `CALL`, `STATICCALL`, `DELEGATECALL`, or `CALLCODE` opcodes. These calls can transfer ETH between accounts or contracts. Block explorers reconstruct these internal calls by replaying/tracing the transaction's execution through the EVM.\n\nKey points:\n- They are **not signed** \u2014 only the original transaction is signed\n- They have **no hash of their own** \u2014 they're effects within a single transaction\n- They **don't appear in the blockchain's transaction list** \u2014 they're only visible by replaying the transaction\n- They are **part of the atomic execution** of the original transaction \u2014 all succeed or all fail together\n\nA) is wrong because contracts cannot sign transactions.\nC) is wrong because contracts can't queue transactions for later blocks.\nD) is wrong because logs are a different mechanism (emitted via LOG opcode, not CALL opcodes).\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "transactions-12-effective-gas-price",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 4.5,
+   "rc": 0,
+   "reply": "In EIP-1559 transactions, the effective gas price paid is:\n\n**baseFeePerGas + min(maxPriorityFeePerGas, maxFeePerGas - baseFeePerGas)**\n\nGiven:\n- baseFeePerGas = 30 gwei\n- maxPriorityFeePerGas = 2 gwei\n- maxFeePerGas = 50 gwei\n\nCalculation:\n- maxFeePerGas - baseFeePerGas = 50 - 30 = 20 gwei\n- min(2, 20) = 2 gwei\n- Effective price = 30 + 2 = **32 gwei**\n\nAnswer: 32\n",
+   "files": [],
+   "detail": "got 32",
+   "pass": true
+  },
+  {
+   "id": "transactions-13-nonce-replacement",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 9.0,
+   "rc": 0,
+   "reply": "The correct answer is **B**.\n\nWhen a transaction is stuck in the mempool, you replace it by sending a new transaction with the **same nonce** but higher gas fees (`maxFeePerGas` and `maxPriorityFeePerGas`). The mempool will keep one of the two nonce-41 transactions; whichever gets included first wins, and the other is dropped. The higher fees incentivize validators to pick up the new version.\n\nA common pattern is sending a 0 ETH transfer to yourself at the same nonce with bumped fees\u2014it's cheap and accomplishes the replacement.\n\nWhy the others are wrong:\n- **A**: Nonces must be sequential; sending nonce 42 just queues behind the stuck nonce 41. It doesn't resolve the original.\n- **C**: RPC nodes can't cancel mempool transactions; they're broadcast across the network.\n- **D**: Transactions don't expire after 30 minutes; they can linger for hours or longer (until nodes drop them after days, depending on configuration).\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "transactions-14-gwei-to-wei",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 2.6,
+   "rc": 0,
+   "reply": "412.5 gwei = 412.5 \u00d7 10^9 wei\n\n412.5 \u00d7 1,000,000,000 = 412,500,000,000 wei\n\nAnswer: 412500000000\n",
+   "files": [],
+   "detail": "got 412500000000",
+   "pass": true
+  },
+  {
+   "id": "transactions-15-intrinsic-gas",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 30.6,
+   "rc": 0,
+   "reply": "I need to calculate the intrinsic gas for this transaction using EIP-2028 calldata pricing.\n\n**EIP-2028 calldata cost:**\n- Zero bytes (0x00): 4 gas per byte\n- Non-zero bytes: 16 gas per byte\n\n**Parse the calldata:**\n`0x0046be6100d30000677700c4000000960022ac00009f76123a0000e8001b00ec00b54500e699`\n\nBreaking into bytes:\n`00 46 be 61 00 d3 00 00 67 77 00 c4 00 00 00 96 00 22 ac 00 00 9f 76 12 3a 00 00 e8 00 1b 00 ec 00 b5 45 00 e6 99`\n\n**Count bytes:**\n- Total: 38 bytes\n- Zero bytes: 17 (0x00)\n- Non-zero bytes: 21\n\n**Intrinsic gas calculation:**\n- Base transaction cost: 21,000 gas\n- Zero bytes: 17 \u00d7 4 = 68 gas\n- Non-zero bytes: 21 \u00d7 16 = 336 gas\n- **Total calldata gas: 404 gas**\n\n**Total intrinsic gas: 21,000 + 404 = 21,404 gas**\n\nAnswer: 21404\n",
+   "files": [],
+   "detail": "got 21404",
+   "pass": true
+  },
+  {
+   "id": "transactions-16-create2-truncation",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 29.8,
+   "rc": 0,
+   "reply": "Looking at the CREATE2 formula, the contract address is derived by taking the **last 20 bytes** (40 hex characters) of the keccak256 result.\n\nFrom the hash: `0xcae80d92883b9ab8ccd30dbb60fe96ffb50be955748dcc275be17314ff75a345`\n\nTaking the last 40 hex characters: `60fe96ffb50be955748dcc275be17314ff75a345`\n\n**0x60fe96ffb50be955748dcc275be17314ff75a345**\n",
+   "files": [],
+   "detail": "got '0x60fe96ffb50be955748dcc275be17314ff75a345'",
+   "pass": true
+  },
+  {
+   "id": "transactions-17-eip55-checksum",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 68.8,
+   "rc": 0,
+   "reply": "Looking at these three addresses, the key difference is the casing of the 5th character (after \"0xd8d\"):\n- A) has lowercase: `0xd8da...`\n- B) has uppercase: `0xd8dA...`  \n- C) has uppercase: `0xd8dA...`\n\n(Note: B and C appear identical as written.)\n\nTo validate EIP-55, I need to verify the checksum: each letter a-f should be uppercase if the corresponding hex digit in the Keccak-256 hash of the lowercase address is \u2265 8, otherwise lowercase.\n\nThis address (d8da6bf26964af9d7eed9e03e53415d37aa96045) is Vitalik Buterin's known address. The correctly checksummed version is **0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045**, with the uppercase 'A' at position 5.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "transactions-18-storage-packing",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 9.0,
+   "rc": 0,
+   "reply": "Looking at Solidity's storage layout rules, variables are packed into 32-byte slots in declaration order.\n\nLet me trace through each variable:\n\n1. **`uint128 a`** \u2014 16 bytes \u2192 Slot 0 (bytes 0-15)\n2. **`uint64 b`** \u2014 8 bytes \u2192 Slot 0 (bytes 16-23, still fits)\n3. **`uint64 c`** \u2014 8 bytes \u2192 Slot 0 (bytes 24-31, still fits)\n   - Slot 0 is now full (16 + 8 + 8 = 32 bytes)\n4. **`address owner`** \u2014 20 bytes \u2192 Slot 1 (doesn't fit in remaining space of slot 0)\n5. **`uint256 total`** \u2014 32 bytes \u2192 Slot 2 (doesn't fit in remaining 12 bytes of slot 1)\n\nAnswer: 2\n",
+   "files": [],
+   "detail": "got 2",
+   "pass": true
+  },
+  {
+   "id": "transactions-19-nested-calldata",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 69.4,
+   "rc": 0,
+   "reply": "```json\n{\n  \"function\": \"transfer\",\n  \"to\": \"0x0000000000000000000000000000000000dead\",\n  \"amount\": 3200000000\n}\n```\n",
+   "files": [],
+   "detail": "got {\"function\": \"transfer\", \"to\": \"0x0000000000000000000000000000000000dead\", \"amount\": 3200000000}",
+   "pass": false
+  },
+  {
+   "id": "transactions-20-decode-a-revert",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 6.4,
+   "rc": 0,
+   "reply": "I'll decode this Ethereum revert data for you.\n\nThe revert data is ABI-encoded. Breaking it down:\n\n- `08c379a0` \u2014 function selector for `Error(string)` (standard revert)\n- `0000000000000000000000000000000000000000000000000000000000000020` \u2014 offset to string data (32)\n- `0000000000000000000000000000000000000000000000000000000000000014` \u2014 string length (20 bytes in decimal)\n- `496e73756666696369656e742062616c616e6365` \u2014 the string data in hex\n\nConverting the hex bytes to ASCII:\n`496e73756666696369656e742062616c616e6365` = \"Insufficient balance\"\n\nAnswer: Insufficient balance\n",
+   "files": [],
+   "detail": "got 'insufficient balance'",
+   "pass": true
   }
  ]
 }

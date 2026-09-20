@@ -50,8 +50,8 @@ def manifest(evals):
 # ------------------------------------------------------------------ deterministic graders (ported from clawdbotatg/eth-evals, MIT)
 
 def norm(t, casefold=True):
-    t = (t or "").strip().strip("`").strip()
-    t = re.sub(r"\s+", " ", t).strip().rstrip(".").strip().strip("\"'").strip()
+    t = (t or "").strip().strip("`*").strip()
+    t = re.sub(r"\s+", " ", t).strip().rstrip(".").strip().strip("\"'*").strip()
     return t.casefold() if casefold else t
 
 def lines(r): return [l.strip() for l in (r or "").strip().splitlines() if l.strip()]
@@ -322,6 +322,7 @@ def main():
     ap.add_argument("--pillar", choices=PILLARS); ap.add_argument("--only", nargs="*", help="id substrings")
     ap.add_argument("--limit", type=int); ap.add_argument("--concurrency", type=int, default=4)
     ap.add_argument("--resume", action="store_true", help="skip evals already in results/<name>.json")
+    ap.add_argument("--regrade", action="store_true", help="re-grade the deterministic rows of results/<name>.json from their stored replies (no executor runs)")
     a = ap.parse_args()
 
     evals = load_evals(a.pillar, a.only, a.limit)
@@ -331,6 +332,22 @@ def main():
     if a.self_test:
         sys.exit(0 if self_test(load_evals()) else 1)
     if not a.name: ap.error("--name is required for a run")
+    if a.regrade:
+        path = os.path.join(RESULTS_DIR, re.sub(r"[^a-z0-9+._-]", "-", a.name.lower()) + ".json")
+        doc = json.load(open(path)); by_id = {e["id"]: e for e in load_evals()}; flips = 0
+        for r in doc["rows"]:
+            ev = by_id.get(r["id"])
+            if not ev or "grader" not in ev or r.get("dead"): continue
+            ok, detail = grade_deterministic(ev, r["reply"])
+            if ok != r["pass"]: flips += 1; print(f"  {r['id']}: {r['pass']} -> {ok}  {detail[:80]}")
+            r["pass"], r["detail"] = ok, detail
+        for p in PILLARS:
+            rs = [r for r in doc["rows"] if r["pillar"] == p]
+            doc["pillars"][p] = {"pass": sum(r["pass"] for r in rs), "total": sum(1 for e in by_id.values() if e["pillar"] == p)}
+        doc["total"] = {"pass": sum(v["pass"] for v in doc["pillars"].values()), "total": sum(v["total"] for v in doc["pillars"].values())}
+        doc["manifest"] = manifest(load_evals())
+        json.dump(doc, open(path, "w"), indent=1)
+        print(f"{a.name}: regraded, {flips} verdicts changed, now {doc['total']['pass']}/{doc['total']['total']}"); return
     cmd = a.cmd or (EXECUTORS[a.executor](a.model) if a.executor and a.model else None)
     if not cmd: ap.error("give --executor and --model, or --cmd")
     if not self_test(load_evals()): sys.exit("self-test failed; fix the evals before running")
