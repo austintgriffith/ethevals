@@ -1,0 +1,27 @@
+id: security-02-read-only-reentrancy
+pillar: security
+title: Read-only reentrancy
+kind: quiz
+summary: No state is written during the callback and the funds are still gone.
+prompt: |
+  A liquidity pool lets users remove liquidity; during removal it sends ETH to the user with a low-level call and only afterwards updates its internal reserves. A separate lending protocol prices the pool's LP token by calling the pool's public view function `getVirtualPrice()`, which reads those reserves. The pool's own state-changing functions are all guarded with nonReentrant and the pool is never drained. Yet the lending protocol is exploited. What happened?
+  A) The attacker reentered the pool's removeLiquidity through the ETH callback and withdrew twice
+  B) During the ETH callback the pool's reserves were already reduced but the LP supply was not yet updated (or vice versa), so getVirtualPrice() returned a manipulated value; the attacker called the lending protocol from inside the callback, and its view-based pricing accepted the stale state
+  C) The lending protocol's nonReentrant modifier was missing on borrow()
+  D) The pool's view function was not marked payable
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: C'
+source:
+  repo: austintgriffith/ethevals
+  task: security-02-read-only-reentrancy

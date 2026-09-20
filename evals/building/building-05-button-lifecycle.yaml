@@ -1,0 +1,48 @@
+id: building-05-button-lifecycle
+pillar: building
+title: The approve button lifecycle
+kind: quiz
+prompt: |
+  Our Ethereum staking dApp — a React app with wagmi v2 and viem
+  configured — has an approve-then-stake flow, and QA just filed two
+  tickets against the same Approve button:
+
+  1. A user on Ethereum mainnet ended up with two identical approval
+     transactions in their wallet activity, seconds apart.
+  2. Another user rejected the approval in their wallet, and the button
+     stayed dead until a full page reload.
+
+  The button is wired like this, and the UI swaps Approve for Stake once a
+  useReadContract allowance read (default options) shows enough allowance:
+
+      const { writeContractAsync, isPending } = useWriteContract();
+      const [submitting, setSubmitting] = useState(false);
+
+      <button
+        disabled={isPending || submitting}
+        onClick={async () => {
+          setSubmitting(true);
+          await writeContractAsync(approveArgs);
+          setSubmitting(false);
+        }}
+      >
+        {isPending ? "Approving..." : "Approve"}
+      </button>
+
+  Explain both tickets from this exact code — with the state timeline on
+  mainnet (12s blocks) that produces each — and specify the state handling
+  that fixes both. Write your answer to answer.md in this directory.
+expect:
+- answer.md explains both tickets from the given code with a concrete state timeline, not generic best-practice
+  advice.
+- Ticket 1 is traced to isPending and submitting both clearing when the wallet returns the tx hash — before
+  the approval is mined — leaving the button enabled until the allowance refetch reflects the mined transaction;
+  a click inside that window sends the duplicate approval.
+- Ticket 2 is traced to the wallet rejection throwing before setSubmitting(false), so the flag never clears
+  and the button stays disabled; the fix clears it in a finally block.
+- The proposed fix keeps the button disabled from click through onchain confirmation and the allowance
+  refetch (submitting flag cleared in finally plus a post-confirmation hold), not isPending alone.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: frontend-ux-quiz-001
+  skill: skills/frontend-ux

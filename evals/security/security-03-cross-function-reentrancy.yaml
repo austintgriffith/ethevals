@@ -1,0 +1,27 @@
+id: security-03-cross-function-reentrancy
+pillar: security
+title: Cross-function reentrancy
+kind: quiz
+summary: A guarded withdraw and an unguarded transfer sharing one balance.
+prompt: |
+  A contract tracks `balances[msg.sender]`. `withdraw()` is marked nonReentrant: it sends the caller's full balance with a low-level call, then zeroes the balance. `transfer(address to, uint256 amount)` has no modifier and simply moves balance between accounts. Can an attacker still profit, and how?
+  A) No: nonReentrant on withdraw() blocks every reentrant path into the contract
+  B) Yes: during withdraw()'s external call, before the balance is zeroed, the attacker's fallback calls transfer() to move the still-credited balance to a second account, then withdraws from that account
+  C) Yes: the attacker calls withdraw() twice in the same transaction from two different addresses
+  D) No: the low-level call forwards only 2300 gas, so the fallback cannot make another call
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: D'
+source:
+  repo: austintgriffith/ethevals
+  task: security-03-cross-function-reentrancy

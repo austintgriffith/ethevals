@@ -1,0 +1,22 @@
+id: concepts-11-spot-price-oracle
+pillar: concepts
+title: Spot price is not an oracle
+kind: quiz
+prompt: |
+  Your smart contract needs a token price, and a teammate suggests reading the spot price directly from a DEX pool's reserves. Attackers commonly use a specific financing primitive to skew such a spot price within a single transaction. Name that primitive.
+  End your reply with a line of the form "Answer: <primitive>".
+grader:
+  type: regex
+  pattern: flash[\s-]*loan
+reference: 'Answer: a flash loan'
+checks:
+  must_pass:
+  - 'Answer: flash loan'
+  must_fail:
+  - 'Answer: sandwich attack'
+source_quote: |
+  Use Chainlink — never read prices from a DEX pool, because a flash loan can fake the price for one transaction.
+source:
+  repo: clawdbotatg/eth-evals
+  task: concepts-k-07
+  skill: concepts

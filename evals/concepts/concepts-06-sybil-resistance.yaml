@@ -1,0 +1,17 @@
+id: concepts-06-sybil-resistance
+pillar: concepts
+title: Sybil resistance
+kind: quiz
+prompt: |
+  A voting-based onchain mechanism gives every distinct address one vote. An attacker generates thousands of fresh addresses for free and captures the vote. What is the standard name for this attack — the one that explains why blockchain consensus weights influence by a costly, scarce resource (work or stake) instead of by identity count?
+  End your reply with a line of the form "Answer: <attack name>".
+grader:
+  type: regex
+  pattern: sybil
+reference: 'Answer: Sybil attack'
+source_quote: |
+  Canon (John Douceur, 'The Sybil Attack', 2002; standard consensus-design usage): forging many cheap pseudonymous identities to gain disproportionate influence is a Sybil attack; proof-of-work and proof-of-stake resist it by tying voting power to a costly resource rather than to identities.
+source:
+  repo: clawdbotatg/eth-evals
+  task: cryptoecon-k-06
+  skill: canon

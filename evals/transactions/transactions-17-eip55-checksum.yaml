@@ -1,0 +1,26 @@
+id: transactions-17-eip55-checksum
+pillar: transactions
+title: EIP-55 checksums
+kind: quiz
+summary: Mixed case is a checksum. Only one of three spellings passes it.
+prompt: |
+  Exactly one of these three spellings of the same address carries a valid EIP-55 mixed-case checksum. Which?
+  A) 0xd8da6BF26964aF9D7eEd9e03E53415D37aA96045
+  B) 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
+  C) 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: C'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-17-eip55-checksum

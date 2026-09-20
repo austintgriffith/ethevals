@@ -1,0 +1,19 @@
+id: security-14-sandwich-slippage
+pillar: security
+title: Sandwiches and slippage
+kind: quiz
+prompt: |
+  You submit a swap of 10 ETH for USDC on Uniswap through the public mempool with a 1% slippage tolerance. A bot sees your pending transaction, buys USDC immediately before yours executes (pushing the price up), lets your swap fill at the worse price, then sells immediately after your transaction, pocketing the difference. What is this specific MEV attack called?
+  End your reply with a line of the form "Answer: <short answer>".
+grader:
+  type: regex
+  pattern: sandwich
+reference: 'Answer: a sandwich attack'
+source_quote: |
+  3. Attacker frontruns: buys USDC before you → price rises
+  4. Your swap executes at a worse price (but within your 1% slippage)
+  5. Attacker backruns: sells USDC after you → profits from the price difference
+source:
+  repo: clawdbotatg/eth-evals
+  task: security-k-03
+  skill: security

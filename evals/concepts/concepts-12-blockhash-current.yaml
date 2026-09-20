@@ -1,0 +1,23 @@
+id: concepts-12-blockhash-current
+pillar: concepts
+title: blockhash of the current block
+kind: quiz
+prompt: |
+  Inside a Solidity contract, a developer writes `blockhash(block.number)` hoping to get the hash of the current block. What value does this expression always return?
+  End your reply with a line of the form "Answer: <value>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: zero
+  - type: exact
+    expect: '0'
+  - type: bigint
+    expect: 0
+reference: 'Answer: 0'
+source_quote: |
+  // ❌ blockhash(block.number) is ALWAYS zero for the current block
+source:
+  repo: clawdbotatg/eth-evals
+  task: concepts-k-03
+  skill: concepts

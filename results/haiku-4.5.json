@@ -1,0 +1,287 @@
+{
+ "name": "haiku-4.5",
+ "model": "haiku",
+ "harness": "claude code",
+ "skill": null,
+ "executor_cmd": "claude -p --model haiku --dangerously-skip-permissions --strict-mcp-config",
+ "judge_cmd": "claude -p --model sonnet --strict-mcp-config --disallowedTools Bash,Edit,Write,WebFetch,WebSearch",
+ "started": "2026-09-20T21:03:44+00:00",
+ "manifest": "9d5e88084860",
+ "pillars": {
+  "concepts": {
+   "pass": 17,
+   "total": 20
+  },
+  "transactions": {
+   "pass": 1,
+   "total": 20
+  },
+  "building": {
+   "pass": 0,
+   "total": 20
+  },
+  "security": {
+   "pass": 0,
+   "total": 20
+  }
+ },
+ "total": {
+  "pass": 18,
+  "total": 80
+ },
+ "rows": [
+  {
+   "id": "concepts-01-nothing-is-automatic",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 7.1,
+   "rc": 0,
+   "reply": "The correct answer is **A) Contracts cannot execute themselves \u2014 every function call needs an external caller who pays gas**.\n\nSmart contracts are **passive** \u2014 they have no execution engine of their own. They only run when someone calls one of their functions via a transaction. That external caller must pay gas fees. The contract cannot \"wake up\" on its own or be triggered by time passing.\n\nTo achieve periodic execution, developers use external services:\n- **Chainlink Automation** \u2014 monitors conditions and calls functions on a schedule\n- **Gelato Network** \u2014 similar keeper network\n- **Off-chain bots** \u2014 services that watch time and trigger transactions\n\nThis is a fundamental constraint of blockchain design: code is data until someone pays to execute it.\n\nAnswer: A\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-02-walkaway-test",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 11.6,
+   "rc": 0,
+   "reply": "The protocol **fails the walkaway test**.\n\nThe critical issue is that epoch advancement depends on active team operation via an admin account. No matter how healthy the incentives or thorough the audit, the system cannot progress autonomously\u2014it requires someone to manually trigger each transition.\n\nThis makes it a **service**, not a hyperstructure:\n- If the team stops operating (dissolves, shifts focus, loses the private keys), the protocol stalls\n- The admin account is a single point of failure\u2014the entire system's continuity depends on that key's availability and the team's willingness to use it\n- An audit ensures the code is correct *as written*, but it doesn't enable autonomous operation; it just verifies what's already there\n\nOptions B, C, and D all miss the mark:\n- **B** confuses cost-of-action with autonomy (cheap actions still require someone to take them)\n- **C** mistakes an audit for a replacement for operational design (audits don't enable self-running systems)\n- **D** treats the failure as incidental to gas economics, when the real issue is architectural dependency on team action\n\nThe test isn't \"could we afford to keep it running?\" or \"could it theoretically work?\" It's \"could it keep working with no one operating it?\" A protocol that stops advancing when the team goes idle doesn't pass.\n\nAnswer: A\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-03-keeper-bounty-math",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 10.3,
+   "rc": 0,
+   "reply": "Looking at the economics:\n\n**Cost vs. incentive:**\n- Gas cost: ~$3\n- Bounty paid to caller: $0.40\n- Net loss per call: ~$2.60\n\n**Analyzing each option:**\n\n**A) Network executes itself** \u2014 No. Blockchain networks don't autonomously call user functions. Transactions need external actors.\n\n**C) Bots call at a loss** \u2014 Unlikely. Bots are profit-seeking. Systematically losing $2.60 per action isn't sustainable or rational, unless there's hidden MEV they can extract (not mentioned).\n\n**D) Validator requirement** \u2014 No indication this exists in the question, and validators can't be forced to include arbitrary transactions beyond protocol rules.\n\n**B) Nobody calls it** \u2014 This is what happens. The bounty doesn't cover gas. Rational actors won't call harvest() because they'd lose money. Rewards accumulate but never compound. The vault becomes a \"locked\" state where no one has economic incentive to poke it.\n\nThis is a real DeFi design failure. Yearn solved it with keeper networks and variable bounties. A fixed $0.40 bounty against $3 gas is backwards incentive design.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-04-hyperstructures",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 11.1,
+   "rc": 0,
+   "reply": "The term is **credibly neutral**.\n\nThis is how the Ethereum community refers to protocols designed to operate indefinitely without an operator, company, or admin key. Credibly neutral protocols are structured so that no party has inherent advantage, and they remain sustainable through economic incentives alone. Uniswap is indeed the canonical example \u2014 it runs entirely on smart contracts with no ongoing governance control or company involvement needed for its core operation.\n\nThe term was popularized by Vitalik Buterin and others in the Ethereum ecosystem to describe a category of protocol design where neutrality itself becomes the mechanism for permanence.\n\nAnswer: credibly neutral\n",
+   "files": [],
+   "detail": "answer 'credibly neutral'",
+   "pass": false
+  },
+  {
+   "id": "concepts-05-fee-switch-fork",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 14.9,
+   "rc": 0,
+   "reply": "Looking at the economic incentives in this AMM fork:\n\nThe critical mechanism in Uniswap's design is that **liquidity providers (LPs) earn the 0.3% swap fee**. This is what compensates LPs for:\n- Capital tied up in the pool\n- Impermanent loss risk from price movements\n- Opportunity cost (capital could be deployed elsewhere)\n\nBy redirecting 100% of fees to the treasury, LPs lose their primary income stream while keeping all the risk.\n\nLet me trace through the incentives:\n\n**LPs (Option A):**\n- Providing liquidity = capital at risk + impermanent loss exposure\n- Compensation = zero fees\n- Rational response: withdraw and deploy capital where it earns returns\n- Result: liquidity drains \u2192 slippage increases \u2192 traders get worse prices \u2192 volume declines \u2192 the positive feedback loop breaks\n\n**Validators (Option B):**\n- They earn base transaction fees regardless of internal fee routing\n- No reason to censor; more transactions = more revenue\n- Doesn't make economic sense\n\n**Traders (Option C):**\n- They still benefit from trading at market prices\n- Fee routing (treasury vs. LPs) doesn't directly affect their incentive to trade\n- Morality/fairness isn't a reliable economic mechanism for participation\n\n**Founders (Option D):**\n- This might eventually happen as a side effect, but it's not the primary defection\n- Founders would need to *burn* treasury to provide their own liquidity just to keep the protocol alive\n\nThe flywheel depends entirely on LPs voluntarily providing liquidity in exchange for fees. Remove the fee incentive, and the mechanism collapses at the foundation.\n\n**Answer: A**\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-06-sybil-resistance",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 5.6,
+   "rc": 0,
+   "reply": "A Sybil attack is when an attacker creates multiple fake identities (addresses) to gain disproportionate influence over a system. In the voting example you described, the attacker spawns thousands of addresses to capture votes that should be distributed across real participants.\n\nThis is precisely why modern blockchain consensus mechanisms use costly, scarce resources:\n- **Proof of Work** makes Sybil attacks expensive because you need real computational power, not just free wallet creation.\n- **Proof of Stake** requires locking up actual capital (tokens) rather than just holding addresses.\n\nBoth approaches price out the economics of Sybil attacks\u2014you can't multiply your influence by simply generating more identities.\n\nAnswer: Sybil attack\n",
+   "files": [],
+   "detail": "answer 'Sybil attack'",
+   "pass": true
+  },
+  {
+   "id": "concepts-07-crops-pillars",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 10.6,
+   "rc": 0,
+   "reply": "The setup violates **Censorship Resistance** most directly.\n\nHere's why:\n\n- **Smart contracts permissionless** \u2713 \u2014 technically, anyone can interact with them on-chain\n- **Single provider UI** \u2717 \u2014 but in practice, that's the only usable access point\n- **IP geofencing** \u2717 \u2014 blocks users by geography\n- **OFAC wallet filtering** \u2717 \u2014 blocks specific addresses\n\nBoth the IP geofencing and OFAC filtering are explicit censorship mechanisms. The provider can refuse service to users in certain regions or with certain wallet addresses. Even though the contracts themselves are permissionless, the practical censorship bottleneck at the access layer (the UI) means the dapp as a whole lacks censorship resistance.\n\nPrivacy (C) isn't directly violated by blocking access. Open Source (A) isn't violated if the contracts are published. Security (D) isn't compromised. But Censorship Resistance (B) is directly undermined\u2014users are being censored based on IP and identity.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-08-verified-is-not-open",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 12.0,
+   "rc": 0,
+   "reply": "Etherscan verification is often misunderstood as a mark of full openness. Let me work through what it actually certifies:\n\n**What Etherscan verification does:**\n- Confirms the deployed bytecode at that address matches source code submitted to Etherscan\n- Applies to ONE contract address only\n- Is purely a bytecode-source matching check\n\n**What it does NOT establish:**\n- **A)** Nothing about the frontend, indexer, or other contracts in the stack. A dapp with a closed frontend and verified contract is not \"fully open source.\"\n- **B)** Nothing about git commits, reproducibility, or pins. Etherscan doesn't track build processes or versions.\n- **C)** Nothing about licensing. A verified contract could have no license, a restrictive license, or no explicit grant to fork. Verification is technical, not legal.\n\n**Why D is correct:**\nEtherscan verification is a narrow technical fact: bytecode \u2194 source for that contract. It's a useful transparency signal, but conflating it with \"open source\" misses the entire stack. A proper CROPS-style review would check:\n- License (fork/modify rights)\n- All source code (contracts + frontend + indexing logic) publicly available\n- Buildability and redeploy-ability from published sources\n\nA team claiming \"fully open source\" because of Etherscan verification has verified one piece of one layer.\n\nAnswer: D\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-09-eip1559-mechanics",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 11.5,
+   "rc": 0,
+   "reply": "Looking at EIP-1559 mechanics:\n\n**Base fee adjustment formula:**\nWhen a block uses gas beyond the target, the base fee for the next block adjusts by: `(gas_used - target) / target / 8`\n\n**In this case:**\n- Block N gas limit = 2\u00d7 gas target (given it used its entire limit)\n- Gas deviation from target = (2\u00d7 target) - target = 1\u00d7 target\n- Base fee adjustment = (1\u00d7 target) / target / 8 = 1/8 = **12.5% increase**\n\n**Base fee destination:**\n- Under EIP-1559, the base fee portion of all transaction fees is **burned** (permanently removed from supply)\n- The proposer receives only the priority fee/tip, not the base fee\n\n**Evaluating options:**\n- A: Wrong \u2014 base fee does respond to demand relative to gas target\n- B: **Correct** \u2014 base fee rises exactly 12.5%, and base fee is burned\n- C: Wrong \u2014 25% is incorrect (only 12.5%), and base fee goes to burn, not proposer\n- D: Wrong \u2014 base fee is algorithmic, not freely set\n\nAnswer: **B**\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-10-mev-backrun",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 6.4,
+   "rc": 0,
+   "reply": "The insertion technique you're describing is **back-running**.\n\nIn MEV terminology:\n- **Front-running**: inserting a transaction *before* a target transaction to profit from it\n- **Back-running**: inserting a transaction *after* a target transaction to profit from it\n- **Sandwich attack**: both front-running and back-running around a target (bracketing it)\n\nYour scenario\u2014where the bot positions its transaction immediately *after* yours to capture the price movement you created\u2014is the classic back-running pattern. The profit strategy (arbitrage between Uniswap and other exchanges) is separate from the insertion technique itself.\n\nAnswer: back-running\n",
+   "files": [],
+   "detail": "answer 'back-running'",
+   "pass": true
+  },
+  {
+   "id": "concepts-11-spot-price-oracle",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 6.2,
+   "rc": 0,
+   "reply": "The primitive is a **flash loan**. \n\nAttackers can borrow a large amount of tokens from a DEX pool in a single transaction without needing collateral, use those tokens to manipulate the pool's reserves (typically by swapping), skew the spot price, exploit a price oracle that reads directly from pool reserves, and then repay the loan \u2014 all atomically within one block.\n\nThis is why reading spot prices directly from DEX reserves is unsafe. Defenses include using Time-Weighted Average Price (TWAP) oracles, Chainlink price feeds, or multi-block checks.\n\nAnswer: flash loan\n",
+   "files": [],
+   "detail": "answer 'flash loan'",
+   "pass": true
+  },
+  {
+   "id": "concepts-12-blockhash-current",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 6.2,
+   "rc": 0,
+   "reply": "In Solidity, `blockhash(block.number)` **always returns 0**.\n\nThe hash of the current block is not available during that block's execution. The `blockhash()` function can only access hashes of previous blocks (the 256 most recent ones). When you try to retrieve the hash of the block currently being mined (`block.number`), no hash exists yet\u2014the block hasn't been finalized\u2014so the function returns 0.\n\nThis is a common pitfall when developers try to use `blockhash(block.number)` as a source of randomness or for security-critical logic. It won't work as intended.\n\nAnswer: 0\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-13-eip712-replay",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 6.4,
+   "rc": 0,
+   "reply": "The **domain separator** is the component responsible for preventing signature replay across different contracts and chains.\n\nThe domain separator is a hash that encodes:\n- **chainId** \u2014 prevents replay on different chains\n- **verifyingContract** \u2014 prevents replay against different contracts on the same chain\n- name and version \u2014 further namespace the signature\n\nThe signed digest is constructed as:\n```\ndigest = keccak256(\"\\x19\\x01\" || domainSeparator || structHash)\n```\n\nIf a signature were used against a different contract address or on a different chain, the domain separator would be different, resulting in a different digest. Since the signature was signed over the original digest, it would be invalid against the new digest \u2014 preventing replay.\n\nAnswer: domain separator (specifically the chainId and verifyingContract fields within it)\n",
+   "files": [],
+   "detail": "answer 'domain separator (specifically the chainId and verifyingContract fields within i'",
+   "pass": true
+  },
+  {
+   "id": "concepts-14-eip7702-delegation",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 26.4,
+   "rc": 0,
+   "reply": "Looking at EIP-7702, which introduces Set Code Transactions and code delegation for EOAs:\n\nWhen an EOA signs an authorization under EIP-7702, it sets a delegation designator that points the account's code to a contract. This delegation is **scoped to the specific transaction** in which it's used. The delegated code executes during that transaction's execution, and the delegation clears once the transaction completes.\n\nThe authorization itself can be reused across transactions (via nonce management), but each individual delegation\u2014each setting of code\u2014only remains in effect for that single transaction.\n\nThe design is intentionally temporary and transaction-scoped to avoid persistent state changes and security complications.\n\n**Answer: A**\n",
+   "files": [],
+   "detail": "got 'a'; answer 'Looking at EIP-7702, which introduces Set Code Transactions and code delegation '",
+   "pass": false
+  },
+  {
+   "id": "concepts-15-paymaster-deposit",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 9.6,
+   "rc": 0,
+   "reply": "Looking at this ERC-4337 scenario: the paymaster has 5 ETH *in its own account*, but the bundler rejects the UserOperation with AA31 \"paymaster deposit too low.\"\n\nThis is a classic misunderstanding of how ERC-4337 funds paymasters.\n\nThe answer is **B**.\n\nThe EntryPoint contract maintains a separate *deposit account* for each paymaster \u2014 a balance held *within the EntryPoint itself*, not in the paymaster's own address. When a UserOperation specifies a paymaster, the EntryPoint deducts gas costs from the paymaster's deposit at the EntryPoint, not from ETH sitting in the paymaster contract's own balance.\n\nTo fund a paymaster, you must call:\n- `EntryPoint.depositTo(paymasterAddress)` \u2014 paymaster transfers ETH into the EntryPoint's internal accounting\n- Or `EntryPoint.addStake(...)` \u2014 paymaster stakes ETH at the EntryPoint\n\nThis separation exists so the EntryPoint can reliably lock and account for gas payments *before* executing user transactions. The paymaster's 5 ETH in its own balance is inaccessible to the bundler unless explicitly deposited at the EntryPoint.\n\n**Answer: B**\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-16-peerdas-eip",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 22.6,
+   "rc": 0,
+   "reply": "PeerDAS (peer data availability sampling), the headline change of Ethereum's Fusaka hard fork, is specified in **EIP-7594**. This EIP introduces a fundamental shift in how Ethereum verifies and stores blob data, allowing nodes to sample random data pieces from peers rather than requiring every validator to download complete blobs.\n\nSources:\n- [Alchemy: Ethereum Fusaka Upgrade Dev Guide to 12 EIPs](https://www.alchemy.com/blog/ethereum-fusaka-upgrade-dev-guide-to-12-eips)\n- [CoinGecko: What Is the Fusaka Upgrade](https://www.coingecko.com/learn/what-is-ethereum-fusaka-upgrade)\n\nAnswer: EIP-7594\n",
+   "files": [],
+   "detail": "got 7594",
+   "pass": true
+  },
+  {
+   "id": "concepts-17-forced-inclusion",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 11.1,
+   "rc": 0,
+   "reply": "I don't have enough certainty to answer this from my training knowledge alone. This is asking about a specific ecosystem guidance recommendation, which could be in recent L2 documentation, a standards document, or research site that I'm not confident enough to name.\n\nThe most likely candidate based on general L2 ecosystem resources is **L2BEAT** (l2beat.com), which documents L2 risk assumptions including sequencer trust models and forced-inclusion mechanisms. However, I'm not certain this is the specific site the ecosystem guidance points to.\n\nTo give you an accurate answer, I'd need to either:\n- Search for current ecosystem guidance documents on this topic\n- Check the specific L2's official documentation\n- Look up recent L2 risk standard documents\n\nWould you like me to search for this, or can you point me toward the guidance document you're referring to?\n\nAnswer: Unable to determine with confidence without additional context or search.\n",
+   "files": [],
+   "detail": "answer 'Unable to determine with confidence without additional context or search.'",
+   "pass": false
+  },
+  {
+   "id": "concepts-18-admin-power-mechanisms",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 10.8,
+   "rc": 0,
+   "reply": "Looking at this from the CROPS-style framework for admin privilege management:\n\nWhen some admin power must survive launch but a single owner key is a critical vulnerability, the two primary onchain mechanisms are:\n\n1. **Timelock (Delay)** \u2014 Any admin action (pause, upgrade, fund seizure) must be proposed first, then waits for a fixed delay period (typically 1-7 days) before execution. This gives the community time to exit, object, or upgrade the contract themselves.\n\n2. **Multisig (Multi-signature requirement)** \u2014 Admin powers are held by multiple independent signers (e.g., 2-of-3, 3-of-5), so no single compromised key can unilaterally pause, upgrade, or seize funds. Signers are spread across different entities/regions.\n\nTogether, these prevent the \"single key = total control\" problem. The timelock provides a reaction window; the multisig ensures no single signer can exploit it unilaterally. This pattern is standard in production DeFi (OpenZeppelin's TimelockController + Gnosis Safe multisig is the canonical implementation).\n\nAnswer: **Timelock and Multisig**\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-19-why-slashing",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 10.1,
+   "rc": 0,
+   "reply": "The answer is **B**.\n\nA slashable bond is Ethereum's solution to the \"nothing at stake\" problem. In Proof-of-Work, attacking the network has a real cost (electricity, hardware). In Proof-of-Stake with only rewards and no stake at risk, a validator could sign conflicting messages\u2014attacking finality\u2014without losing anything, since they only miss out on rewards they wouldn't have earned anyway.\n\nBy requiring validators to lock up a deposit that gets destroyed if they provably misbehave (e.g., sign two conflicting blocks), the protocol gives misbehavior a concrete economic cost. An attacker would have to stake enough ETH to potentially profit from their attack, but if caught, they lose it all\u2014making attacks economically irrational for rational participants.\n\nOption A is wrong (rewards don't come from slashing). Option C overstates the link to censorship (it's about finality attacks, not censorship prevention). Option D confuses a side effect (limiting validator set size) with the primary purpose.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-20-honesty-live-data",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 4.2,
+   "rc": 0,
+   "reply": "```json\n{\n  \"can_know\": false,\n  \"note\": \"Gas prices change by the block; I have no live data access or tools to fetch current network state.\"\n}\n```\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "transactions-01-selector-string",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 5.5,
+   "rc": 0,
+   "reply": "The function selector is derived from the function signature string. For the `transferFrom` function with parameters `(address from, address to, uint256 amount)`, the signature string is formed by concatenating the function name with the parameter types (without parameter names or spaces).\n\nAnswer: transferFrom(address,address,uint256)\n",
+   "files": [],
+   "detail": "got 'transferFrom(address,address,uint256)'",
+   "pass": true
+  },
+  {
+   "id": "transactions-02-abi-encode-static",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 15.0,
+   "rc": 0,
+   "reply": "0xc13456f70000000000000000000000b7ee24b258d02c057ad8ba41f9bd707c87baba630000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000456b36c\n",
+   "files": [],
+   "detail": "got '0xc13456f70000000000000000000000b7ee24b258d02c057ad8ba41f9bd707c87baba6300000000'",
+   "pass": false
+  },
+  {
+   "id": "transactions-03-decode-calldata",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 11.1,
+   "rc": 0,
+   "reply": "```json\n{\n  \"function\": \"setOperatorFor\",\n  \"args\": [388677225, 980657558, \"0xd0ae540d06750347741abcf7db1e59b3313b5eea\"]\n}\n```\n",
+   "files": [],
+   "detail": "got {\"function\": \"setOperatorFor\", \"args\": [388677225, 980657558, \"0xd0ae540d06750347741abcf7db1e59b3313b5eea\"]}",
+   "pass": false
+  }
+ ]
+}

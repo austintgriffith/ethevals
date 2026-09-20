@@ -1,0 +1,25 @@
+id: building-17-x402-paid-api
+pillar: building
+title: x402 paid API
+kind: quiz
+prompt: |
+  I'm building a paid API for AI agents. I want an agent to pay me a few cents
+  per call, settled on-chain (Base is fine), with the payment happening inline in
+  the HTTP request — no accounts, no API keys, no invoicing. So my server should
+  gate the endpoint behind payment, and the agent's TypeScript client should pay
+  and retry the call automatically. What's the standard way to build both sides
+  today, and what exactly do I install?
+
+  Write your answer to answer.md in this directory. Show the client code, name
+  the packages, and confirm anything you install actually resolves today.
+expect:
+- answer.md identifies x402 as the standard for this HTTP-native, pay-per-call, on-chain-settled flow
+  — not a bespoke paywall, an API-key/JWT scheme, Stripe, or L402/Lightning.
+- It names concrete, installable package(s) — an actual `npm install …` line — for both the TypeScript
+  server gate and the client, not a vague reference to 'the x402 library'.
+- It shows client code that pays and retries the 402-gated request automatically via that library, rather
+  than a hand-rolled signing/settlement flow.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: tools-quiz-001
+  skill: skills/tools

@@ -1,0 +1,32 @@
+id: building-03-usdc-decimals
+pillar: building
+title: USDC has six decimals
+kind: quiz
+prompt: |
+  An Ethereum React dApp with wagmi v2 and viem configured. A support
+  ticket just came in: a user holding 400 USDC typed "250" into the deposit
+  form and the transaction reverted with "transfer amount exceeds balance".
+  The deposit handler reads:
+
+      import { parseEther } from "viem";
+      ...
+      const amount = parseEther(depositInput); // depositInput = "250"
+      writeContract({ ...vaultConfig, functionName: "deposit", args: [amount] });
+
+  A teammate insists the code is fine because "viem handles the units".
+  Work out the exact uint256 the contract was asked to move, the value the
+  user intended, and the factor between the two — that settles whether the
+  teammate is right. Then give the correct conversion for this form, and
+  what the balance display side must use so a 250 USDC position never
+  renders as anything else. Write your answer to answer.md in this
+  directory, showing the arithmetic.
+expect:
+- answer.md derives the numbers with the arithmetic shown, not a bare 'use parseUnits'.
+- The contract was asked to move 250 * 10^18 base units while the user meant 250 * 10^6 — USDC has 6 decimals
+  — an overshoot factor of 10^12, which is why a 400 USDC balance reverts.
+- The fix is parseUnits(depositInput, 6) (or an equivalent 6-decimal conversion) on the input side and
+  formatUnits(value, 6) on the display side; parseEther/formatEther are identified as wrong for USDC.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: frontend-ux-quiz-002
+  skill: skills/frontend-ux

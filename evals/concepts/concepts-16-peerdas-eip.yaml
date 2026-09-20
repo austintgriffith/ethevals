@@ -1,0 +1,24 @@
+id: concepts-16-peerdas-eip
+pillar: concepts
+title: PeerDAS and the fork roadmap
+kind: quiz
+prompt: "PeerDAS (peer data availability sampling), the headline change of Ethereum's Fusaka hard fork,\
+  \ is specified in which EIP? \nEnd your reply with a line of the form \"Answer: <EIP number>\".\n"
+grader:
+  type: bigint
+  expect: 7594
+reference: 'Answer: 7594'
+checks:
+  must_pass:
+  - 'Answer: EIP-7594'
+  - 'Answer: 7594'
+  - EIP 7594
+  must_fail:
+  - 'Answer: EIP-1559'
+  - 'Answer: 7595'
+source_quote: |
+  | Fusaka | Dec 3, 2025 | PeerDAS (EIP-7594), more blobs (EIP-7892) |
+source:
+  repo: clawdbotatg/eth-evals
+  task: protocol-k-08
+  skill: protocol

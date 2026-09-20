@@ -1,0 +1,49 @@
+id: security-05-spot-price-oracle
+pillar: security
+title: Spot price oracles
+kind: quiz
+prompt: |
+  Design review on our lending market. Positions are up to $2M of WETH
+  collateral backing USDC debt, liquidated at 85% LTV, on Ethereum mainnet.
+
+  A teammate has written up how we should price the collateral:
+
+    "Read it straight from the Uniswap V3 WETH/USDC 0.05% pool with slot0. That
+    pool holds around $200M of liquidity. To move its price 10% an attacker
+    would have to push tens of millions of dollars through it, and arbitrage
+    bots would drag it back within the same block, so they would eat the loss
+    for nothing. Chainlink is an extra external call, its answer can be stale
+    between updates, and it puts a third party between us and our own
+    liquidations. Our own on-chain reserve of truth is strictly better."
+
+  Work the numbers rather than trading opinions: what does it actually cost an
+  attacker to make our contract read a price 10% away from the market price at
+  the moment our contract reads it, and what do they get for it? Then tell me
+  what we should price collateral with, and what has to be checked around that
+  price before we use it in a health calculation.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md rejects the teammate''s cost argument with the atomicity reasoning: the capital needed to
+  move the pool is borrowed and repaid inside the SAME transaction (a flash loan), so the tens of millions
+  is never at risk and the attacker''s true cost is only pool fees plus slippage on the round trip — and
+  arbitrage cannot help because the manipulated read, the borrow or liquidation it enables, and the unwind
+  all complete before any other transaction can run.'
+- 'It concludes that a Uniswap V3 slot0 spot read (or any single-block spot price: getReserves, a balance
+  ratio, an on-the-spot quoter call) must NOT be the price source for these health calculations, regardless
+  of how deep the pool is.'
+- It prescribes a manipulation-resistant source instead. A Chainlink or equivalent push feed as the primary
+  liquidation price passes. A Uniswap V3 TWAP also passes only when averaged over a meaningful window
+  on the order of 30 minutes or more and presented as a weaker fallback or secondary sanity check, not
+  as equivalent to a push feed for liquidation-grade decisions. It need not prescribe both sources.
+- 'It requires both validations before a push-feed answer enters the health calculation: the answer is
+  positive, and updatedAt is no older than a configured per-feed maximum age chosen from that feed''s
+  published update interval or heartbeat (a tighter justified bound also passes). A bare latestAnswer(),
+  an unchecked latestRoundData(), or one global timeout asserted to fit every feed fails.'
+- It does NOT settle for keeping the spot read plus a patch — a deviation threshold or circuit breaker
+  on the spot price, a median across several pools' spot prices, or moving to a bigger pool — as the primary
+  fix.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: security-quiz-002
+  skill: skills/security

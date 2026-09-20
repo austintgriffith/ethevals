@@ -1,0 +1,28 @@
+id: transactions-18-storage-packing
+pillar: transactions
+title: Storage slots
+kind: quiz
+summary: Packed variables share a slot; know where the next one lands.
+prompt: |
+  A contract declares, in this order and nothing before them:
+
+    uint128 a;
+    uint64 b;
+    uint64 c;
+    address owner;
+    uint256 total;
+
+  Which storage slot number holds `total`?
+  End your reply with a line of the form "Answer: <integer>".
+grader:
+  type: bigint
+  expect: 2
+reference: 'Answer: 2'
+checks:
+  must_fail:
+  - 'Answer: 4'
+  - 'Answer: 1'
+  - 'Answer: 3'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-18-storage-packing

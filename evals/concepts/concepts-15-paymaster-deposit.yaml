@@ -1,0 +1,27 @@
+id: concepts-15-paymaster-deposit
+pillar: concepts
+title: 4337 paymaster deposits
+kind: quiz
+summary: Why a paymaster holding ETH still fails validation with 'deposit too low'.
+prompt: |
+  An ERC-4337 paymaster contract on Ethereum mainnet holds 5 ETH at its own address, yet every UserOperation that names it is rejected by the bundler at validation with AA31 "paymaster deposit too low". Why?
+  A) The paymaster must hold at least 32 ETH before the EntryPoint will trust it
+  B) The EntryPoint prepays gas from the paymaster's deposit held at the EntryPoint (funded via depositTo / addStake), not from ETH sitting in the paymaster's own balance
+  C) Bundlers only accept paymasters that are also stakers on the beacon chain
+  D) The paymaster's ETH is locked until the UserOperation's nonce is consumed
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: D'
+source:
+  repo: austintgriffith/ethevals
+  task: concepts-15-paymaster-deposit

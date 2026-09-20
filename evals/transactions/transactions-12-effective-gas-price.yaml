@@ -1,0 +1,20 @@
+id: transactions-12-effective-gas-price
+pillar: transactions
+title: Effective gas price
+kind: quiz
+summary: maxFeePerGas, maxPriorityFeePerGas and the base fee, combined.
+prompt: |
+  A type-2 transaction sets maxFeePerGas = 50 gwei and maxPriorityFeePerGas = 2 gwei. It is included in a block whose base fee is 30 gwei. What effective gas price, in gwei, does the sender pay per unit of gas?
+  End your reply with a line of the form "Answer: <integer>".
+grader:
+  type: bigint
+  expect: 32
+reference: 'Answer: 32'
+checks:
+  must_fail:
+  - 'Answer: 50'
+  - 'Answer: 30'
+  - 'Answer: 52'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-12-effective-gas-price

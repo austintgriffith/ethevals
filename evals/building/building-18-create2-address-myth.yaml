@@ -1,0 +1,40 @@
+id: building-18-create2-address-myth
+pillar: building
+title: Same address on every chain
+kind: quiz
+prompt: |
+  We use Morpho Blue on Base at 0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb, and
+  we're launching the same lending integration on Arbitrum this week. A teammate
+  says:
+
+    "Morpho uses a vanity CREATE2 address, so it's live at the exact same
+    0xBBBB... address on every chain. Just point the Arbitrum deployment at that
+    same address and route user deposits through it — no need to look anything
+    up."
+
+  Before we wire user funds through it on Arbitrum, is the teammate right?
+  And either way, tell us what our Arbitrum integration should actually point
+  at: give the address you would wire into the config, and say how you
+  established it.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md rejects the teammate''s reasoning: a matching vanity / CREATE2 address on one chain does
+  NOT prove the same contract is live at that address on another chain — Morpho''s contract addresses
+  are not guaranteed identical cross-chain, so the 0xBBBB... Base address cannot be assumed to be a live
+  Morpho contract on Arbitrum.'
+- It requires verifying against Arbitrum itself before wiring funds — block explorer / eth_getCode / Morpho's
+  official Arbitrum address list — and warns that routing user deposits to an address that may hold different
+  code (or none) on Arbitrum risks loss of funds.
+- It does NOT wire the 0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb Base address into the Arbitrum config,
+  and does NOT invent an Arbitrum address.
+- 'It answers what the Arbitrum integration should point at with a concrete, sourced result rather than
+  leaving it open: Morpho Blue IS deployed on Arbitrum, at the non-vanity address 0x6c247b1F6182318877311737BaC0844bAa518F5e
+  (per Morpho''s official address list at docs.morpho.org). PASS if answer.md gives that Arbitrum address
+  and says where it came from — official deployment list, block explorer, or an on-chain code check. FAIL
+  if it asserts Morpho is not deployed on Arbitrum, if it gives some other address as Morpho on Arbitrum,
+  or if it only says ''look it up'' without producing the deployment status.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: addresses-quiz-003
+  skill: skills/addresses

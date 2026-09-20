@@ -1,0 +1,25 @@
+id: transactions-09-event-signature
+pillar: transactions
+title: Event signature string
+kind: quiz
+prompt: |
+  A contract declares:
+
+  `event Redeemed(uint256 indexed to, bytes32 value);`
+
+  topic0 of this event's logs is the keccak256 hash of exactly what ASCII string?
+
+  Answer with only that string.
+grader:
+  type: exact
+  expect: Redeemed(uint256,bytes32)
+  case_sensitive: true
+reference: Redeemed(uint256,bytes32)
+checks:
+  must_fail:
+  - Redeemed(uint256 to, bytes32 value)
+  - redeemed(uint256,bytes32)
+source:
+  repo: clawdbotatg/eth-evals
+  task: indexing-evsig-01
+  skill: generated

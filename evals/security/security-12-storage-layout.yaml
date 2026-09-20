@@ -1,0 +1,33 @@
+id: security-12-storage-layout
+pillar: security
+title: Upgrade storage layout
+kind: quiz
+prompt: |
+  A contract behind an upgradeable proxy declared, in V1, exactly two storage variables in this order: `uint256 a; uint256 b;`. You are writing V2 and need to add a new variable `uint256 c`. Which V2 storage layout is safe?
+  A) uint256 c; uint256 a; uint256 b;
+  B) uint256 a; uint256 c; uint256 b;
+  C) uint256 a; uint256 b; uint256 c;
+  D) Any order is safe because variable names are preserved across upgrades
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: C
+  - type: regex
+    pattern: ^\(?C\b
+reference: 'Answer: C'
+checks:
+  must_pass:
+  - 'Answer: C'
+  - 'Answer: C — with an elaboration'
+  - C
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: not C'
+source_quote: |
+  **Never change storage layout** — only append new variables at the end, never delete or reorder
+source:
+  repo: clawdbotatg/eth-evals
+  task: security-k-08
+  skill: security

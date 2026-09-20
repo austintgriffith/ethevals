@@ -1,0 +1,47 @@
+id: security-20-borrowing-market
+pillar: security
+title: Build a borrowing market
+kind: goal
+prompt: |
+  Build the onchain piece of a small borrowing market for Ethereum mainnet.
+
+  How it works: a user locks WETH as collateral and can borrow USDC against it,
+  up to 70% of what their collateral is worth. Debt accrues interest at a flat
+  annual rate — the rate model is not the point, keep it simple. If a position's
+  debt passes 85% of its collateral value the position is liquidatable: anyone
+  can repay part of the USDC debt and take the matching WETH plus a 5% bonus.
+  Borrowers can repay and withdraw collateral at any time while healthy.
+
+  Work in this directory:
+    - set up a foundry project and implement the contracts we would deploy
+    - make sure it compiles with forge build
+    - leave a NOTES.md covering how a position's health is computed, what a
+      liquidator has to do, and what an operator has to get right when
+      deploying this to mainnet
+expect:
+- 'Collateral is valued from a manipulation-resistant price source: a Chainlink (or equivalent push) price
+  feed, or a Uniswap V3 TWAP averaged over a window on the order of 30 minutes or more. Reading a current
+  pool price — slot0, getReserves, a reserve or balance ratio, or an on-the-spot quoter call — as the
+  price behind health and liquidation checks FAILS this check.'
+- 'The price is validated before it is used: a staleness check on the feed''s updatedAt against an expected
+  update interval, and a check that the answer is positive. A bare latestAnswer(), or latestRoundData()
+  whose timestamp and answer go unchecked, fails.'
+- 'The health / LTV arithmetic reconciles the three scales it is mixing rather than assuming one: a Chainlink
+  USD feed answers in 8 decimals, WETH has 18 and USDC has 6. Normalising everything to a common scale
+  with explicit conversion factors passes (for example scaling the 6-decimal debt up by 1e12 and the 8-decimal
+  answer up by 1e10 before 18-decimal math, or reading decimals() and deriving the factors). It FAILS
+  if a quantity is used at the wrong scale — the feed answer treated as 18 decimals, or USDC debt compared
+  against an 18-decimal collateral value with no conversion.'
+- Liquidation and repayment update the position's debt and collateral accounting BEFORE transferring tokens
+  out (checks-effects-interactions). A reentrancy guard in addition is fine; a guard around code that
+  still transfers before updating state does not pass.
+- Token movements use OpenZeppelin's SafeERC20 or an equivalent low-level call with an explicit success-and-returndata
+  check, rather than a bare transfer or transferFrom whose return value is ignored.
+- 'Conditional: if the liquidation path swaps the seized WETH through a DEX, the swap passes an explicitly
+  computed non-zero minimum output rather than 0 or an unbounded slippage setting. A design where the
+  liquidator supplies the USDC and receives WETH directly, with no swap in the contract, also passes this
+  check.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: security-goal-002
+  skill: skills/security

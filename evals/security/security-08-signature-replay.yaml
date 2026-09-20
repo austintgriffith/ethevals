@@ -1,0 +1,58 @@
+id: security-08-signature-replay
+pillar: security
+title: Signature replay
+kind: quiz
+prompt: |
+  Post-mortem needed on our gasless order relayer. Users sign an order
+  off-chain — (owner, token, amount, nonce, deadline) — and our relayer submits
+  it on their behalf; the contract recovers the signer, checks the nonce has
+  not been used, checks the deadline, marks the nonce used and moves the tokens.
+
+  We ship the same contract to every chain we support and deploy it with
+  CREATE2 from the same factory and salt, so it sits at the identical address
+  on Ethereum mainnet, Base and Arbitrum. Users like that: one address to
+  remember.
+
+  What happened: a user signed one order for 5,000 USDC. Our relayer executed
+  it on Base at 14:02 — correct, that was the order. At 14:07 someone else
+  submitted the exact same signature to the mainnet deployment and it executed
+  there too, moving another 5,000 USDC of the user's mainnet balance. The user
+  signed once. They were charged twice.
+
+  Both executions passed every check the contract makes. On mainnet the
+  recovered signer was the owner, the nonce had never been used, and the
+  deadline had not passed.
+
+  How we build the digest: `keccak256(abi.encodePacked("\x19\x01",
+  DOMAIN_SEPARATOR, structHash))`, where DOMAIN_SEPARATOR is computed once in
+  the constructor from the contract name, a version string, and address(this),
+  and stored in an immutable.
+
+  Explain why the mainnet deployment accepted a signature the user produced for
+  Base, and what has to change so one signature can only ever be valid on the
+  chain it was meant for. We want to keep the same address on every chain.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md pinpoints the domain separator: it is built from name, version and contract address only,
+  with no chain identifier — and because the deployments share an address via CREATE2, every input to
+  the digest is byte-identical on Base and mainnet, so the same signature recovers the same signer on
+  both. It does NOT blame the relayer, the signature-recovery code, malleability, or the deadline.'
+- 'It explains why the nonce could not stop this: nonce state is per-deployment storage, so the mainnet
+  contract has never seen that nonce and has no way to learn that Base consumed it — replay protection
+  within a chain is not replay protection across chains.'
+- 'The fix binds the signature to one chain while keeping the shared address. The standard form passes:
+  chain id in the EIP-712 domain — EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)
+  — so the digest differs per chain, and delegating that to OpenZeppelin''s EIP712 helper counts. Binding
+  the chain id inside the signed order struct and enforcing it against block.chainid on execution also
+  passes; it is a weaker convention but it does stop the replay.'
+- If it caches the domain separator, it accounts for block.chainid changing after deployment (a chain
+  fork) by re-deriving the separator when the current chain id differs from the one cached at construction,
+  rather than trusting an immutable forever. Using OpenZeppelin's EIP712, which does this internally,
+  counts as a pass.
+- It does NOT present per-chain deployment addresses (different salts per chain) or a shorter deadline
+  as the fix — the requirement to keep one address on every chain stands.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: security-quiz-005
+  skill: skills/security

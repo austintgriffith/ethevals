@@ -1,0 +1,27 @@
+id: transactions-10-read-a-receipt
+pillar: transactions
+title: Read a receipt
+kind: quiz
+summary: What status 0x1 guarantees, and what it does not.
+prompt: |
+  A user deposited into a vault. The transaction receipt shows status 0x1, gasUsed 51203, and the user's share balance now reads zero. What does status 0x1 actually guarantee?
+  A) The deposit did what the user intended; the balance read must be stale
+  B) The transaction executed to completion without reverting — nothing more; the outcome has to be read from the logs and state
+  C) Every internal call inside the transaction succeeded
+  D) The funds were credited to the sender
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: C'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-10-read-a-receipt

@@ -1,0 +1,27 @@
+id: transactions-13-nonce-replacement
+pillar: transactions
+title: Nonces and replacement
+kind: quiz
+summary: A stuck transaction is a nonce problem.
+prompt: |
+  Your transaction with nonce 41 has been pending for an hour at a fee far below the current base fee. You want it gone. What do you send?
+  A) A new transaction with nonce 42 at a high fee; the stuck one is dropped once it is skipped
+  B) A transaction with the same nonce 41 (for example 0 ETH to yourself) with maxFeePerGas and maxPriorityFeePerGas raised by at least ~10% over the stuck one; whichever nonce-41 transaction is included first replaces the other
+  C) A cancel request to the RPC node that holds it
+  D) Nothing; pending transactions expire after 30 minutes
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: C'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-13-nonce-replacement

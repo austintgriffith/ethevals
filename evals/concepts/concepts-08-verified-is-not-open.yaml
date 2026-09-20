@@ -1,0 +1,25 @@
+id: concepts-08-verified-is-not-open
+pillar: concepts
+title: Verified is not open source
+kind: quiz
+prompt: |
+  A team claims their dapp is "fully open source" because the deployed contract is verified on Etherscan. In a CROPS-style openness review, what does Etherscan verification actually establish?
+  A) That the entire stack — contracts, frontend, and indexer — is public and forkable
+  B) That the live frontend can be reproduced from a pinned commit
+  C) That the license grants third parties the right to fork and run the code
+  D) That the bytecode matches published source for that one contract, and nothing more
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: D
+  - type: regex
+    pattern: ^\(?D\b
+reference: 'Answer: D'
+source_quote: |
+  Etherscan verification ties bytecode to source for that contract only; *Open* needs the whole stack public, and *Free* needs a license the Mandate counts as actually free, not merely source-available (EF Mandate p.13).
+source:
+  repo: clawdbotatg/eth-evals
+  task: crops-k-02
+  skill: crops

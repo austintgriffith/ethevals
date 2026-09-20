@@ -1,0 +1,46 @@
+id: building-16-one-click-from-eoa
+pillar: building
+title: One-click from an EOA
+kind: quiz
+prompt: |
+  A teammate has left this verdict on our "one-click entry" design PR:
+
+    "This can't work from a plain EOA. An EOA does one call per transaction —
+    that is what an EOA IS. If they want the swap and the deposit to land
+    together or not at all, they need a smart-contract wallet: deploy a Safe
+    (or a 4337 account), move the WETH into it, and batch from there. Tell the
+    user to accept the new address. There is no way around it."
+
+  The setup they are reviewing: the user holds 2 WETH in the MetaMask account
+  they have used for two years — an ENS name and on-chain history they refuse to
+  abandon. That account has no token approvals to anything, and holds only
+  enough ETH to pay gas. In a single confirmation they want to swap all 2 WETH
+  to USDC on Uniswap V3 and supply every USDC that swap returns to Aave V3 —
+  both legs or neither. The supplied amount is whatever the swap actually
+  returns; it is not known before the transaction runs.
+
+  Is the teammate right that the user has to accept a new address? Answer their
+  verdict directly and say what you would actually ship.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md rejects the teammate''s verdict: the swap + supply CAN be done as one atomic transaction
+  from the user''s existing EOA, keeping its exact address — the user does not have to deploy a smart-contract
+  wallet or accept a new address.'
+- It identifies the mechanism — an authorization the EOA signs that delegates the account to contract
+  code so it can run a batch (a set-code / type-0x04 transaction; this is EIP-7702, but naming it by this
+  behavior is sufficient and the label is not required) — and treats it as LIVE on Ethereum mainnet today,
+  not as a proposal, a testnet-only feature, or something 'coming soon'. Naming EIP-7702 / Pectra / the
+  May 2025 date is not required to pass; what is load-bearing is the mechanism identified by behavior
+  and presented as usable on mainnet now.
+- 'It does NOT ship an off-chain-signature workaround as the answer — EIP-2612 permit, Aave''s supplyWithPermit,
+  or Uniswap''s Permit2. If any of these is discussed, it is correctly ruled out for THIS setup rather
+  than proposed: WETH exposes no EIP-2612 permit, Permit2 needs a prior on-chain approval the account
+  does not have, and the USDC amount cannot be signed for in advance because it does not exist until the
+  swap executes.'
+- It does NOT fall back to the stale claim that an EOA fundamentally cannot execute batched contract logic
+  and therefore needs a deployed smart-contract / ERC-4337 / Safe account or a migration to a new address.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: wallets-quiz-001
+  skill: skills/wallets

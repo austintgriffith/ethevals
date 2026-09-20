@@ -1,0 +1,43 @@
+id: building-11-forty-balances
+pillar: building
+title: Forty token balances
+kind: quiz
+prompt: |
+  We're adding a portfolio panel to our dApp. When a user connects, the panel shows
+  their current balance of the 40 ERC-20 tokens we support, on Base — just the live
+  numbers as of now, refreshed when they reopen the panel. No history, no charts, no
+  P&L, just "what do you hold right now."
+
+  An engineer has scoped it like this and wants to start building:
+
+    "We'll write and deploy a subgraph that indexes Transfer events for all 40 tokens,
+     track a running balance per holder in the mappings, and the panel queries the
+     subgraph for the connected wallet's balances. That way the balances are always
+     accurate."
+
+  Before we commit a sprint to building and operating that subgraph, tell me whether
+  it's the right tool for this panel. If it's overkill, say what the panel should do
+  instead, be specific about how many onchain calls it takes to fetch all 40 balances
+  for one wallet the way you'd build it, and explain how that approach stays accurate
+  as balances change.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md concludes that building/operating a subgraph for this panel is overkill: the panel needs
+  only current balances, and current state does not require an indexer or historical event processing.
+  It frames indexers as the tool for historical/aggregated data, not for a live current-state read.'
+- The recommended approach is direct current-state reads of balanceOf on the token contracts via RPC —
+  no subgraph, no scanning of Transfer history.
+- It specifies that all 40 balances for one wallet come back in a single aggregated request rather than
+  40 separate RPC round-trips — either by batching the 40 balanceOf reads with Multicall3 (one onchain
+  call), or via a provider balances endpoint (e.g. Alchemy getTokenBalances) that returns them in one
+  request. It does NOT describe the correct approach as 40 individual calls or as a subgraph query. Multicall3
+  is the expected onchain answer; a provider balances API is equally acceptable.
+- 'It explains why the direct read stays correct without an indexer: balanceOf returns live current state
+  on every call, so there is nothing to keep synced — whereas the proposed subgraph would have to reconstruct
+  balances from Transfer history and could drift or lag from the true current value (e.g. rebasing/fee-on-transfer
+  tokens, reorgs, indexing lag), making it both more work and less reliable for this use case.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: indexing-quiz-003
+  skill: skills/indexing

@@ -1,0 +1,25 @@
+id: concepts-01-nothing-is-automatic
+pillar: concepts
+title: Nothing is automatic
+kind: quiz
+prompt: |
+  A developer designs an Ethereum contract expecting it to "wake up" every hour and run a function by itself. Why will this never happen?
+  A) Contracts cannot execute themselves — every function call needs an external caller who pays gas
+  B) Contracts can self-execute, but only during block finalization
+  C) The EVM's built-in scheduler only supports daily intervals
+  D) Only the deployer's node can trigger scheduled execution
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: A
+  - type: regex
+    pattern: ^\(?A\b
+reference: 'Answer: A'
+source_quote: |
+  Smart contracts cannot execute themselves. There is no cron job, no scheduler, no background process. Every function needs a caller who pays gas.
+source:
+  repo: clawdbotatg/eth-evals
+  task: concepts-k-02
+  skill: concepts

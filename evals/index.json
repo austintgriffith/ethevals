@@ -1,0 +1,1052 @@
+{
+ "generated": "2026-09-20T21:05:29+00:00",
+ "manifest": "d79092755fae",
+ "pillars": [
+  {
+   "id": "concepts",
+   "name": "Concepts",
+   "desc": "What gets built on Ethereum and why it holds up. Incentive design, the walkaway test, decentralization, MEV, EIP-1559, EIP-712, the fork roadmap.",
+   "count": 20
+  },
+  {
+   "id": "transactions",
+   "name": "Transactions",
+   "desc": "Reading the chain. Calldata, selectors, ABIs, events, receipts, gas, what a block explorer is really showing you.",
+   "count": 20
+  },
+  {
+   "id": "building",
+   "name": "Building",
+   "desc": "Shipping a dApp real users can touch. Approvals, decimals, USD context, RPCs, indexing, keys, and the whole way to production.",
+   "count": 20
+  },
+  {
+   "id": "security",
+   "name": "Security",
+   "desc": "Everyone catches reentrancy. Inflation attacks, stale oracles, signature replay, upgrade collisions, rounding, and the rest.",
+   "count": 20
+  }
+ ],
+ "evals": [
+  {
+   "id": "concepts-01-nothing-is-automatic",
+   "pillar": "concepts",
+   "title": "Nothing is automatic",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A developer designs an Ethereum contract expecting it to \"wake up\" every hour and run a function by itself. Why will this never happen? A) Contracts cannot execute themse\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "concepts-k-02",
+    "skill": "concepts"
+   }
+  },
+  {
+   "id": "concepts-02-walkaway-test",
+   "pillar": "concepts",
+   "title": "The walkaway test",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A DeFi protocol is fully audited and its incentives look healthy, but advancing each epoch requires the founding team to trigger the next phase from an admin account. App\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "cryptoecon-k-02",
+    "skill": "concepts"
+   }
+  },
+  {
+   "id": "concepts-03-keeper-bounty-math",
+   "pillar": "concepts",
+   "title": "Keeper bounty math",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A Yearn-style vault lets ANYONE call harvest() to compound accumulated rewards, paying the caller a fixed bounty of $0.40. Gas for the call reliably costs about $3. For e\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "cryptoecon-k-03",
+    "skill": "concepts"
+   }
+  },
+  {
+   "id": "concepts-04-hyperstructures",
+   "pillar": "concepts",
+   "title": "Hyperstructures",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "The Ethereum community has a specific term for an unstoppable protocol that runs forever with no operator, no company, no server, and no admin key \u2014 sustained purely by i\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "concepts-k-09",
+    "skill": "concepts"
+   }
+  },
+  {
+   "id": "concepts-05-fee-switch-fork",
+   "pillar": "concepts",
+   "title": "The fee-switch fork",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A team forks a Uniswap-style AMM but changes one rule: 100% of swap fees go to a founder-controlled treasury instead of to liquidity providers. Trading works fine on day \u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "cryptoecon-k-05",
+    "skill": "concepts"
+   }
+  },
+  {
+   "id": "concepts-06-sybil-resistance",
+   "pillar": "concepts",
+   "title": "Sybil resistance",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A voting-based onchain mechanism gives every distinct address one vote. An attacker generates thousands of fresh addresses for free and captures the vote. What is the sta\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "cryptoecon-k-06",
+    "skill": "canon"
+   }
+  },
+  {
+   "id": "concepts-07-crops-pillars",
+   "pillar": "concepts",
+   "title": "Which CROPS pillar",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A dapp's smart contracts are fully permissionless, but the only usable UI is hosted by one provider, which geofences users by IP and filters connecting wallet addresses a\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "crops-k-04",
+    "skill": "crops"
+   }
+  },
+  {
+   "id": "concepts-08-verified-is-not-open",
+   "pillar": "concepts",
+   "title": "Verified is not open source",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A team claims their dapp is \"fully open source\" because the deployed contract is verified on Etherscan. In a CROPS-style openness review, what does Etherscan verification\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "crops-k-02",
+    "skill": "crops"
+   }
+  },
+  {
+   "id": "concepts-09-eip1559-mechanics",
+   "pillar": "concepts",
+   "title": "EIP-1559 fee mechanics",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "What moves the base fee, where it goes, and what the tip buys.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "concepts-09-eip1559-mechanics"
+   }
+  },
+  {
+   "id": "concepts-10-mev-backrun",
+   "pillar": "concepts",
+   "title": "MEV backruns",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Your 500 ETH swap on Uniswap executes and pushes the pool's price away from prices on other exchanges. A bot arranges for its own arbitrage transaction to execute immedia\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "mev-k-04",
+    "skill": "security"
+   }
+  },
+  {
+   "id": "concepts-11-spot-price-oracle",
+   "pillar": "concepts",
+   "title": "Spot price is not an oracle",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Your smart contract needs a token price, and a teammate suggests reading the spot price directly from a DEX pool's reserves. Attackers commonly use a specific financing p\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "concepts-k-07",
+    "skill": "concepts"
+   }
+  },
+  {
+   "id": "concepts-12-blockhash-current",
+   "pillar": "concepts",
+   "title": "blockhash of the current block",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Inside a Solidity contract, a developer writes `blockhash(block.number)` hoping to get the hash of the current block. What value does this expression always return?",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "concepts-k-03",
+    "skill": "concepts"
+   }
+  },
+  {
+   "id": "concepts-13-eip712-replay",
+   "pillar": "concepts",
+   "title": "EIP-712 replay protection",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A protocol verifies user signatures over typed structured data per EIP-712. Which component of the signed digest is specifically responsible for preventing a valid signat\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "security-k-10",
+    "skill": "security"
+   }
+  },
+  {
+   "id": "concepts-14-eip7702-delegation",
+   "pillar": "concepts",
+   "title": "EIP-7702 delegation",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Under EIP-7702, an EOA signs an authorization that sets a delegation designator pointing its code at a contract. Per the spec, how long does that delegation remain in eff\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "standards-k-07",
+    "skill": "standards"
+   }
+  },
+  {
+   "id": "concepts-15-paymaster-deposit",
+   "pillar": "concepts",
+   "title": "4337 paymaster deposits",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Why a paymaster holding ETH still fails validation with 'deposit too low'.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "concepts-15-paymaster-deposit"
+   }
+  },
+  {
+   "id": "concepts-16-peerdas-eip",
+   "pillar": "concepts",
+   "title": "PeerDAS and the fork roadmap",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "PeerDAS (peer data availability sampling), the headline change of Ethereum's Fusaka hard fork, is specified in which EIP?",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "protocol-k-08",
+    "skill": "protocol"
+   }
+  },
+  {
+   "id": "concepts-17-forced-inclusion",
+   "pillar": "concepts",
+   "title": "L2 exit and forced inclusion",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A dapp deploys on an L2 with a centralized sequencer. Before claiming users can escape sequencer censorship by forcing a transaction through L1, which website does ecosys\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "crops-k-11",
+    "skill": "crops"
+   }
+  },
+  {
+   "id": "concepts-18-admin-power-mechanisms",
+   "pillar": "concepts",
+   "title": "Surviving admin powers",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A review finds a contract where a single `onlyOwner` key can pause, upgrade, and seize funds, and the team insists some admin power must survive launch. Per CROPS-style g\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "crops-k-05",
+    "skill": "crops"
+   }
+  },
+  {
+   "id": "concepts-19-why-slashing",
+   "pillar": "concepts",
+   "title": "Why slashing exists",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Ethereum proof-of-stake requires validators to lock a deposit that can be destroyed (slashed) if they provably violate the rules, e.g. by signing two conflicting blocks. \u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "cryptoecon-k-08",
+    "skill": "canon"
+   }
+  },
+  {
+   "id": "concepts-20-honesty-live-data",
+   "pillar": "concepts",
+   "title": "Honesty on live data",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "What is the current gas price on Ethereum mainnet, right now, in gwei? You have no tools and no live data access. Reply with ONLY a JSON object of the form {\"can_know\": <\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "honesty-k-01",
+    "skill": "honesty"
+   }
+  },
+  {
+   "id": "transactions-01-selector-string",
+   "pillar": "transactions",
+   "title": "Selector from signature",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Write the exact string whose keccak256 gives the selector. Most models add the parameter names.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-01-selector-string"
+   }
+  },
+  {
+   "id": "transactions-02-abi-encode-static",
+   "pillar": "transactions",
+   "title": "ABI-encode a static call",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "The Solidity function `updateOracleV2(address,bool,uint256)` has 4-byte selector 0xc13456f7. ABI-encode a call to it with arguments: address = 0xb7ee24b258d02c057ad8ba41f\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "calldata-encgiven-01",
+    "skill": "generated"
+   }
+  },
+  {
+   "id": "transactions-03-decode-calldata",
+   "pillar": "transactions",
+   "title": "Decode calldata",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A contract has these functions: - `setOperatorFor(uint256,uint256,address)` \u2014 selector 0xd117a0cd - `stake(uint256)` \u2014 selector 0xa694fc3a - `mintBatchV2(address)` \u2014 sele\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "calldata-decgiven-01",
+    "skill": "generated"
+   }
+  },
+  {
+   "id": "transactions-04-dynamic-types",
+   "pillar": "transactions",
+   "title": "Dynamic types",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Encode a call with a string and a uint256[]: offsets, lengths, tail.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-04-dynamic-types"
+   }
+  },
+  {
+   "id": "transactions-05-struct-argument",
+   "pillar": "transactions",
+   "title": "Struct arguments",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Uniswap v3 exactInputSingle takes a tuple. A static struct is not a dynamic type.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-05-struct-argument"
+   }
+  },
+  {
+   "id": "transactions-06-token-decimals",
+   "pillar": "transactions",
+   "title": "Token decimals",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "7.25 DAI is an 18-decimal integer. Build the transferFrom.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-06-token-decimals"
+   }
+  },
+  {
+   "id": "transactions-07-bounded-approve",
+   "pillar": "transactions",
+   "title": "Bounded approve",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Approve exactly 250 USDT to the router. Not max.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-07-bounded-approve"
+   }
+  },
+  {
+   "id": "transactions-08-permit-2612",
+   "pillar": "transactions",
+   "title": "EIP-2612 permit",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Build the permit call: owner, spender, value, deadline, v, r, s.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-08-permit-2612"
+   }
+  },
+  {
+   "id": "transactions-09-event-signature",
+   "pillar": "transactions",
+   "title": "Event signature string",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A contract declares: `event Redeemed(uint256 indexed to, bytes32 value);` topic0 of this event's logs is the keccak256 hash of exactly what ASCII string?",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "indexing-evsig-01",
+    "skill": "generated"
+   }
+  },
+  {
+   "id": "transactions-10-read-a-receipt",
+   "pillar": "transactions",
+   "title": "Read a receipt",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "What status 0x1 guarantees, and what it does not.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-10-read-a-receipt"
+   }
+  },
+  {
+   "id": "transactions-11-internal-transactions",
+   "pillar": "transactions",
+   "title": "Internal transactions",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "The explorer's 'internal txns' tab is traces, not transactions.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-11-internal-transactions"
+   }
+  },
+  {
+   "id": "transactions-12-effective-gas-price",
+   "pillar": "transactions",
+   "title": "Effective gas price",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "maxFeePerGas, maxPriorityFeePerGas and the base fee, combined.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-12-effective-gas-price"
+   }
+  },
+  {
+   "id": "transactions-13-nonce-replacement",
+   "pillar": "transactions",
+   "title": "Nonces and replacement",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A stuck transaction is a nonce problem.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-13-nonce-replacement"
+   }
+  },
+  {
+   "id": "transactions-14-gwei-to-wei",
+   "pillar": "transactions",
+   "title": "Units",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Convert 412.5 gwei to wei.",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "units-01",
+    "skill": "generated"
+   }
+  },
+  {
+   "id": "transactions-15-intrinsic-gas",
+   "pillar": "transactions",
+   "title": "Intrinsic gas",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A simple value-transfer transaction to an EOA carries this calldata: 0x0046be6100d30000677700c4000000960022ac00009f76123a0000e8001b00ec00b54500e699 Using EIP-2028 calldat\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "gas-intrinsic-01",
+    "skill": "generated"
+   }
+  },
+  {
+   "id": "transactions-16-create2-truncation",
+   "pillar": "transactions",
+   "title": "CREATE2 address from the hash",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "In a CREATE2 derivation, keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code)) evaluates to: 0xcae80d92883b9ab8ccd30dbb60fe96ffb50be955748dcc275be17314ff75a345 What\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "derivations-c2finish-01",
+    "skill": "generated"
+   }
+  },
+  {
+   "id": "transactions-17-eip55-checksum",
+   "pillar": "transactions",
+   "title": "EIP-55 checksums",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Mixed case is a checksum. Only one of three spellings passes it.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-17-eip55-checksum"
+   }
+  },
+  {
+   "id": "transactions-18-storage-packing",
+   "pillar": "transactions",
+   "title": "Storage slots",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Packed variables share a slot; know where the next one lands.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-18-storage-packing"
+   }
+  },
+  {
+   "id": "transactions-19-nested-calldata",
+   "pillar": "transactions",
+   "title": "Nested calldata",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A multicall wrapping a transfer. Decode it to the bottom.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-19-nested-calldata"
+   }
+  },
+  {
+   "id": "transactions-20-decode-a-revert",
+   "pillar": "transactions",
+   "title": "Decode a revert",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Error(string) is 0x08c379a0. Read the reason out of the bytes.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-20-decode-a-revert"
+   }
+  },
+  {
+   "id": "building-01-no-infinite-approvals",
+   "pillar": "building",
+   "title": "No infinite approvals",
+   "kind": "goal",
+   "graded": "judge",
+   "summary": "Finish an approve-then-stake component. Does it approve the amount, or type(uint256).max?",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "building-01-no-infinite-approvals"
+   }
+  },
+  {
+   "id": "building-02-approve-flow-states",
+   "pillar": "building",
+   "title": "The approve-then-stake flow",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "An Ethereum React dApp with wagmi v2 and viem configured. A teammate's PR adds the stake widget below. To \"keep it simple\" it shows the buttons whenever a wallet is conne\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "frontend-ux-quiz-003",
+    "skill": "skills/frontend-ux"
+   }
+  },
+  {
+   "id": "building-03-usdc-decimals",
+   "pillar": "building",
+   "title": "USDC has six decimals",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "An Ethereum React dApp with wagmi v2 and viem configured. A support ticket just came in: a user holding 400 USDC typed \"250\" into the deposit form and the transaction rev\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "frontend-ux-quiz-002",
+    "skill": "skills/frontend-ux"
+   }
+  },
+  {
+   "id": "building-04-balance-read",
+   "pillar": "building",
+   "title": "Reading a token balance",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "A Scaffold-ETH 2 dApp (hardhat flavor) live on Base. The /payouts page reads the user's USDC balance like this: const { data: usdcBalance } = useScaffoldReadContract({ co\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "qa-quiz-001",
+    "skill": "skills/qa"
+   }
+  },
+  {
+   "id": "building-05-button-lifecycle",
+   "pillar": "building",
+   "title": "The approve button lifecycle",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Our Ethereum staking dApp \u2014 a React app with wagmi v2 and viem configured \u2014 has an approve-then-stake flow, and QA just filed two tickets against the same Approve button:\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "frontend-ux-quiz-001",
+    "skill": "skills/frontend-ux"
+   }
+  },
+  {
+   "id": "building-06-ens-input",
+   "pillar": "building",
+   "title": "ENS in address inputs",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "An Ethereum React dApp with wagmi v2 and viem configured. A user filed a bug: \"I pasted my friend's name vitalik.eth into the transfer form and the Send button just stays\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "frontend-ux-quiz-005",
+    "skill": "skills/frontend-ux"
+   }
+  },
+  {
+   "id": "building-07-double-fire",
+   "pillar": "building",
+   "title": "Pending state that still double-fires",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "A Scaffold-ETH 2 dApp using DaisyUI. A teammate added a pending state to the Approve button: <button className={`btn btn-primary ${isPending ? \"loading\" : \"\"}`} disabled=\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "qa-quiz-002",
+    "skill": "skills/qa"
+   }
+  },
+  {
+   "id": "building-08-rpc-config",
+   "pillar": "building",
+   "title": "RPC configuration",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "A Scaffold-ETH 2 dApp live on Base. Ops report: production traffic is getting rate-limited on public endpoints \u2014 429s from mainnet.base.org \u2014 even though the config looks\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "qa-quiz-005",
+    "skill": "skills/qa"
+   }
+  },
+  {
+   "id": "building-09-mobile-chain-switch",
+   "pillar": "building",
+   "title": "Mobile wallet chain switch",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "A Scaffold-ETH 2 dApp live on Base. Mobile users who connect through WalletConnect with the Rainbow app report that tapping \"Stake\" does nothing \u2014 no wallet opens, the pa\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "qa-quiz-004",
+    "skill": "skills/qa"
+   }
+  },
+  {
+   "id": "building-10-index-events",
+   "pillar": "building",
+   "title": "Index events, not blocks",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "We're launching the frontend for an NFT collection that's been live on Ethereum mainnet for about three years. The main screen is an activity feed \u2014 every mint, sale, and\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "indexing-quiz-001",
+    "skill": "skills/indexing"
+   }
+  },
+  {
+   "id": "building-11-forty-balances",
+   "pillar": "building",
+   "title": "Forty token balances",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "We're adding a portfolio panel to our dApp. When a user connects, the panel shows their current balance of the 40 ERC-20 tokens we support, on Base \u2014 just the live number\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "indexing-quiz-003",
+    "skill": "skills/indexing"
+   }
+  },
+  {
+   "id": "building-12-pick-a-chain",
+   "pillar": "building",
+   "title": "Pick a chain with numbers",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "I want to build an escrow service for freelance payments. Each job holds somewhere between $2,000 and $50,000 until the work is delivered. Which chain should I deploy on,\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "gas-quiz-001",
+    "skill": "skills/gas"
+   }
+  },
+  {
+   "id": "building-13-l2-real-cost",
+   "pillar": "building",
+   "title": "Where the L2 fee goes",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "A teammate estimated our Uniswap swap on Base at $0.0003 by pricing the swap's execution gas over RPC. But the actual charge per swap showing up in the wallet is roughly \u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "gas-quiz-002",
+    "skill": "skills/gas"
+   }
+  },
+  {
+   "id": "building-14-deployer-key-hygiene",
+   "pillar": "building",
+   "title": "Deployer key hygiene",
+   "kind": "goal",
+   "graded": "judge",
+   "summary": "Get our deploy tooling ready to hand to the rest of the team. We have a Solidity contract shipping to Sepolia this week and no deploy story yet. The deployer account we'v\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "wallets-goal-003",
+    "skill": "skills/wallets"
+   }
+  },
+  {
+   "id": "building-15-agent-custody",
+   "pillar": "building",
+   "title": "Bounded agent authority",
+   "kind": "goal",
+   "graded": "judge",
+   "summary": "I'm a solo builder and I'm putting a trading agent into production on Ethereum mainnet this week. What it does: rebalances a ~$400k treasury between WETH and USDC on Unis\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "wallets-goal-002",
+    "skill": "skills/wallets"
+   }
+  },
+  {
+   "id": "building-16-one-click-from-eoa",
+   "pillar": "building",
+   "title": "One-click from an EOA",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "A teammate has left this verdict on our \"one-click entry\" design PR: \"This can't work from a plain EOA. An EOA does one call per transaction \u2014 that is what an EOA IS. If \u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "wallets-quiz-001",
+    "skill": "skills/wallets"
+   }
+  },
+  {
+   "id": "building-17-x402-paid-api",
+   "pillar": "building",
+   "title": "x402 paid API",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "I'm building a paid API for AI agents. I want an agent to pay me a few cents per call, settled on-chain (Base is fine), with the payment happening inline in the HTTP requ\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "tools-quiz-001",
+    "skill": "skills/tools"
+   }
+  },
+  {
+   "id": "building-18-create2-address-myth",
+   "pillar": "building",
+   "title": "Same address on every chain",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "We use Morpho Blue on Base at 0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb, and we're launching the same lending integration on Arbitrum this week. A teammate says: \"Morpho\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "addresses-quiz-003",
+    "skill": "skills/addresses"
+   }
+  },
+  {
+   "id": "building-19-deploy-verify-ship",
+   "pillar": "building",
+   "title": "Deploy, verify, ship",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Our two-person team shipped the contracts for a Scaffold-ETH 2 (foundry flavor) dApp to Base mainnet three days ago \u2014 `yarn deploy --network base` went fine and the app w\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "orchestration-quiz-001",
+    "skill": "skills/orchestration"
+   }
+  },
+  {
+   "id": "building-20-existing-eoa-smart-account",
+   "pillar": "building",
+   "title": "Upgrade an existing EOA",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "A team runs a consumer app whose users each already hold a funded EOA \u2014 the same address they've used for a year, with an ENS name and onchain history tied to it. The tea\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "standards-quiz-002",
+    "skill": "skills/standards"
+   }
+  },
+  {
+   "id": "security-01-reentrancy",
+   "pillar": "security",
+   "title": "Reentrancy",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A Solidity withdraw function reads the caller's balance, sends that amount of ETH to the caller via a low-level call, and only after the call returns does it set the call\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "security-k-01",
+    "skill": "security"
+   }
+  },
+  {
+   "id": "security-02-read-only-reentrancy",
+   "pillar": "security",
+   "title": "Read-only reentrancy",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "No state is written during the callback and the funds are still gone.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "security-02-read-only-reentrancy"
+   }
+  },
+  {
+   "id": "security-03-cross-function-reentrancy",
+   "pillar": "security",
+   "title": "Cross-function reentrancy",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A guarded withdraw and an unguarded transfer sharing one balance.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "security-03-cross-function-reentrancy"
+   }
+  },
+  {
+   "id": "security-04-vault-inflation",
+   "pillar": "security",
+   "title": "Vault inflation attack",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Our USDC vault went live on Ethereum mainnet last night and a depositor has lost their money. Support has the on-chain sequence from the explorer: 09:12 0xA1.. deposit(1)\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "security-quiz-001",
+    "skill": "skills/security"
+   }
+  },
+  {
+   "id": "security-05-spot-price-oracle",
+   "pillar": "security",
+   "title": "Spot price oracles",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Design review on our lending market. Positions are up to $2M of WETH collateral backing USDC debt, liquidated at 85% LTV, on Ethereum mainnet. A teammate has written up h\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "security-quiz-002",
+    "skill": "skills/security"
+   }
+  },
+  {
+   "id": "security-06-fee-on-transfer-books",
+   "pillar": "security",
+   "title": "Books that do not close",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Our single-token staking pool on Ethereum mainnet has been live for three weeks and the books do not close. What we can see: - 1,250,000 TKN has been staked cumulatively \u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "security-quiz-003",
+    "skill": "skills/security"
+   }
+  },
+  {
+   "id": "security-07-oz-v5-approvals",
+   "pillar": "security",
+   "title": "OpenZeppelin v5 approvals",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Our treasury router on Ethereum mainnet pulls stablecoins in and forwards them to a strategy contract, which it has to approve before each run. The repo is on @openzeppel\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "security-quiz-004",
+    "skill": "skills/security"
+   }
+  },
+  {
+   "id": "security-08-signature-replay",
+   "pillar": "security",
+   "title": "Signature replay",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Post-mortem needed on our gasless order relayer. Users sign an order off-chain \u2014 (owner, token, amount, nonce, deadline) \u2014 and our relayer submits it on their behalf; the\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "security-quiz-005",
+    "skill": "skills/security"
+   }
+  },
+  {
+   "id": "security-09-uups-upgrade",
+   "pillar": "security",
+   "title": "The upgrade that succeeded",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Post-mortem on our staking protocol \u2014 a UUPS-upgradeable contract on Ethereum mainnet. We upgraded the implementation from V1 to V2 yesterday. The upgrade transaction suc\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "security-quiz-006",
+    "skill": "skills/security"
+   }
+  },
+  {
+   "id": "security-10-checks-effects-interactions",
+   "pillar": "security",
+   "title": "Checks, effects, interactions",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A Solidity function body is ordered so that it first validates inputs and conditions, then updates all contract state, and only performs external calls last. What is the \u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "security-k-04",
+    "skill": "security"
+   }
+  },
+  {
+   "id": "security-11-missing-access-control",
+   "pillar": "security",
+   "title": "Missing access control",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A deployed contract that holds user funds exposes a function `emergencyWithdraw()` marked `external` with no modifiers; its body transfers the contract's entire token bal\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "security-k-07",
+    "skill": "security"
+   }
+  },
+  {
+   "id": "security-12-storage-layout",
+   "pillar": "security",
+   "title": "Upgrade storage layout",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A contract behind an upgradeable proxy declared, in V1, exactly two storage variables in this order: `uint256 a; uint256 b;`. You are writing V2 and need to add a new var\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "security-k-08",
+    "skill": "security"
+   }
+  },
+  {
+   "id": "security-13-authorize-upgrade",
+   "pillar": "security",
+   "title": "UUPS authorization",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "You are writing an upgradeable implementation contract that inherits OpenZeppelin's UUPSUpgradeable. There is one internal function you must override (typically restricte\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "security-k-09",
+    "skill": "security"
+   }
+  },
+  {
+   "id": "security-14-sandwich-slippage",
+   "pillar": "security",
+   "title": "Sandwiches and slippage",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "You submit a swap of 10 ETH for USDC on Uniswap through the public mempool with a 1% slippage tolerance. A bot sees your pending transaction, buys USDC immediately before\u2026",
+   "source": {
+    "repo": "clawdbotatg/eth-evals",
+    "task": "security-k-03",
+    "skill": "security"
+   }
+  },
+  {
+   "id": "security-15-lending-postmortem-1",
+   "pillar": "security",
+   "title": "Lending post-mortem: the sequencer",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Post-mortem, and I am stuck on it. We run a lending market on Arbitrum One. Collateral is wstETH, debt is USDC, positions are liquidatable below 125% collateralisation. L\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "audit-quiz-001",
+    "skill": "skills/audit"
+   }
+  },
+  {
+   "id": "security-16-lending-postmortem-2",
+   "pillar": "security",
+   "title": "Lending post-mortem: the clock",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "We run the same fixed-rate borrowing contract on Ethereum mainnet and on Arbitrum One. Identical bytecode, identical constructor arguments, deployed a day apart. The rate\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "audit-quiz-002",
+    "skill": "skills/audit"
+   }
+  },
+  {
+   "id": "security-17-lending-postmortem-3",
+   "pillar": "security",
+   "title": "Lending post-mortem: the loop",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Support ticket I cannot close, and I need to know what to tell the user. Our lending market lets a relayer submit a borrow that the borrower authorised off-chain, so borr\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "audit-quiz-003",
+    "skill": "skills/audit"
+   }
+  },
+  {
+   "id": "security-18-decimal-scale-mismatch",
+   "pillar": "security",
+   "title": "Decimal scale mismatch",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "WETH at 18 decimals against USDC at 6. Where the 10^12 goes missing.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "security-18-decimal-scale-mismatch"
+   }
+  },
+  {
+   "id": "security-19-permissionless-listing",
+   "pillar": "security",
+   "title": "Permissionless token listing",
+   "kind": "goal",
+   "graded": "judge",
+   "summary": "We're building the onchain piece of a \"save any token\" product for Ethereum mainnet. Anyone can spin up a vault for any ERC-20 \u2014 listing is permissionless, whatever token\u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "security-goal-001",
+    "skill": "skills/security"
+   }
+  },
+  {
+   "id": "security-20-borrowing-market",
+   "pillar": "security",
+   "title": "Build a borrowing market",
+   "kind": "goal",
+   "graded": "judge",
+   "summary": "Build the onchain piece of a small borrowing market for Ethereum mainnet. How it works: a user locks WETH as collateral and can borrow USDC against it, up to 70% of what \u2026",
+   "source": {
+    "repo": "BuidlGuidl/ethskills-evals",
+    "task": "security-goal-002",
+    "skill": "skills/security"
+   }
+  }
+ ]
+}

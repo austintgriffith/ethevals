@@ -1,0 +1,27 @@
+id: concepts-09-eip1559-mechanics
+pillar: concepts
+title: EIP-1559 fee mechanics
+kind: quiz
+summary: What moves the base fee, where it goes, and what the tip buys.
+prompt: |
+  Under EIP-1559, block N used its entire gas limit — twice the gas target. Ignoring the tip, which statement about block N+1 is correct?
+  A) The base fee is unchanged; only priority fees respond to demand
+  B) The base fee rises by 12.5%, and the base fee portion of every fee is burned
+  C) The base fee rises by 25%, and the base fee portion goes to the proposer
+  D) The proposer sets the base fee freely for the next block
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: C'
+  - 'Answer: A'
+source:
+  repo: austintgriffith/ethevals
+  task: concepts-09-eip1559-mechanics

@@ -1,0 +1,28 @@
+id: transactions-01-selector-string
+pillar: transactions
+title: Selector from signature
+kind: quiz
+summary: Write the exact string whose keccak256 gives the selector. Most models add the parameter names.
+prompt: |
+  A contract declares:
+
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+
+  Its 4-byte function selector is the first four bytes of keccak256 applied to exactly one ASCII string. Write that string exactly.
+  End your reply with a line of the form "Answer: <string>".
+grader:
+  type: exact
+  expect: transferFrom(address,address,uint256)
+  case_sensitive: true
+reference: 'Answer: transferFrom(address,address,uint256)'
+checks:
+  must_pass:
+  - 'Answer: `transferFrom(address,address,uint256)`'
+  must_fail:
+  - 'Answer: transferFrom(address from, address to, uint256 amount)'
+  - 'Answer: transferFrom(address, address, uint256)'
+  - 'Answer: transferFrom(address,address,uint)'
+  - 'Answer: transferfrom(address,address,uint256)'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-01-selector-string

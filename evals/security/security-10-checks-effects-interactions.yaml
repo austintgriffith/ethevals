@@ -1,0 +1,20 @@
+id: security-10-checks-effects-interactions
+pillar: security
+title: Checks, effects, interactions
+kind: quiz
+prompt: |
+  A Solidity function body is ordered so that it first validates inputs and conditions, then updates all contract state, and only performs external calls last. What is the standard name of this defensive coding pattern?
+  End your reply with a line of the form "Answer: <short answer>".
+grader:
+  type: regex
+  pattern: checks?[\s_-]*effects?[\s_-]*interactions?|\bCEI\b
+reference: 'Answer: Checks-Effects-Interactions (CEI)'
+source_quote: |
+  **The pattern: Checks → Effects → Interactions (CEI)**
+  1. **Checks** — validate inputs and conditions
+  2. **Effects** — update all state
+  3. **Interactions** — external calls last
+source:
+  repo: clawdbotatg/eth-evals
+  task: security-k-04
+  skill: security

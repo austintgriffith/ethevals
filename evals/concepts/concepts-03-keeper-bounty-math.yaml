@@ -1,0 +1,27 @@
+id: concepts-03-keeper-bounty-math
+pillar: concepts
+title: Keeper bounty math
+kind: quiz
+prompt: |
+  A Yearn-style vault lets ANYONE call harvest() to compound accumulated rewards, paying the caller a fixed bounty of $0.40. Gas for the call reliably costs about $3. For every state transition you must ask: who pokes it, why would they, and is the incentive sufficient (covers gas + profit)? Given those questions, what happens to this vault?
+  A) The network eventually executes harvest() itself once rewards are large enough
+  B) Nobody calls harvest — the incentive doesn't cover gas, so the transition never happens and rewards sit uncompounded
+  C) Bots call it anyway at a loss to keep the protocol healthy
+  D) Validators are required to include a harvest call once per epoch
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+source_quote: |
+  3. Is the incentive sufficient? (covers gas + profit?)
+
+  If you can't answer these questions, that state transition will never happen. Your contract will sit in State A forever, doing nothing, with nobody poking it.
+source:
+  repo: clawdbotatg/eth-evals
+  task: cryptoecon-k-03
+  skill: concepts

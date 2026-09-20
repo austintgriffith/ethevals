@@ -1,0 +1,19 @@
+id: transactions-15-intrinsic-gas
+pillar: transactions
+title: Intrinsic gas
+kind: quiz
+prompt: |
+  A simple value-transfer transaction to an EOA carries this calldata:
+  0x0046be6100d30000677700c4000000960022ac00009f76123a0000e8001b00ec00b54500e699
+
+  Using EIP-2028 calldata pricing (ignore the EIP-7623 floor and access lists), what is the transaction's intrinsic gas?
+
+  End your reply with a line of the form "Answer: <integer>".
+grader:
+  type: bigint
+  expect: 21404
+reference: 'Answer: 21404'
+source:
+  repo: clawdbotatg/eth-evals
+  task: gas-intrinsic-01
+  skill: generated

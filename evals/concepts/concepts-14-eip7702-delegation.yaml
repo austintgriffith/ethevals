@@ -1,0 +1,26 @@
+id: concepts-14-eip7702-delegation
+pillar: concepts
+title: EIP-7702 delegation
+kind: quiz
+prompt: |
+  Under EIP-7702, an EOA signs an authorization that sets a delegation designator pointing its code at a contract. Per the spec, how long does that delegation remain in effect?
+  A) It applies to a single transaction only, then clears automatically
+  B) It expires at the end of the block
+  C) It remains until replaced or cleared by a later authorization
+  D) It expires after a protocol-defined timeout
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: C
+  - type: regex
+    pattern: answer:\s*C\b
+    'on': full
+reference: 'Answer: C'
+source_quote: |
+  **Important nuance:** Delegation is not automatically "single transaction only" by spec. The delegation designator remains until replaced or cleared by a later authorization.
+source:
+  repo: clawdbotatg/eth-evals
+  task: standards-k-07
+  skill: standards

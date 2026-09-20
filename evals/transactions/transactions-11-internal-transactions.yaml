@@ -1,0 +1,27 @@
+id: transactions-11-internal-transactions
+pillar: transactions
+title: Internal transactions
+kind: quiz
+summary: The explorer's 'internal txns' tab is traces, not transactions.
+prompt: |
+  A block explorer lists several "internal transactions" under one transaction hash, each moving ETH between contracts. What are they?
+  A) Separate transactions the contract signed and broadcast during execution
+  B) Value-carrying message calls made during the transaction's execution, reconstructed by tracing the EVM; they are not signed, have no hash of their own, and never appear in the block's transaction list
+  C) Pending transactions queued by the contract for a later block
+  D) Log events emitted with the Transfer signature
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: D'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-11-internal-transactions

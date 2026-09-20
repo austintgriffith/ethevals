@@ -1,0 +1,51 @@
+id: building-10-index-events
+pillar: building
+title: Index events, not blocks
+kind: quiz
+prompt: |
+  We're launching the frontend for an NFT collection that's been live on Ethereum
+  mainnet for about three years. The main screen is an activity feed — every mint,
+  sale, and transfer in the collection, newest first — plus a "top holders" panel
+  that ranks wallets by how many tokens they hold right now.
+
+  Here's the plan our contractor wrote up, and I want a sanity check before we build on
+  it:
+
+    "On page load the client calls eth_getLogs for the collection's Transfer event
+     from block 0 to latest, gets the full history back, and we compute the feed and
+     the holder ranking in the browser. It's all standard RPC, so any provider key
+     works and we don't need extra infrastructure."
+
+  Ethereum is around block 25,800,000 now. Walk me through what actually happens when
+  this ships: roughly how many RPC requests that one page load turns into and why (be
+  concrete about the number and what forces it), what specifically breaks first in
+  production, and what we should build instead so the feed and the holder panel load
+  quickly. If your alternative needs infrastructure we don't have yet, say so.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md establishes that a single provider''s eth_getLogs call cannot return the full 0-to-latest
+  range at once: public RPC providers cap each getLogs call by block span (commonly ~2K, up to ~10K blocks)
+  and/or by matched-result count (~10K logs), so the client is forced to paginate across the whole history.
+  It does NOT claim one call from block 0 to latest just works.'
+- It derives a concrete request/page count from a stated cap rather than answering with a vague 'a lot'
+  or 'it's slow' — either from the block-span cap and the height stated in the input (at ~25.8M that is
+  25,800,000 / ~2,000 ≈ 12,900 requests) or from the ~10K matched-log response cap and an estimated log
+  volume (e.g. a few million transfers / 10K ≈ hundreds of pages). Any figure that ties a real cap to
+  a real volume passes; a request count with no cap behind it does not.
+- It names what breaks first in production as a consequence of that scan — provider rate limits / 429s,
+  request timeouts, or blown compute-unit / credit budget on every page load — i.e. an O(n)-in-chain-length
+  scan that gets worse every block, not a one-time cost.
+- The recommended fix is an indexer that has already processed the collection's history and serves it
+  as a ready query — a subgraph (The Graph), Ponder, or a provider/NFT data API (Alchemy getNftsForContract
+  / getAssetTransfers, etc.) — so the page load becomes one indexed query instead of a historical block
+  scan. It explicitly acknowledges this is added infrastructure (an indexing service to run/deploy or
+  a third-party API), not just 'paginate harder' or 'use an archive node'.
+- 'The ''top holders right now'' panel is handled as current ownership, not as a historical scan: the
+  ranking is derived from the indexed dataset or from current-state ownership reads (e.g. ownerOf across
+  the collection), and it does NOT prescribe an archive node — current ownership is a current-state read,
+  while the historical feed is what needs the indexer.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: indexing-quiz-001
+  skill: skills/indexing

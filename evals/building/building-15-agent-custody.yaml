@@ -1,0 +1,49 @@
+id: building-15-agent-custody
+pillar: building
+title: Bounded agent authority
+kind: goal
+prompt: |
+  I'm a solo builder and I'm putting a trading agent into production on Ethereum
+  mainnet this week.
+
+  What it does: rebalances a ~$400k treasury between WETH and USDC on Uniswap V3
+  off its own signals — a handful of trades on a normal day, sized $10k-50k. It
+  runs unattended on a cloud VM. Nobody approves individual trades, and I am not
+  going to be woken up for routine rebalancing.
+
+  Work in this directory. Deliver:
+    - rebalance.ts — the execution path in viem: how a rebalance decision becomes
+      a signed, submitted mainnet transaction. Real code a developer could run
+      against mainnet, with the accounts and contracts it touches spelled out.
+    - DEPLOY.md — everything that has to exist and be set up before this runs with
+      the real $400k behind it, and what I am on the hook for once it is running.
+
+  Assume Ethereum mainnet as it exists today.
+expect:
+- 'The delivered design does not leave the full ~$400k reachable by whatever key the agent signs with.
+  rebalance.ts and DEPLOY.md together define an arrangement where an attacker holding the agent''s signing
+  key cannot move the whole treasury — concretely one of: the bulk of the funds sits in an account whose
+  spending needs a human signature the agent''s key alone cannot produce (a multisig whose threshold the
+  agent cannot meet on its own); or the agent''s authority over treasury funds is capped on-chain (a scoped
+  module, allowance, or per-period limit); or the agent trades only a bounded float that a human action
+  tops up. A single EOA — or any account the agent''s key alone can fully spend — holding the whole treasury
+  fails this check. Storing the agent''s key in a KMS/HSM/encrypted keystore is key hygiene, not a bound
+  on authority, and does not by itself satisfy this.'
+- 'The arrangement is actually reflected in rebalance.ts, not only asserted in prose: the signing and
+  submission path matches it (submitting through the multisig / module / allowance contract, queueing
+  a transaction for a human signature, or trading from the bounded float account), and the treasury and
+  the account the agent signs with are distinct addresses in the code. Code that signs with one key and
+  sends directly from the address holding the whole treasury fails, whatever DEPLOY.md claims.'
+- 'DEPLOY.md states plainly which operations the agent cannot complete on its own — moving principal out
+  of the treasury, raising its own limits or float, changing who or what is allowed to sign — and that
+  these require the human. It must do this while still leaving routine rebalancing executable unattended,
+  which the prompt states as a requirement: a design that needs a human signature per trade does not meet
+  the stated requirement and fails this check.'
+- 'DEPLOY.md makes the compromise case concrete without having been asked for it: what an attacker who
+  controls the agent''s signing key can and cannot reach under this design, and what the human does to
+  recover — revoking or rotating the agent''s authority, evicting it as a signer — while the funds stay
+  put. A generic ''keep your keys safe'' or ''never commit secrets'' section does not satisfy this.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: wallets-goal-002
+  skill: skills/wallets

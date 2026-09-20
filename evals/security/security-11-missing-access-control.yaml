@@ -1,0 +1,19 @@
+id: security-11-missing-access-control
+pillar: security
+title: Missing access control
+kind: quiz
+prompt: |
+  A deployed contract that holds user funds exposes a function `emergencyWithdraw()` marked `external` with no modifiers; its body transfers the contract's entire token balance to `msg.sender`. Anyone who calls it receives all the funds. What vulnerability class is this?
+  End your reply with a line of the form "Answer: <short answer>".
+grader:
+  type: regex
+  pattern: access[\s_-]?control|unprotected|unrestricted|unauthoriz
+reference: 'Answer: missing access control (unprotected privileged function)'
+source_quote: |
+  Every state-changing function needs explicit access control. "Who should be able to call this?" is the first question.
+
+  // ❌ WRONG — anyone can drain the contract
+source:
+  repo: clawdbotatg/eth-evals
+  task: security-k-07
+  skill: security

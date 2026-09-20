@@ -1,0 +1,17 @@
+id: concepts-17-forced-inclusion
+pillar: concepts
+title: L2 exit and forced inclusion
+kind: quiz
+prompt: |
+  A dapp deploys on an L2 with a centralized sequencer. Before claiming users can escape sequencer censorship by forcing a transaction through L1, which website does ecosystem guidance say to check for that specific chain's forced-inclusion and sequencer trust assumptions?
+  End your reply with a line of the form "Answer: <website>".
+grader:
+  type: regex
+  pattern: l2\s*beat
+reference: 'Answer: l2beat.com'
+source_quote: |
+  exiting an L2/bridge path back to Ethereum L1 where the L2 supports forced inclusion (verify the specific chain's forced-inclusion support on [l2beat.com](https://l2beat.com))
+source:
+  repo: clawdbotatg/eth-evals
+  task: crops-k-11
+  skill: crops

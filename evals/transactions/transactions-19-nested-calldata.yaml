@@ -1,0 +1,24 @@
+id: transactions-19-nested-calldata
+pillar: transactions
+title: Nested calldata
+kind: quiz
+summary: A multicall wrapping a transfer. Decode it to the bottom.
+prompt: |
+  A router exposes `multicall(bytes[] data)` (selector 0xac9650d8); each element is calldata forwarded to a USDC-like token with `transfer(address,uint256)` (selector 0xa9059cbb). This calldata was sent to the router:
+
+  0xac9650d80000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000000000000000000000000000000000000000dead0000000000000000000000000000000000000000000000000000000000bebc2000000000000000000000000000000000000000000000000000000000
+
+  Decode it to the innermost call. Reply with JSON only: {"function": "<inner function name>", "to": "<recipient address>", "amount": <raw integer amount>}
+grader:
+  type: json
+  expect:
+    function: transfer
+    to: '0x000000000000000000000000000000000000dEaD'
+    amount: 12500000
+reference: '{"function": "transfer", "to": "0x000000000000000000000000000000000000dEaD", "amount": 12500000}'
+checks:
+  must_fail:
+  - '{"function": "transfer", "to": "0x000000000000000000000000000000000000dEaD", "amount": 125000000}'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-19-nested-calldata

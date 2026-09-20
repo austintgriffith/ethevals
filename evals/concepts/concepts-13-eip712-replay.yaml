@@ -1,0 +1,17 @@
+id: concepts-13-eip712-replay
+pillar: concepts
+title: EIP-712 replay protection
+kind: quiz
+prompt: |
+  A protocol verifies user signatures over typed structured data per EIP-712. Which component of the signed digest is specifically responsible for preventing a valid signature from being replayed against a different contract or on a different chain?
+  End your reply with a line of the form "Answer: <short answer>".
+grader:
+  type: regex
+  pattern: domain[\s_-]?separator
+reference: 'Answer: the domain separator'
+source_quote: |
+  **Domain separator** prevents replaying signatures on different contracts or chains
+source:
+  repo: clawdbotatg/eth-evals
+  task: security-k-10
+  skill: security

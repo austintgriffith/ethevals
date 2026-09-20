@@ -1,0 +1,25 @@
+id: concepts-02-walkaway-test
+pillar: concepts
+title: The walkaway test
+kind: quiz
+prompt: |
+  A DeFi protocol is fully audited and its incentives look healthy, but advancing each epoch requires the founding team to trigger the next phase from an admin account. Apply the design test "Could this run forever with no team behind it?" (the walkaway test). Does this protocol pass, and what kind of system is it?
+  A) Fails — it is a service, not a hyperstructure: it dies when the team stops operating it, and the admin is a single point of failure
+  B) Passes — admin actions are cheap, so any team could take over
+  C) Passes — audits guarantee it will keep running regardless of the team
+  D) Fails — but only because epoch transitions cost gas that the team must subsidize
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: A
+  - type: regex
+    pattern: ^\(?A\b
+reference: 'Answer: A'
+source_quote: |
+  When you're designing a system, ask: "Could this run forever with no team behind it?" - If yes → you've built a hyperstructure. The incentives sustain it. - If no → you've built a service. It dies when the team stops operating it. [...] ❌ "An admin will manually trigger the next phase" → What if the admin disappears?
+source:
+  repo: clawdbotatg/eth-evals
+  task: cryptoecon-k-02
+  skill: concepts

@@ -1,0 +1,65 @@
+id: security-09-uups-upgrade
+pillar: security
+title: The upgrade that succeeded
+kind: quiz
+prompt: |
+  Post-mortem on our staking protocol — a UUPS-upgradeable contract on Ethereum
+  mainnet. We upgraded the implementation from V1 to V2 yesterday. The upgrade
+  transaction succeeded, the proxy now points at V2, and every function call
+  still executes without reverting — but the values coming back are wrong.
+
+  V1 declared its state, in this order:
+
+    uint256 public totalDeposited;  // held 2,000,000 USDC = 2_000_000_000000 base units
+    address public treasury;        // held 0xC0FFEE0000000000000000000000000000000000
+    uint256 public feeBps;          // held 500
+
+  V2 is V1 plus one feature — a reward index. The new source declares, in order:
+
+    uint256 public rewardIndex;     // new in V2
+    uint256 public totalDeposited;
+    address public treasury;
+    uint256 public feeBps;
+
+  We added no re-initializer, and the upgrade never rewrote any existing value.
+
+  Since the upgrade, reading the proxy returns:
+
+    rewardIndex()    -> 2000000000000        (we have never set this)
+    totalDeposited() -> a huge number that, printed in hex, is exactly our
+                        old treasury address
+    treasury()       -> 0x00000000000000000000000000000000000001F4
+    feeBps()         -> 0
+
+  The proxy admin is unchanged, the implementation address is the V2 we
+  deployed, and no call reverts. Explain why every value reads shifted like
+  this, whether our deposit data is gone, and what we change so the V2 upgrade
+  is safe — we still need rewardIndex in V2.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md diagnoses a storage-layout collision caused by inserting a new variable ahead of the existing
+  ones: because the proxy keeps V1''s storage and V2 assigns slots by declaration order, putting rewardIndex
+  first shifted every existing variable down one slot, so each getter now reads its former neighbour''s
+  slot — rewardIndex reads slot 0 (old totalDeposited, 2,000,000 USDC = 2000000000000), totalDeposited
+  reads slot 1 (the old treasury address, which is why it prints as a huge number equal to that address
+  in hex), treasury reads slot 2 (old feeBps 500 = 0x1F4), and feeBps reads the never-written slot 3 (0).
+  It does NOT pin the cause on a missing or failed initializer, a bad re-initializer value, the wrong
+  implementation address, a proxy-admin misconfiguration, or data lost/corrupted during the upgrade.'
+- 'It states the rule the upgrade broke: an upgradeable contract''s storage layout is append-only — new
+  state variables may only be added AFTER all existing ones, never inserted before them or reordered —
+  because the proxy preserves storage across upgrades and slots are fixed by declaration order.'
+- 'It concludes the deposit data is NOT lost: the original values still sit untouched in their original
+  slots (0, 1, 2) and are only being read through a mismatched layout, so no funds or state were destroyed.
+  It FAILS if it declares the deposits unrecoverable, or if its primary remedy is migrating to a brand-new
+  proxy.'
+- 'The fix restores the V1 slot order and appends the new variable: declare rewardIndex AFTER feeBps (preserving
+  slots 0-2 for totalDeposited/treasury/feeBps) and ship that as the corrected implementation, which makes
+  every read correct again because the physical slots never moved. It FAILS if the fix reorders or inserts
+  again, or if the primary remedy is manually overwriting each variable. Naming storage gaps or ERC-7201
+  namespaced storage (or an OZ storage-layout / upgrade-safety check) as forward-looking prevention is
+  a plus, not a substitute for the append-ordered fix.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: security-quiz-006
+  skill: skills/security

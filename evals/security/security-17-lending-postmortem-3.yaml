@@ -1,0 +1,65 @@
+id: security-17-lending-postmortem-3
+pillar: security
+title: 'Lending post-mortem: the loop'
+kind: quiz
+prompt: |
+  Support ticket I cannot close, and I need to know what to tell the user.
+
+  Our lending market lets a relayer submit a borrow that the borrower
+  authorised off-chain, so borrowers never need gas:
+
+    bytes32 constant BORROW_TYPEHASH = keccak256("Borrow(address borrower,uint256 amount)");
+
+    constructor(...) {
+        DOMAIN_SEPARATOR = keccak256(abi.encode(
+            keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+            keccak256("ArbiLend"),
+            keccak256("1"),
+            block.chainid,
+            address(this)
+        ));
+    }
+
+    function borrowWithSig(address borrower, uint256 amount, uint8 v, bytes32 r, bytes32 s) external {
+        bytes32 structHash = keccak256(abi.encode(BORROW_TYPEHASH, borrower, amount));
+        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", DOMAIN_SEPARATOR, structHash));
+        require(ecrecover(digest, v, r, s) == borrower, "bad sig");
+        _borrow(borrower, amount);
+    }
+
+  The user signed one borrow, 5,000 USDC, in March. They repaid it in full in
+  April and have signed nothing since. In June they woke up to a fresh 5,000
+  USDC debt against their collateral, opened while they were on a flight they
+  can produce a boarding pass for. The (v, r, s) in the June transaction's
+  calldata is byte-identical to the one from March. Our relayer operator says
+  they did not send it, and the June transaction came from an address none of
+  us recognise.
+
+  The user's position is that they only ever authorised one borrow, and the
+  verification looks right to me — the recovered address is genuinely theirs,
+  and no key was compromised on either side.
+
+  Explain how the June borrow was possible, what else this same construction
+  exposes us to that has not bitten us yet, and exactly what we ship to fix it.
+
+  Write your answer to answer.md in this directory.
+expect:
+- 'answer.md identifies the mechanism as signature replay: the signed struct carries no nonce and no expiry,
+  and the contract records nothing about signatures it has already honoured, so the March authorisation
+  stays valid forever and anyone who read it out of the March transaction''s calldata can resubmit it.
+  It attributes the June borrow to that, not to a compromised key, a malicious relayer, or a flaw in ecrecover.'
+- The prescribed fix includes BOTH a per-signer nonce that is part of the signed struct and is incremented
+  (or a mapping of consumed digests) AND a deadline / expiry carried in the signed struct and checked
+  on-chain. Adding the typehash fields is part of the fix — a nonce checked on-chain but not signed over
+  does not pass.
+- 'answer.md flags the DOMAIN_SEPARATOR being computed once in the constructor and cached: it does not
+  track block.chainid, so after a chain split every signature stays valid on both chains. The fix given
+  is to rebuild the separator when block.chainid differs from the value it was built with (the OpenZeppelin
+  EIP-712 pattern).'
+- answer.md does NOT pin the June borrow on signature malleability, a missing zero-address check on ecrecover,
+  or the relayer being unauthenticated. Those may appear as secondary hardening; presented as the cause
+  of a byte-identical resubmission, they fail this check.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: audit-quiz-003
+  skill: skills/audit

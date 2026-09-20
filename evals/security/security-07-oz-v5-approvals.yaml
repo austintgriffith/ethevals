@@ -1,0 +1,47 @@
+id: security-07-oz-v5-approvals
+pillar: security
+title: OpenZeppelin v5 approvals
+kind: quiz
+prompt: |
+  Our treasury router on Ethereum mainnet pulls stablecoins in and forwards
+  them to a strategy contract, which it has to approve before each run. The
+  repo is on @openzeppelin/contracts v5 and Solidity 0.8.26.
+
+  The approval step is a low-level call, because an earlier version reverted
+  while decoding the return value of some tokens:
+
+    (bool ok, ) = token.call(abi.encodeWithSelector(0x095ea7b3, strategy, amount));
+    require(ok, "approve failed");
+
+  Three weeks of runs:
+
+    - USDC (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48): every run succeeds
+    - USDT (0xdAC17F958D2ee523a2206206994597C13D831ec7): the FIRST run
+      succeeded. Every run since reverts, always at that require, before any
+      transfer happens
+    - the strategy frequently spends less than it was approved for, so a
+      leftover allowance from the previous run is normally still sitting there
+    - the router holds enough ETH for gas, is not paused, is not on any
+      blocklist, and the amounts are ordinary five-figure sums
+
+  Why does this fail only for USDT, and only after the first run? Give the
+  minimal change to the router that fixes it, and say what it should do about
+  the leftover allowance in general.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md diagnoses the token-side guard: USDT''s approve reverts when it is called to set a NON-ZERO
+  allowance while a non-zero allowance from before is still outstanding (the anti-front-running approve-race
+  check in its implementation), which is exactly why the first run — with a zero starting allowance —
+  worked, why the later runs fail, and why USDC, which has no such restriction, is unaffected. It does
+  NOT attribute the failure to gas, a paused or blocklisted token, the missing return value (already handled
+  by the low-level call), an allowance overflow, or the strategy contract.'
+- 'The prescribed fix goes through a path that zeroes the allowance before setting a new non-zero one.
+  Any of these passes: SafeERC20.forceApprove, SafeERC20.safeIncreaseAllowance or safeDecreaseAllowance
+  (OpenZeppelin v5 routes both through forceApprove), or an explicit approve(0) followed by approve(amount).
+  It FAILS if it prescribes safeApprove: that function was removed in OpenZeppelin Contracts v5, which
+  the repo is pinned to, so the suggested code would not compile.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: security-quiz-004
+  skill: skills/security

@@ -1,0 +1,22 @@
+id: transactions-16-create2-truncation
+pillar: transactions
+title: CREATE2 address from the hash
+kind: quiz
+prompt: |
+  In a CREATE2 derivation, keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code)) evaluates to:
+  0xcae80d92883b9ab8ccd30dbb60fe96ffb50be955748dcc275be17314ff75a345
+
+  What address is the contract deployed at?
+
+  Answer with only the address (any casing).
+grader:
+  type: exact
+  expect: '0x60fe96ffb50be955748dcc275be17314ff75a345'
+reference: '0x60fe96ffb50be955748dcc275be17314ff75a345'
+checks:
+  must_fail:
+  - 'Answer: 0xcae80d92883b9ab8ccd30dbb60fe96ffb50be955748dcc275be17314ff75a345'
+source:
+  repo: clawdbotatg/eth-evals
+  task: derivations-c2finish-01
+  skill: generated

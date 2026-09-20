@@ -1,0 +1,32 @@
+id: building-06-ens-input
+pillar: building
+title: ENS in address inputs
+kind: quiz
+prompt: |
+  An Ethereum React dApp with wagmi v2 and viem configured. A user filed
+  a bug: "I pasted my friend's name
+  vitalik.eth into the transfer form and the Send button just stays greyed
+  out. No error, nothing." The recipient field is wired like this:
+
+      const isValid = /^0x[a-fA-F0-9]{40}$/.test(input.trim());
+      ...
+      <input value={input} onChange={e => setInput(e.target.value)} />
+      <button disabled={!isValid} onClick={send}>Send</button>
+
+  Explain exactly why the user is stuck, describe step by step what a
+  production recipient field should have done with that paste (the
+  mechanism — the resolved hex itself is not the point), and say what you
+  would replace this input with in this codebase. Write your answer to
+  answer.md in this directory.
+expect:
+- 'answer.md reasons from the given regex: an ENS name has no 0x-hex form, so isValid stays false and
+  the button silently stays disabled with no feedback to the user.'
+- 'The production behavior described is ENS resolution: detect a name, resolve it onchain to an address,
+  validate and use the resolved address while showing the user what it resolved to — plus an inline reason
+  whenever input is rejected.'
+- The replacement is a dedicated address input component with built-in ENS handling (an AddressInput-style
+  component, own or from a library), not a raw text field guarded by a regex.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: frontend-ux-quiz-005
+  skill: skills/frontend-ux

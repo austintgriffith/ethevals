@@ -1,0 +1,29 @@
+id: transactions-03-decode-calldata
+pillar: transactions
+title: Decode calldata
+kind: quiz
+prompt: |
+  A contract has these functions:
+  - `setOperatorFor(uint256,uint256,address)` — selector 0xd117a0cd
+  - `stake(uint256)` — selector 0xa694fc3a
+  - `mintBatchV2(address)` — selector 0xe3ebfa15
+
+  This calldata is sent to it:
+  0xd117a0cd00000000000000000000000000000000000000000000000000000000172af669000000000000000000000000000000000000000000000000000000003aebb196000000000000000000000000d0ae540d06750347741abcf7db1e59b3313b5eea
+
+  Which function is being called, and with what arguments?
+
+  Reply with JSON only: {"function": "<name>", "args": [...]} — addresses as 0x strings, uints as numbers, bools as true/false.
+grader:
+  type: json
+  expect:
+    function: setOperatorFor
+    args:
+    - 388691561
+    - 988524950
+    - '0xd0ae540d06750347741abcf7db1e59b3313b5eea'
+reference: '{"function": "setOperatorFor", "args": [388691561, 988524950, "0xd0ae540d06750347741abcf7db1e59b3313b5eea"]}'
+source:
+  repo: clawdbotatg/eth-evals
+  task: calldata-decgiven-01
+  skill: generated

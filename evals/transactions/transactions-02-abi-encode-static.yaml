@@ -1,0 +1,17 @@
+id: transactions-02-abi-encode-static
+pillar: transactions
+title: ABI-encode a static call
+kind: quiz
+prompt: |
+  The Solidity function `updateOracleV2(address,bool,uint256)` has 4-byte selector 0xc13456f7.
+  ABI-encode a call to it with arguments: address = 0xb7ee24b258d02c057ad8ba41f9bd707c87baba63, bool = true, uint256 = 72790892.
+
+  Answer with only the full 0x-prefixed calldata hex string.
+grader:
+  type: exact
+  expect: '0xc13456f7000000000000000000000000b7ee24b258d02c057ad8ba41f9bd707c87baba630000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000456b36c'
+reference: '0xc13456f7000000000000000000000000b7ee24b258d02c057ad8ba41f9bd707c87baba630000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000456b36c'
+source:
+  repo: clawdbotatg/eth-evals
+  task: calldata-encgiven-01
+  skill: generated

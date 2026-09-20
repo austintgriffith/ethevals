@@ -1,0 +1,57 @@
+id: security-04-vault-inflation
+pillar: security
+title: Vault inflation attack
+kind: quiz
+prompt: |
+  Our USDC vault went live on Ethereum mainnet last night and a depositor has
+  lost their money. Support has the on-chain sequence from the explorer:
+
+    09:12  0xA1..  deposit(1)              — one unit, i.e. 0.000001 USDC
+    09:12  0xA1..  receives 1 share        — vault share supply is now 1
+    09:13  0xA1..  ERC-20 transfer of 20,000 USDC straight to the vault address
+                   (a plain token transfer, not a call into our contract)
+    09:41  0xB2..  deposit(15,000 USDC)    — transaction SUCCEEDS
+    09:41  0xB2..  receives 0 shares
+    09:44  0xA1..  redeems its 1 share     — receives 35,000.000001 USDC
+
+  0xB2's transaction did not revert. The USDC left their wallet, the vault
+  holds it, and their share balance reads zero. 0xA1 walked away with all of
+  it and the vault is now empty.
+
+  How the vault mints: a deposit mints
+  `assets * totalShares / (USDC the vault currently holds)`, and when the share
+  supply is zero the first depositor gets one share per unit deposited.
+  Redeeming burns shares and pays out the same pro-rata slice. Nothing else in
+  the contract touched the balances — no admin function ran, and the vault made
+  no external calls other than the USDC transfers themselves.
+
+  Explain exactly how 0xB2 ended up with zero shares while their deposit
+  succeeded, whether this is a bug in our contract or a mistake by the
+  depositor, and what change we ship so it cannot happen again. We want to stay
+  ERC-4626 compatible.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md diagnoses the mechanism: the 20,000 USDC sent directly to the vault raised the vault''s asset
+  balance without minting any shares, so with a share supply of 1 the next depositor''s share amount,
+  computed as assets * totalShares / vaultAssets, rounded DOWN to zero — 15,000 USDC bought less than
+  one whole share — and their assets were absorbed by the single share the first depositor held. Describing
+  that truncation as a rounding-to-zero bug is part of the correct answer, not a miss. It FAILS only if
+  the loss is pinned on something else: the depositor, a USDC transfer fee, a paused or blocklisted token,
+  reentrancy, or an arithmetic typo unrelated to the direct transfer.'
+- It calls this a bug in the vault (a first-depositor / donation share-price manipulation that any attacker
+  can reproduce), not acceptable behavior and not a user error.
+- 'The prescribed fix is structural — it makes the manipulation uneconomical or impossible rather than
+  only protecting one transaction. Any of these passes: a virtual shares-and-assets offset in the conversion
+  math, adopting OpenZeppelin''s ERC4626 (whose conversion carries virtual assets and shares by default;
+  raising _decimalsOffset on top is a strengthening, not a requirement), seeding the vault with a dead
+  first deposit whose shares are burned to a non-recoverable address, or tracking deposited assets in
+  internal accounting instead of reading the raw token balance.'
+- 'It does NOT prescribe as the fix: preventing or blocking direct ERC-20 transfers to the vault (impossible
+  for a plain token transfer), sweeping donations to the owner, or a minimum-shares-out / slippage check
+  on deposit alone. A minimum-shares-out check may be mentioned as an extra guard for depositors, but
+  on its own it only makes the victim''s transaction revert and leaves the vault manipulable.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: security-quiz-001
+  skill: skills/security

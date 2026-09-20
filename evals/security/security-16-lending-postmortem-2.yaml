@@ -1,0 +1,64 @@
+id: security-16-lending-postmortem-2
+pillar: security
+title: 'Lending post-mortem: the clock'
+kind: quiz
+prompt: |
+  We run the same fixed-rate borrowing contract on Ethereum mainnet and on
+  Arbitrum One. Identical bytecode, identical constructor arguments, deployed a
+  day apart. The rate is 4.00% per year. Interest is applied by a public
+  accrueInterest() that anyone can call, and the accounting is:
+
+    uint256 constant SECONDS_PER_BLOCK = 12;
+
+    function accrueInterest() public {
+        uint256 blocksElapsed = block.number - lastAccrualBlock;
+        if (blocksElapsed == 0) return;
+        uint256 secondsElapsed = blocksElapsed * SECONDS_PER_BLOCK;
+        index += index * rateBps * secondsElapsed / (10_000 * 365 days);
+        lastAccrualBlock = block.number;
+    }
+
+  Finance reconciled July across both deployments. On the rate alone, a
+  borrower holding 1,000,000 USDC of debt for all 31 days should owe 3,397 USDC
+  of interest. On mainnet that borrower was charged 3,391. On Arbitrum, same
+  debt, same 31 days, the charge came out at 3,391 as well — the two
+  deployments agree with each other to within a couple of dollars.
+
+  I had braced for the Arbitrum figure to be nonsense. That chain produces
+  blocks roughly every 250 milliseconds, so by my arithmetic this contract
+  should have been charging tens of times too much interest there, and it
+  plainly is not.
+
+  Two things I need before we sign off on deploying this same contract to Base
+  next month:
+
+    1. Explain the July reconciliation. Why did Arbitrum land on the same
+       number as mainnet, and why are both of them a shade under the 3,397 the
+       rate implies?
+    2. Tell me what this code will do on Base, with the arithmetic worked
+       through on the same 1,000,000 USDC over 31 days.
+
+  Then tell me what you would change, if anything.
+
+  Write your answer to answer.md in this directory.
+expect:
+- 'answer.md explains the Arbitrum result correctly: block.number inside a contract on Arbitrum One does
+  not count L2 blocks, it reports (an approximation of) the current Ethereum L1 block number, so a 12-seconds-per-block
+  assumption happens to line up with wall-clock time there. An answer that has Arbitrum''s block.number
+  counting 250ms L2 blocks, or that explains the match by anything other than block.number tracking L1,
+  fails this check.'
+- 'answer.md works out Base concretely and gets the direction and the order of magnitude right: on Base,
+  block.number is the L2 block number, so with the chain''s block time (state whichever figure the answer
+  uses — roughly 1-2 seconds) each block is charged as 12 seconds and interest is massively OVER-accrued
+  — around 6x at a 2-second block time, around 12x at 1 second — turning ~3,400 USDC of monthly interest
+  into tens of thousands. The stated block time, the multiplier and the resulting figure must be arithmetically
+  consistent with each other; the exact block time chosen is not what is graded.'
+- The prescribed fix is to stop using block.number as a clock and accrue on block.timestamp instead. It
+  must be stated explicitly.
+- answer.md does NOT offer a per-chain SECONDS_PER_BLOCK constant (or a per-chain deployment config of
+  the same shape) as the remedy, and does not conclude that the mainnet deployment is the broken one.
+  Mentioning a per-chain constant only to reject it is fine.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: audit-quiz-002
+  skill: skills/audit

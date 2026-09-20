@@ -1,0 +1,29 @@
+id: concepts-05-fee-switch-fork
+pillar: concepts
+title: The fee-switch fork
+kind: quiz
+prompt: |
+  A team forks a Uniswap-style AMM but changes one rule: 100% of swap fees go to a founder-controlled treasury instead of to liquidity providers. Trading works fine on day one. In the original design, the 0.3% swap fee paid to LPs drives the flywheel (more liquidity → less slippage → more traders → more fees → more liquidity). Which participant group defects from the fork, and with what result?
+  A) LPs — with no fee income there is no reason to deposit, so liquidity leaves, slippage worsens, and the flywheel never starts
+  B) Validators — they censor the fork's transactions because the fee routing is non-standard
+  C) Traders — they refuse to pay fees that don't go to LPs, so volume drops but liquidity is unaffected
+  D) The founders — treasury accumulation forces them to become the market maker of last resort
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: A
+  - type: regex
+    pattern: ^\(?A\b
+reference: 'Answer: A'
+source_quote: |
+  DEX needs liquidity to function
+  → LPs deposit tokens into pools
+  → Every swap pays 0.3% fee to LPs
+  → More liquidity = less slippage = more traders = more fees = more liquidity
+  → Self-reinforcing flywheel — nobody manages it
+source:
+  repo: clawdbotatg/eth-evals
+  task: cryptoecon-k-05
+  skill: concepts

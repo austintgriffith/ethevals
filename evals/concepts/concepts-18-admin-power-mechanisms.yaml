@@ -1,0 +1,20 @@
+id: concepts-18-admin-power-mechanisms
+pillar: concepts
+title: Surviving admin powers
+kind: quiz
+prompt: |
+  A review finds a contract where a single `onlyOwner` key can pause, upgrade, and seize funds, and the team insists some admin power must survive launch. Per CROPS-style guidance, name the TWO onchain mechanisms that any surviving admin power should be placed behind.
+  End your reply with a line of the form "Answer: <mechanism 1> and <mechanism 2>".
+grader:
+  type: regex_all
+  'on': full
+  patterns:
+  - multi.?sig|\bsafe\b
+  - time.?lock
+reference: 'Answer: a multisig (Safe) and a timelock'
+source_quote: |
+  Fix: minimize powers, use a multisig (Safe; ≥2-of-3) plus timelock for any admin power that survives launch, make powers explicit, and remove or expire them when possible.
+source:
+  repo: clawdbotatg/eth-evals
+  task: crops-k-05
+  skill: crops

@@ -1,0 +1,17 @@
+id: concepts-04-hyperstructures
+pillar: concepts
+title: Hyperstructures
+kind: quiz
+prompt: |
+  The Ethereum community has a specific term for an unstoppable protocol that runs forever with no operator, no company, no server, and no admin key — sustained purely by its own incentives (Uniswap is the canonical example). What is the term?
+  End your reply with a line of the form "Answer: <term>".
+grader:
+  type: regex
+  pattern: hyper[\s-]*structure
+reference: 'Answer: a hyperstructure'
+source_quote: |
+  This is a **hyperstructure** — an unstoppable protocol that runs forever, with no operator, no company, no server, no admin key.
+source:
+  repo: clawdbotatg/eth-evals
+  task: concepts-k-09
+  skill: concepts

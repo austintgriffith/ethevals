@@ -1,0 +1,21 @@
+id: security-18-decimal-scale-mismatch
+pillar: security
+title: Decimal scale mismatch
+kind: quiz
+summary: WETH at 18 decimals against USDC at 6. Where the 10^12 goes missing.
+prompt: |
+  A lending market takes WETH (18 decimals) as collateral and lends USDC (6 decimals). It values collateral as `collateralWei * ethUsdPrice / 1e18`, giving a USD value with 18 decimals, and it allows a borrow when `debtRaw <= collateralValue * 70 / 100`, where `debtRaw` is the raw USDC amount the borrower is requesting. By what factor does this check overstate how much USDC a borrower may take, compared to a correct check?
+  End your reply with a line of the form "Answer: <integer, plain decimal>".
+grader:
+  type: bigint
+  expect: 1000000000000
+reference: 'Answer: 1000000000000'
+checks:
+  must_pass:
+  - 'Answer: 1_000_000_000_000'
+  must_fail:
+  - 'Answer: 1000000'
+  - 'Answer: 1000000000000000000'
+source:
+  repo: austintgriffith/ethevals
+  task: security-18-decimal-scale-mismatch

@@ -1,0 +1,70 @@
+{
+ "generated": "2026-09-20T21:05:29+00:00",
+ "manifest": "d79092755fae",
+ "runs": [
+  {
+   "name": "fable-5.1",
+   "model": "fable",
+   "harness": "claude code",
+   "skill": null,
+   "started": "2026-09-20T21:03:46+00:00",
+   "manifest": "9d5e88084860",
+   "pillars": {
+    "concepts": {
+     "pass": 19,
+     "total": 20
+    },
+    "transactions": {
+     "pass": 17,
+     "total": 20
+    },
+    "building": {
+     "pass": 0,
+     "total": 20
+    },
+    "security": {
+     "pass": 0,
+     "total": 20
+    }
+   },
+   "total": {
+    "pass": 36,
+    "total": 80
+   },
+   "file": "results/fable-5.1.json",
+   "evals_run": 40
+  },
+  {
+   "name": "haiku-4.5",
+   "model": "haiku",
+   "harness": "claude code",
+   "skill": null,
+   "started": "2026-09-20T21:03:44+00:00",
+   "manifest": "9d5e88084860",
+   "pillars": {
+    "concepts": {
+     "pass": 17,
+     "total": 20
+    },
+    "transactions": {
+     "pass": 1,
+     "total": 20
+    },
+    "building": {
+     "pass": 0,
+     "total": 20
+    },
+    "security": {
+     "pass": 0,
+     "total": 20
+    }
+   },
+   "total": {
+    "pass": 18,
+    "total": 80
+   },
+   "file": "results/haiku-4.5.json",
+   "evals_run": 23
+  }
+ ]
+}

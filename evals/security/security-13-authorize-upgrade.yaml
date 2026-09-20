@@ -1,0 +1,17 @@
+id: security-13-authorize-upgrade
+pillar: security
+title: UUPS authorization
+kind: quiz
+prompt: |
+  You are writing an upgradeable implementation contract that inherits OpenZeppelin's UUPSUpgradeable. There is one internal function you must override (typically restricted with an owner check) to control who may perform upgrades — getting it wrong can leave the contract locked. Name that function.
+  End your reply with a line of the form "Answer: <function name>".
+grader:
+  type: regex
+  pattern: authorize[\s_]?upgrade
+reference: 'Answer: _authorizeUpgrade'
+source_quote: |
+  | Risk | Forgetting `_authorizeUpgrade` locks the contract | More gas overhead |
+source:
+  repo: clawdbotatg/eth-evals
+  task: security-k-09
+  skill: security

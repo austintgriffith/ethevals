@@ -1,0 +1,19 @@
+id: transactions-07-bounded-approve
+pillar: transactions
+title: Bounded approve
+kind: quiz
+summary: Approve exactly 250 USDT to the router. Not max.
+prompt: |
+  Build the exact calldata to approve the Uniswap v3 SwapRouter (0xE592427A0AEce92De3Edee1F18E0157C05861564) to spend exactly 250 USDT (the mainnet token at 0xdAC17F958D2ee523a2206206994597C13D831ec7). Mind the token's decimals.
+  Answer with only the full 0x-prefixed calldata hex string on the last line, as: Answer: 0x...
+grader:
+  type: exact
+  expect: '0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564000000000000000000000000000000000000000000000000000000000ee6b280'
+reference: 'Answer: 0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564000000000000000000000000000000000000000000000000000000000ee6b280'
+checks:
+  must_fail:
+  - 'Answer: 0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c0586156400000000000000000000000000000000000000000000000d8d726b7177a80000'
+  - 'Answer: 0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-07-bounded-approve

@@ -1,0 +1,17 @@
+id: security-01-reentrancy
+pillar: security
+title: Reentrancy
+kind: quiz
+prompt: |
+  A Solidity withdraw function reads the caller's balance, sends that amount of ETH to the caller via a low-level call, and only after the call returns does it set the caller's balance to zero. An attacker's contract uses its receive function to call withdraw again before the first invocation finishes, draining the contract. What is the name of this vulnerability class?
+  End your reply with a line of the form "Answer: <short answer>".
+grader:
+  type: regex
+  pattern: re-?(entranc|entry)
+reference: 'Answer: reentrancy'
+source_quote: |
+  An external call can call back into your contract before the first call finishes. If you update state AFTER the external call, the attacker re-enters with stale state.
+source:
+  repo: clawdbotatg/eth-evals
+  task: security-k-01
+  skill: security

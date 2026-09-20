@@ -1,0 +1,25 @@
+id: concepts-07-crops-pillars
+pillar: concepts
+title: Which CROPS pillar
+kind: quiz
+prompt: |
+  A dapp's smart contracts are fully permissionless, but the only usable UI is hosted by one provider, which geofences users by IP and filters connecting wallet addresses against OFAC compliance lists. Which CROPS pillar does this setup most directly violate?
+  A) Open Source and Free
+  B) Censorship Resistance
+  C) Privacy
+  D) Security
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+source_quote: |
+  **Censorable frontend:** Contracts are permissionless, but the only usable UI is hosted by one provider that can take it down, geofence users by IP, or filter wallet addresses against OFAC and compliance lists.
+source:
+  repo: clawdbotatg/eth-evals
+  task: crops-k-04
+  skill: crops

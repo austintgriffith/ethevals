@@ -1,0 +1,23 @@
+id: building-12-pick-a-chain
+pillar: building
+title: Pick a chain with numbers
+kind: quiz
+prompt: |
+  I want to build an escrow service for freelance payments. Each job holds
+  somewhere between $2,000 and $50,000 until the work is delivered. Which
+  chain should I deploy on, and why?
+
+  Write your answer to answer.md in this directory. Show the numbers you used
+  and the reasoning behind the recommendation.
+expect:
+- answer.md gives a concrete chain recommendation with current per-transaction costs in numbers, not a
+  bare pick.
+- Ethereum mainnet is treated as a viable (or the recommended) home for high-value low-frequency escrow,
+  backed by current per-transaction costs in the cents range — it is not disqualified on gas-cost grounds
+  or quoted at dollars-to-tens-of-dollars per transaction.
+- Any cost figure uses a live-checked gas price in sub-1-gwei territory and a live-fetched ETH price,
+  not values quoted from memory.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: gas-quiz-001
+  skill: skills/gas

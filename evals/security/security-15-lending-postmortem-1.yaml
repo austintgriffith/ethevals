@@ -1,0 +1,58 @@
+id: security-15-lending-postmortem-1
+pillar: security
+title: 'Lending post-mortem: the sequencer'
+kind: quiz
+prompt: |
+  Post-mortem, and I am stuck on it.
+
+  We run a lending market on Arbitrum One. Collateral is wstETH, debt is USDC,
+  positions are liquidatable below 125% collateralisation.
+
+  Last Tuesday, from 09:14 to 12:40 UTC, our users could not reach the chain.
+  Transactions submitted from the app sat unconfirmed and the explorer showed
+  no new blocks for three and a half hours. Everywhere else trading carried on:
+  ETH fell 11% over that window on Binance and on mainnet DEXes.
+
+  At 12:41, in the first blocks after service came back, keeper bots liquidated
+  38 positions in one sweep. Every one of those borrowers had been trying to
+  add collateral since mid-morning and could not get a transaction through.
+
+  Here is the part I cannot explain. Before any price is used we already do
+  this:
+
+    (, int256 answer, , uint256 updatedAt, ) = feed.latestRoundData();
+    require(answer > 0, "bad price");
+    require(block.timestamp - updatedAt <= 3600, "stale price");
+
+  Our collateral feed's heartbeat is 86400 seconds, so our one-hour bound is far
+  tighter than the feed itself promises. I pulled the round data for all 38
+  liquidations: the check passed every time, and the answer we read had been
+  published seconds earlier and matched the real market price. The price was
+  not stale. The math was not wrong. Our liquidation logic did exactly what it
+  was written to do.
+
+  Explain how 38 users lost their positions to a price they had no way to react
+  to, when our freshness check was working correctly the whole time. Then tell
+  me precisely what we change, and where in the flow it goes.
+
+  Write your answer to answer.md in this directory.
+expect:
+- answer.md identifies the cause as the L2 itself being unavailable — the Arbitrum sequencer was down,
+  so users could not transact while the outside world repriced — and names the missing control as a sequencer-liveness
+  check, i.e. reading the Chainlink L2 Sequencer Uptime Feed (or equivalent) and refusing to price when
+  it reports the sequencer down.
+- 'answer.md requires a grace period after the sequencer comes back up — a defined window (an hour is
+  the conventional figure) during which liquidations are refused even though the sequencer is up and the
+  price is fresh — and gives the reason: borrowers need a chance to act before the market acts against
+  them. A fix that resumes liquidating the moment the sequencer is back does not pass.'
+- answer.md does NOT present the remedy as tightening or loosening the staleness bound, adding answeredInRound
+  / roundId checks, or switching to a TWAP or a different price source. It states that the existing freshness
+  check was not what failed. Any of those may appear as secondary hardening, but not as the fix for this
+  incident.
+- The fix is placed so that it gates liquidation (and anything else that uses the price against a user's
+  position) while leaving deposits, collateral top-ups and repayments open during the grace window — it
+  does not pause the whole market in a way that keeps borrowers from restoring their own health.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: audit-quiz-001
+  skill: skills/audit

@@ -1,0 +1,48 @@
+id: security-19-permissionless-listing
+pillar: security
+title: Permissionless token listing
+kind: goal
+prompt: |
+  We're building the onchain piece of a "save any token" product for Ethereum
+  mainnet. Anyone can spin up a vault for any ERC-20 — listing is
+  permissionless, whatever token someone proposes gets a vault. Depositors
+  receive a transferable receipt token representing their pro-rata claim on
+  that vault, so they can move it around or use it elsewhere. Yield arrives as
+  more of the same underlying token: a keeper bot periodically transfers tokens
+  into the vault, which lifts every holder's claim. Deposits and withdrawals
+  are open at any time, with no lockup.
+
+  Work in this directory:
+    - set up a foundry project and implement the contracts we would deploy
+    - the yield source is not the point — the keeper just sends tokens in;
+      assume that part already works
+    - make sure it compiles with forge build
+    - leave a NOTES.md covering how a depositor's claim is computed, and what
+      an operator has to get right when they list a token and run the keeper
+expect:
+- 'The share/claim math is protected against a first depositor manipulating the share price by transferring
+  tokens straight to the vault. Any of these passes: inheriting OpenZeppelin''s ERC4626, whose conversion
+  carries virtual assets and shares (with or without a raised _decimalsOffset), a hand-rolled virtual
+  offset, or a dead first deposit whose shares are burned to an unrecoverable address. Hand-rolled math
+  that mints assets * totalSupply / token.balanceOf(vault) with a 1:1 path for the first depositor and
+  no mitigation FAILS this check.'
+- 'The vault does not silently credit a depositor with tokens it never received. Any of these passes:
+  measuring the vault''s token balance before and after the incoming transfer and using the difference
+  for the accounting, or refusing a deposit (or a listing) whose received amount does not match the amount
+  sent. Crediting the caller''s requested amount with nothing in the code that detects the mismatch fails
+  — listing is permissionless, so fee-on-transfer tokens will be listed. A NOTES.md line calling such
+  tokens unsupported does not pass on its own if nothing in the code enforces it.'
+- Every token movement goes through a call that tolerates non-standard ERC-20s — OpenZeppelin's SafeERC20
+  (safeTransfer / safeTransferFrom) or an equivalent low-level call with an explicit success-and-returndata
+  check. A bare token.transfer(...) or token.transferFrom(...) whose return value is ignored or assumed
+  to be a bool fails this check.
+- 'Withdrawal follows checks-effects-interactions: the depositor''s shares are burned and the vault''s
+  accounting is updated BEFORE the token is transferred out. A reentrancy guard in addition is fine; a
+  guard wrapped around code that still transfers before updating state does not pass.'
+- NOTES.md explains how a depositor's claim is computed concretely enough to follow the arithmetic (the
+  conversion between shares and underlying, and what happens to the claim when the keeper sends yield
+  in), rather than describing it in general terms.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: security-goal-001
+  skill: skills/security

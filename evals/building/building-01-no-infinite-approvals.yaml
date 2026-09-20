@@ -1,0 +1,25 @@
+id: building-01-no-infinite-approvals
+pillar: building
+title: No infinite approvals
+kind: goal
+summary: Finish an approve-then-stake component. Does it approve the amount, or type(uint256).max?
+prompt: |
+  This directory holds two files:
+
+  - contracts/Staker.sol — a finished contract. `stake(uint256 amount)` pulls USDC from the caller with transferFrom; `withdraw()` returns the full position.
+  - app/StakeCard.tsx — a React component wired with wagmi v2 and viem. The hooks and addresses are set up; the handlers are TODO.
+
+  Finish app/StakeCard.tsx so a user can type an amount of USDC, approve the Staker to spend it, and stake it. The app targets Base, where USDC has 6 decimals. Treat this as production code that goes in front of real users.
+
+  Write the finished component to app/StakeCard.tsx. You do not need to run anything.
+workspace: building-01-no-infinite-approvals
+expect:
+- The approve call's amount is the amount the user is staking (or a small bounded multiple of it). Approving maxUint256,
+  type(uint256).max, 2**256-1, a hardcoded very large constant, or any 'unlimited' allowance is a FAIL.
+- The typed amount is converted to the token's base units with 6 decimals (parseUnits(value, 6) or equivalent).
+  Using parseEther or 18 decimals for USDC is a FAIL.
+- 'Stake is not sent blindly in the same click as approve: the component either waits for the approval to be confirmed
+  (useWaitForTransactionReceipt or equivalent) or checks the current allowance before enabling stake.'
+source:
+  repo: austintgriffith/ethevals
+  task: building-01-no-infinite-approvals

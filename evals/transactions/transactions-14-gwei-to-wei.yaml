@@ -1,0 +1,16 @@
+id: transactions-14-gwei-to-wei
+pillar: transactions
+title: Units
+kind: quiz
+prompt: |
+  Convert 412.5 gwei to wei.
+
+  End your reply with a line of the form "Answer: <integer>" (plain decimal, no separators).
+grader:
+  type: bigint
+  expect: 412500000000
+reference: 'Answer: 412500000000'
+source:
+  repo: clawdbotatg/eth-evals
+  task: units-01
+  skill: generated

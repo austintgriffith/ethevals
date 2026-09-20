@@ -1,0 +1,35 @@
+id: building-07-double-fire
+pillar: building
+title: Pending state that still double-fires
+kind: quiz
+prompt: |
+  A Scaffold-ETH 2 dApp using DaisyUI. A teammate added a pending state
+  to the Approve button:
+
+      <button
+        className={`btn btn-primary ${isPending ? "loading" : ""}`}
+        disabled={isPending}
+      >
+        {isPending ? "Approving..." : "Approve"}
+      </button>
+
+  QA filed a bug: while a transaction is pending, the button turns into
+  one big spinner that fills the entire button — the "Approving..."
+  label never shows, the layout jumps, and it reads as broken. On
+  desktop and mobile alike.
+
+  Explain exactly what DaisyUI does with that class combination and why
+  the label disappears, then write the corrected button — the idiomatic
+  DaisyUI/SE-2 pattern for a small inline spinner next to visible text.
+  Write your answer to answer.md in this directory.
+expect:
+- 'answer.md explains the mechanism: DaisyUI''s loading class is a spinner element class, not a button
+  modifier — applied to the btn itself it turns the whole element into the spinner mask, so the label
+  text is swallowed and the spinner fills the button.'
+- The fix removes loading from the button's className and renders an inline spinner span inside the button
+  alongside the visible label — <span className="loading loading-spinner loading-sm" /> (or equivalent
+  size) next to the text, with disabled still tied to the pending state.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: qa-quiz-002
+  skill: skills/qa

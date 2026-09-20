@@ -1,0 +1,58 @@
+id: building-20-existing-eoa-smart-account
+pillar: building
+title: Upgrade an existing EOA
+kind: quiz
+prompt: |
+  A team runs a consumer app whose users each already hold a funded EOA — the
+  same address they've used for a year, with an ENS name and onchain history tied
+  to it. The team wants each of those existing accounts to be able to:
+    - batch an ERC-20 approve and a swap into a single atomic transaction, and
+    - run custom auth logic (session keys) from that account,
+  while keeping the exact same address and private key. Migrating users to a
+  freshly deployed account at a new address is off the table — the address, its
+  ENS name, and its history all have to survive.
+
+  It's 2026 and this has to run on Ethereum mainnet today — not a testnet, not a
+  future roadmap item. Answer all of the following in answer.md. Explain the
+  reasoning behind each answer — the mechanism, the dates, what the account ends
+  up pointing at — but do not quote or name the files, pages, or documents you
+  consulted.
+
+  1. Is this possible on mainnet as of now, and what makes it possible? Name the
+     mechanism that lets an already-existing EOA execute contract code without
+     becoming a new account type, name the network upgrade that shipped it, and
+     give the date it went live.
+  2. Concretely, what does the user's account point at after they opt in, and how
+     does an approve+swap end up running atomically from their own address?
+  3. After the account runs one batched transaction this way, does it
+     automatically revert to a plain EOA, or does the new behavior stay in place?
+     State exactly what is required to change or remove it.
+  4. A teammate proposes instead deploying a fresh ERC-4337 smart-contract wallet
+     for each user and having them move their funds and ENS across to it. Explain
+     why that does not satisfy the stated constraint.
+expect:
+- answer.md identifies the mechanism as EIP-7702 (an EOA authorizing delegated smart-contract code without
+  migrating to a new account type). Concluding it is impossible without migrating, that a new ERC-4337
+  / smart-contract wallet must be deployed, or naming only account abstraction with no EIP-7702, all fail
+  this check — recognizing the standard unprompted is the point.
+- The answer states EIP-7702 is live on mainnet, shipped with the Pectra upgrade, active since May 2025
+  (naming the exact day, May 7, is not required). Calling it 'proposed', 'not yet live', 'testnet only',
+  or a future roadmap item fails, as does attributing it to the wrong upgrade (e.g. Dencun/Cancun) or
+  a wrong year.
+- 'The mechanism is described correctly: opting in sets a delegation designator on the EOA that points
+  at a smart-contract implementation address, authorized by a signature from the EOA''s own key, after
+  which calls to that same address execute the contract''s code — so the approve+swap batch runs atomically
+  from the user''s existing address. An answer where the code lives at a different address, or where the
+  EOA''s key does not sign the authorization, fails.'
+- The answer states the delegation persists — it does NOT auto-clear after one transaction. The designator
+  stays set until it is replaced by a later authorization or cleared (delegating to the zero address /
+  an authorization to 0x0). Claiming the account reverts to a plain EOA automatically after the transaction,
+  or that the delegation is single-transaction-only by spec, fails this check.
+- 'The ERC-4337-migration alternative is rejected for the right reason: a freshly deployed smart-contract
+  wallet lives at a NEW address, so the funds, ENS name, and history do not carry over, violating the
+  same-address/same-key constraint — whereas EIP-7702 upgrades the existing EOA in place. Endorsing the
+  migration, or rejecting it without identifying that the address changes, fails.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: standards-quiz-002
+  skill: skills/standards

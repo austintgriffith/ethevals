@@ -1,0 +1,21 @@
+id: building-13-l2-real-cost
+pillar: building
+title: Where the L2 fee goes
+kind: quiz
+prompt: |
+  A teammate estimated our Uniswap swap on Base at $0.0003 by pricing the
+  swap's execution gas over RPC. But the actual charge per swap showing up
+  in the wallet is roughly 10x that. Where is the rest of the money going,
+  and how can we make it cheaper?
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- answer.md explains the ~10x gap and gives at least one concrete way to reduce it.
+- The gap is identified as the L1 data-availability component — posting the batch to Ethereum as blobs
+  — i.e. an L2 fee = L2 execution + L1 data, with execution the minor share.
+- The explanation is not sequencer profit margin, network congestion, slippage, or a wrong per-swap gas
+  estimate.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: gas-quiz-002
+  skill: skills/gas

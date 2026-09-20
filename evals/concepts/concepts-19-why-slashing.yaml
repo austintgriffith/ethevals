@@ -1,0 +1,25 @@
+id: concepts-19-why-slashing
+pillar: concepts
+title: Why slashing exists
+kind: quiz
+prompt: |
+  Ethereum proof-of-stake requires validators to lock a deposit that can be destroyed (slashed) if they provably violate the rules, e.g. by signing two conflicting blocks. Why is a slashable bond required at all — what does it add that paying honest-behavior rewards alone cannot?
+  A) It funds the block rewards paid to other validators
+  B) It gives misbehavior a concrete, attributable cost: with only rewards, an attacker who signs conflicting messages has nothing at stake to lose, so attacks on finality would be nearly free
+  C) It compensates users whose transactions get censored
+  D) It exists purely to limit the validator set size to keep consensus messages small
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+source_quote: |
+  Canon (Casper FFG, Buterin & Griffith 2017): slashing conditions destroy the deposit of any validator who provably equivocates, giving 'accountable safety' — reverting a finalized block requires at least one-third of deposits to be provably slashed — whereas reward-only schemes suffer the nothing-at-stake problem, where signing conflicting histories costs an attacker nothing.
+source:
+  repo: clawdbotatg/eth-evals
+  task: cryptoecon-k-08
+  skill: canon

@@ -1,0 +1,55 @@
+id: security-06-fee-on-transfer-books
+pillar: security
+title: Books that do not close
+kind: quiz
+prompt: |
+  Our single-token staking pool on Ethereum mainnet has been live for three
+  weeks and the books do not close. What we can see:
+
+    - 1,250,000 TKN has been staked cumulatively since launch, and 250,000 TKN
+      has been unstaked
+    - summing stakedBalance[user] across every current staker: 1,000,000 TKN
+    - the pool contract's actual TKN balance: 975,000 TKN
+    - the early unstakers were all paid without the pool reverting; the ones
+      unstaking now are starting to revert with the token's insufficient-balance
+      error
+    - one user staked 10,000 TKN, the UI showed 10,000 staked, and when they
+      unstaked all 10,000 their wallet received 9,800 TKN
+
+  What the contract does, in full: `stake(amount)` calls
+  `token.transferFrom(msg.sender, address(this), amount)` and then sets
+  `stakedBalance[msg.sender] += amount`. `unstake(amount)` decrements
+  `stakedBalance[msg.sender]` and then calls `token.transfer(msg.sender,
+  amount)`. There is no rewards logic yet, no admin withdrawal function, and
+  the pool has never sent TKN anywhere except back to unstakers. TKN's total
+  supply has not been changed by anyone and no rebase has occurred.
+
+  Explain where the missing 25,000 TKN went and why the shortfall grows, then
+  give the change that makes the accounting correct — including what happens to
+  the stakers who cannot currently unstake.
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- answer.md identifies that TKN takes a cut on every transfer (a fee-on-transfer / transfer-tax / deflationary
+  token), so the pool receives LESS than the amount argument it credits — the derivation the numbers support
+  is roughly 2% (10,000 unstaked vs 9,800 delivered; a 25,000 shortfall against 1,250,000 cumulatively
+  staked). It does NOT explain the gap as a rebase, an admin drain, a reentrancy exploit, integer rounding,
+  or a mistake by users.
+- 'It explains why the shortfall is progressive and lands on the last unstakers: every stake over-credits
+  by the fee while the pool is debited the full requested amount on the way out, so the deficit accumulates
+  and the pool runs out of tokens before the last balances are paid.'
+- 'The fix credits what was actually received rather than what was requested: measure token.balanceOf(address(this))
+  immediately before and after transferFrom and credit the difference. Explicitly rejecting such tokens
+  up front by reverting when the received delta mismatches the requested amount is equally acceptable.
+  On withdrawal, debiting the requested amount already matches what leaves the pool even when the recipient
+  receives less; the answer may either accept that token-level exit fee or measure it for user-facing
+  guarantees, but it need not apply a second balance-delta credit mechanism. It FAILS if the prescribed
+  fix is a hardcoded fee percentage or buffer, topping the pool up from treasury as the fix itself, or
+  asking users to send extra.'
+- 'It addresses the already-stuck stakers concretely (for example: socialize the shortfall pro-rata over
+  remaining balances, or fund the gap and migrate to the corrected accounting) rather than leaving them
+  unmentioned.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: security-quiz-003
+  skill: skills/security

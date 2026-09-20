@@ -1,0 +1,47 @@
+id: building-02-approve-flow-states
+pillar: building
+title: The approve-then-stake flow
+kind: quiz
+prompt: |
+  An Ethereum React dApp with wagmi v2 and viem configured. A teammate's
+  PR adds the stake widget below. To
+  "keep it simple" it shows the buttons whenever a wallet is connected, and
+  to save an RPC call it remembers approval in component state once the
+  approve transaction has been sent:
+
+      const [hasApproved, setHasApproved] = useState(false);
+
+      {isConnected && (
+        <div>
+          {!hasApproved && (
+            <button onClick={async () => { await approve(); setHasApproved(true); }}>
+              Approve
+            </button>
+          )}
+          <button onClick={stake}>Stake</button>
+        </div>
+      )}
+
+  Review it. First walk through what a user connected on Arbitrum (the app
+  is mainnet-only) with zero allowance sees, and what each click does.
+  Then find the subtler bug: give a concrete sequence of user actions
+  after which hasApproved makes the widget show a button that cannot work.
+  Finally, specify the flow this widget should implement: which single
+  primary action renders in each situation, in what priority order the
+  checks run, and where approval status must come from. Write your answer
+  to answer.md in this directory.
+expect:
+- answer.md reasons from the given code with concrete walk-throughs, not generic best-practice advice.
+- The wrong-network walk-through identifies that the widget renders active Approve and Stake on Arbitrum
+  with zero allowance, every click dead-ends (wrong-chain prompt or failed tx), and the missing network
+  check must run before any approval or stake logic.
+- The hasApproved bug is shown with a valid sequence — allowance consumed by a stake while the flag stays
+  true, a reload resetting the flag despite a live allowance, or the flag being set at submission rather
+  than confirmation — concluding that approval status must come from a fresh onchain allowance read, not
+  local state.
+- The specified flow renders one primary action at a time in priority order connect -> switch network
+  -> approve -> stake, with Approve and Stake never simultaneously active.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: frontend-ux-quiz-003
+  skill: skills/frontend-ux

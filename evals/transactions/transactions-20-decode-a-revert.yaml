@@ -1,0 +1,22 @@
+id: transactions-20-decode-a-revert
+pillar: transactions
+title: Decode a revert
+kind: quiz
+summary: Error(string) is 0x08c379a0. Read the reason out of the bytes.
+prompt: |
+  A call reverted and the node returned this revert data:
+
+  0x08c379a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000014496e73756666696369656e742062616c616e6365000000000000000000000000
+
+  What is the revert reason string?
+  End your reply with a line of the form "Answer: <string>".
+grader:
+  type: exact
+  expect: Insufficient balance
+reference: 'Answer: Insufficient balance'
+checks:
+  must_pass:
+  - 'Answer: "Insufficient balance"'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-20-decode-a-revert

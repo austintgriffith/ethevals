@@ -1,0 +1,17 @@
+id: concepts-10-mev-backrun
+pillar: concepts
+title: MEV backruns
+kind: quiz
+prompt: |
+  Your 500 ETH swap on Uniswap executes and pushes the pool's price away from prices on other exchanges. A bot arranges for its own arbitrage transaction to execute immediately AFTER yours in the same block, capturing the price gap your trade created. The bot never trades ahead of you. In MEV terminology, what is this technique of positioning a transaction immediately after a target transaction called (name the insertion technique, not the profit strategy)?
+  End your reply with a line of the form "Answer: <short answer>".
+grader:
+  type: regex
+  pattern: back[\s-]*run
+reference: 'Answer: backrunning'
+source_quote: |
+  They profit by frontrunning your transaction, backrunning it, or both.
+source:
+  repo: clawdbotatg/eth-evals
+  task: mev-k-04
+  skill: security

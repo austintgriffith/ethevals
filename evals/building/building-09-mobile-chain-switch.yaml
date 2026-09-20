@@ -1,0 +1,38 @@
+id: building-09-mobile-chain-switch
+pillar: building
+title: Mobile wallet chain switch
+kind: quiz
+prompt: |
+  A Scaffold-ETH 2 dApp live on Base. Mobile users who connect through
+  WalletConnect with the Rainbow app report that tapping "Stake" does
+  nothing — no wallet opens, the page just sits there. If they manually
+  switch to Rainbow, the signing request is waiting for them inside.
+
+  A teammate shipped a patch: the first line of the button handler is
+  now window.location.href = "rainbow://", followed by the
+  writeContractAsync call. Since the patch, Rainbow opens instantly —
+  but there is nothing to sign when it opens, and the transaction never
+  lands onchain.
+
+  Explain, in order: (1) why nothing auto-opened before the patch —
+  what RainbowKit / WalletConnect v2 actually does with a transaction
+  request on mobile; (2) why the patch made it worse; (3) the correct
+  pattern — the ordering, the delay and the reason for its length, how
+  to decide which wallet scheme to open given that wagmi's connector.id
+  reports "walletConnect", and the situations where the deep link must
+  be skipped entirely. Write your answer to answer.md in this directory.
+expect:
+- 'answer.md names the root cause: WalletConnect v2 / RainbowKit v2 does not deep-link into the wallet
+  app on a transaction request — it relies on push notifications — so nothing opens and the request just
+  waits in the wallet.'
+- 'The patch is dissected by ordering: navigating to rainbow:// before the write call means the signing
+  request has not been created and relayed yet, so the wallet opens empty and the transaction never fires;
+  the correct order fires the write first and deep-links after a delay on the order of ~2 seconds, justified
+  by gas estimation plus WalletConnect relay time.'
+- 'Wallet detection: connector.id reports the generic "walletConnect", so picking the scheme requires
+  other signals (WalletConnect session data / localStorage hints), and the deep link is skipped when window.ethereum
+  exists (already inside a wallet''s in-app browser) or off mobile.'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: qa-quiz-004
+  skill: skills/qa

@@ -1,0 +1,42 @@
+id: building-19-deploy-verify-ship
+pillar: building
+title: Deploy, verify, ship
+kind: quiz
+prompt: |
+  Our two-person team shipped the contracts for a Scaffold-ETH 2 (foundry
+  flavor) dApp to Base mainnet three days ago — `yarn deploy --network base`
+  went fine and the app works against the live contracts. Contract
+  verification is still an open ticket, currently marked blocked: "waiting
+  on a block explorer API key from ops (ETA next sprint)". A teammate
+  suggests we just fold verification into the launch checklist and run it
+  right before the public announcement next month, all in one go.
+
+  Unblock this ticket: what exactly would we run, what do we actually need
+  in place for it to work, and when should it happen — now or at launch —
+  and why does the timing matter? The repo isn't checked out here, so write
+  the answer rather than trying to run anything. Write your answer to
+  answer.md in this directory.
+expect:
+- 'answer.md unblocks the ticket by contradicting its premise: no block explorer API key needs to be obtained
+  — Scaffold-ETH 2''s built-in verification handles this out of the box. It does NOT treat getting a key
+  from an explorer, from ops, or through a signup flow as a prerequisite for verifying. None of these
+  fail the line: noting that SE2 already ships a default explorer key in its .env; wiring that already-shipped
+  key into an [etherscan] entry for base in foundry.toml; saying the team may swap in its own key later.
+  What fails is any step that waits on a key the team does not already have, i.e. leaving the ticket blocked
+  on ops.'
+- The concrete action is SE2's verify command against the live network — yarn verify --network base (minor
+  flag variations acceptable) — presented as the primary path. Explaining that yarn verify wraps forge
+  verify-contract under the hood does not fail this; substituting a hand-rolled forge verify-contract
+  invocation, or a manual source upload through the explorer UI, for it does.
+- 'On timing it says verify NOW rather than at launch, and it explicitly rejects folding verification
+  into next month''s launch checklist. (Grader''s context, not a required assertion: the skill puts verification
+  immediately after deploy, so a three-day-old unverified deploy is already late. The answer does not
+  have to characterise the gap that way.)'
+- The timing call is backed by at least one substantive reason (e.g. unverified contracts are unreadable/untrustworthy
+  to users and integrators, live debugging needs source on the explorer, the app is already live so every
+  day unverified is a day people transact against opaque bytecode). A reason that amounts to 'it's best
+  practice' with nothing behind it does not count.
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: orchestration-quiz-001
+  skill: skills/orchestration
