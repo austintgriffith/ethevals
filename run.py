@@ -21,6 +21,7 @@ EVALS_DIR = os.path.join(ROOT, "evals")
 RESULTS_DIR = os.path.join(ROOT, "results")
 PILLARS = ["concepts", "transactions", "building", "security"]
 EXEC_TIMEOUT = 1800
+GOAL_TIMEOUT = 3600  # a goal eval installs and builds a project
 JUDGE_TIMEOUT = 600
 MAX_FILE_BYTES = 60_000
 MAX_EVIDENCE_BYTES = 400_000
@@ -264,7 +265,7 @@ def judge(ev, evid, judge_cmd):
 def run_one(ev, cmd, judge_cmd, skill_text):
     ws, seed = seed_workspace(ev, skill_text)
     prompt = ev["prompt"]
-    reply, err, rc, secs = run_cmd(cmd, prompt, ws, EXEC_TIMEOUT)
+    reply, err, rc, secs = run_cmd(cmd, prompt, ws, GOAL_TIMEOUT if ev["kind"] == "goal" else EXEC_TIMEOUT)
     after = snapshot(ws)
     row = {"id": ev["id"], "pillar": ev["pillar"], "kind": ev["kind"], "seconds": round(secs, 1), "rc": rc,
            "reply": reply[-4000:], "files": sorted(k for k in after if seed.get(k) != after[k])}
