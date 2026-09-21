@@ -10,7 +10,7 @@ prompt: |
 
   What would signing this do? Is it safe? What should the user do?
 
-  Write your answer to answer.md in this directory, showing your reasoning.
+  Write your answer to answer.md in this directory. Be specific about the amount, the spender and the dates.
 expect:
 - answer.md identifies this as an EIP-2612 permit on mainnet USDC (the verifyingContract 0xa0b8…eb48, 'USD Coin'
   version 2) that would grant the spender 0x1661…3Ee3 an allowance of 1,033,366.316628 USDC — the value 1033366316628

@@ -1,154 +1,39 @@
 {
- "generated": "2026-09-21T16:42:41+00:00",
- "manifest": "724efe1c57d2",
+ "generated": "2026-09-21T17:10:38+00:00",
+ "manifest": "4aa67fc4f695",
  "runs": [
-  {
-   "name": "gpt-6-astra",
-   "model": "gpt-6-astra",
-   "harness": "codex",
-   "skill": null,
-   "started": "2026-09-21T03:03:59+00:00",
-   "manifest": "2e23c19c009f",
-   "pillars": {
-    "concepts": {
-     "pass": 20,
-     "total": 20
-    },
-    "transactions": {
-     "pass": 20,
-     "total": 20
-    },
-    "building": {
-     "pass": 16,
-     "total": 20
-    },
-    "security": {
-     "pass": 18,
-     "total": 20
-    }
-   },
-   "total": {
-    "pass": 74,
-    "total": 80
-   },
-   "label": "GPT-6 Astra",
-   "file": "results/gpt-6-astra.json",
-   "evals_run": 80,
-   "verdicts": {
-    "building-01-no-infinite-approvals": true,
-    "building-02-approve-flow-states": true,
-    "building-03-usdc-decimals": true,
-    "building-04-se2-staking-dapp": false,
-    "building-05-button-lifecycle": true,
-    "building-06-ens-input": true,
-    "building-07-double-fire": true,
-    "building-08-rpc-config": false,
-    "building-09-mobile-chain-switch": false,
-    "building-10-index-events": true,
-    "building-11-forty-balances": true,
-    "building-12-pick-a-chain": false,
-    "building-13-l2-real-cost": true,
-    "building-14-deployer-key-hygiene": true,
-    "building-15-agent-custody": true,
-    "building-16-one-click-from-eoa": true,
-    "building-17-x402-paid-api": true,
-    "building-18-create2-address-myth": true,
-    "building-19-deploy-verify-ship": true,
-    "building-20-existing-eoa-smart-account": true,
-    "concepts-01-nothing-is-automatic": true,
-    "concepts-02-walkaway-test": true,
-    "concepts-03-keeper-bounty-math": true,
-    "concepts-04-hyperstructures": true,
-    "concepts-05-fee-switch-fork": true,
-    "concepts-06-sybil-resistance": true,
-    "concepts-07-crops-pillars": true,
-    "concepts-08-verified-is-not-open": true,
-    "concepts-09-eip1559-mechanics": true,
-    "concepts-10-mev-backrun": true,
-    "concepts-11-spot-price-oracle": true,
-    "concepts-12-blockhash-current": true,
-    "concepts-13-eip712-replay": true,
-    "concepts-14-eip7702-delegation": true,
-    "concepts-15-paymaster-deposit": true,
-    "concepts-16-peerdas-eip": true,
-    "concepts-17-forced-inclusion": true,
-    "concepts-18-admin-power-mechanisms": true,
-    "concepts-19-why-slashing": true,
-    "concepts-20-honesty-live-data": true,
-    "security-01-reentrancy": true,
-    "security-02-read-only-reentrancy": true,
-    "security-03-cross-function-reentrancy": true,
-    "security-04-vault-inflation": true,
-    "security-05-spot-price-oracle": true,
-    "security-06-fee-on-transfer-books": true,
-    "security-07-oz-v5-approvals": true,
-    "security-08-signature-replay": true,
-    "security-09-uups-upgrade": true,
-    "security-10-checks-effects-interactions": true,
-    "security-11-missing-access-control": true,
-    "security-12-storage-layout": true,
-    "security-13-authorize-upgrade": true,
-    "security-14-sandwich-slippage": true,
-    "security-15-lending-postmortem-1": true,
-    "security-16-lending-postmortem-2": true,
-    "security-17-lending-postmortem-3": true,
-    "security-18-decimal-scale-mismatch": true,
-    "security-19-permissionless-listing": false,
-    "security-20-borrowing-market": false,
-    "transactions-01-selector-string": true,
-    "transactions-02-abi-encode-static": true,
-    "transactions-03-decode-calldata": true,
-    "transactions-04-dynamic-types": true,
-    "transactions-05-struct-argument": true,
-    "transactions-06-token-decimals": true,
-    "transactions-07-bounded-approve": true,
-    "transactions-08-permit-2612": true,
-    "transactions-09-event-signature": true,
-    "transactions-10-read-a-receipt": true,
-    "transactions-11-internal-transactions": true,
-    "transactions-12-effective-gas-price": true,
-    "transactions-13-nonce-replacement": true,
-    "transactions-14-gwei-to-wei": true,
-    "transactions-15-intrinsic-gas": true,
-    "transactions-16-create2-truncation": true,
-    "transactions-17-eip55-checksum": true,
-    "transactions-18-storage-packing": true,
-    "transactions-19-nested-calldata": true,
-    "transactions-20-decode-a-revert": true
-   }
-  },
   {
    "name": "fable-5.1+ethskills",
    "model": "fable",
    "harness": "claude code",
    "skill": "https://ethskills.com/SKILL.md",
-   "started": "2026-09-21T00:34:35+00:00",
-   "manifest": "2e23c19c009f",
+   "started": "2026-09-21T17:03:50+00:00",
+   "manifest": "4aa67fc4f695",
    "pillars": {
     "concepts": {
-     "pass": 20,
-     "total": 20
+     "pass": 25,
+     "total": 25
     },
     "transactions": {
-     "pass": 18,
-     "total": 20
+     "pass": 23,
+     "total": 25
     },
     "building": {
-     "pass": 16,
-     "total": 20
+     "pass": 21,
+     "total": 25
     },
     "security": {
-     "pass": 19,
-     "total": 20
+     "pass": 24,
+     "total": 25
     }
    },
    "total": {
-    "pass": 73,
-    "total": 80
+    "pass": 93,
+    "total": 100
    },
    "label": "Fable 5.1 + ethskills",
    "file": "results/fable-5.1+ethskills.json",
-   "evals_run": 80,
+   "evals_run": 100,
    "verdicts": {
     "building-01-no-infinite-approvals": true,
     "building-02-approve-flow-states": true,
@@ -170,6 +55,11 @@
     "building-18-create2-address-myth": true,
     "building-19-deploy-verify-ship": false,
     "building-20-existing-eoa-smart-account": true,
+    "building-21-5792-fallback": true,
+    "building-22-sign-transaction": true,
+    "building-23-compact-signature": true,
+    "building-24-4337-2d-nonce": true,
+    "building-25-hash-message-string": true,
     "concepts-01-nothing-is-automatic": true,
     "concepts-02-walkaway-test": true,
     "concepts-03-keeper-bounty-math": true,
@@ -190,6 +80,11 @@
     "concepts-18-admin-power-mechanisms": true,
     "concepts-19-why-slashing": true,
     "concepts-20-honesty-live-data": true,
+    "concepts-21-7702-chainid-zero": true,
+    "concepts-22-7702-no-recursion": true,
+    "concepts-23-7702-bad-tuple": true,
+    "concepts-24-4337-banned-opcodes": true,
+    "concepts-25-1271-replay-safe": true,
     "security-01-reentrancy": true,
     "security-02-read-only-reentrancy": true,
     "security-03-cross-function-reentrancy": true,
@@ -210,6 +105,11 @@
     "security-18-decimal-scale-mismatch": true,
     "security-19-permissionless-listing": true,
     "security-20-borrowing-market": false,
+    "security-21-malicious-permit": true,
+    "security-22-permit2-batch": true,
+    "security-23-decimal-verifying-contract": true,
+    "security-24-siwe-domain": true,
+    "security-25-safe-delegatecall": true,
     "transactions-01-selector-string": true,
     "transactions-02-abi-encode-static": true,
     "transactions-03-decode-calldata": false,
@@ -229,7 +129,147 @@
     "transactions-17-eip55-checksum": true,
     "transactions-18-storage-packing": true,
     "transactions-19-nested-calldata": false,
-    "transactions-20-decode-a-revert": true
+    "transactions-20-decode-a-revert": true,
+    "transactions-21-decode-raw-tx": true,
+    "transactions-22-legacy-v-chainid": true,
+    "transactions-23-serialize-zero-tx": true,
+    "transactions-24-7702-self-nonce": true,
+    "transactions-25-safe-tx-hash": true
+   }
+  },
+  {
+   "name": "gpt-6-astra",
+   "model": "gpt-6-astra",
+   "harness": "codex",
+   "skill": null,
+   "started": "2026-09-21T17:02:07+00:00",
+   "manifest": "4aa67fc4f695",
+   "pillars": {
+    "concepts": {
+     "pass": 25,
+     "total": 25
+    },
+    "transactions": {
+     "pass": 24,
+     "total": 25
+    },
+    "building": {
+     "pass": 21,
+     "total": 25
+    },
+    "security": {
+     "pass": 23,
+     "total": 25
+    }
+   },
+   "total": {
+    "pass": 93,
+    "total": 100
+   },
+   "label": "GPT-6 Astra",
+   "file": "results/gpt-6-astra.json",
+   "evals_run": 100,
+   "verdicts": {
+    "building-01-no-infinite-approvals": true,
+    "building-02-approve-flow-states": true,
+    "building-03-usdc-decimals": true,
+    "building-04-se2-staking-dapp": false,
+    "building-05-button-lifecycle": true,
+    "building-06-ens-input": true,
+    "building-07-double-fire": true,
+    "building-08-rpc-config": false,
+    "building-09-mobile-chain-switch": false,
+    "building-10-index-events": true,
+    "building-11-forty-balances": true,
+    "building-12-pick-a-chain": false,
+    "building-13-l2-real-cost": true,
+    "building-14-deployer-key-hygiene": true,
+    "building-15-agent-custody": true,
+    "building-16-one-click-from-eoa": true,
+    "building-17-x402-paid-api": true,
+    "building-18-create2-address-myth": true,
+    "building-19-deploy-verify-ship": true,
+    "building-20-existing-eoa-smart-account": true,
+    "building-21-5792-fallback": true,
+    "building-22-sign-transaction": true,
+    "building-23-compact-signature": true,
+    "building-24-4337-2d-nonce": true,
+    "building-25-hash-message-string": true,
+    "concepts-01-nothing-is-automatic": true,
+    "concepts-02-walkaway-test": true,
+    "concepts-03-keeper-bounty-math": true,
+    "concepts-04-hyperstructures": true,
+    "concepts-05-fee-switch-fork": true,
+    "concepts-06-sybil-resistance": true,
+    "concepts-07-crops-pillars": true,
+    "concepts-08-verified-is-not-open": true,
+    "concepts-09-eip1559-mechanics": true,
+    "concepts-10-mev-backrun": true,
+    "concepts-11-spot-price-oracle": true,
+    "concepts-12-blockhash-current": true,
+    "concepts-13-eip712-replay": true,
+    "concepts-14-eip7702-delegation": true,
+    "concepts-15-paymaster-deposit": true,
+    "concepts-16-peerdas-eip": true,
+    "concepts-17-forced-inclusion": true,
+    "concepts-18-admin-power-mechanisms": true,
+    "concepts-19-why-slashing": true,
+    "concepts-20-honesty-live-data": true,
+    "concepts-21-7702-chainid-zero": true,
+    "concepts-22-7702-no-recursion": true,
+    "concepts-23-7702-bad-tuple": true,
+    "concepts-24-4337-banned-opcodes": true,
+    "concepts-25-1271-replay-safe": true,
+    "security-01-reentrancy": true,
+    "security-02-read-only-reentrancy": true,
+    "security-03-cross-function-reentrancy": true,
+    "security-04-vault-inflation": true,
+    "security-05-spot-price-oracle": true,
+    "security-06-fee-on-transfer-books": true,
+    "security-07-oz-v5-approvals": true,
+    "security-08-signature-replay": true,
+    "security-09-uups-upgrade": true,
+    "security-10-checks-effects-interactions": true,
+    "security-11-missing-access-control": true,
+    "security-12-storage-layout": true,
+    "security-13-authorize-upgrade": true,
+    "security-14-sandwich-slippage": true,
+    "security-15-lending-postmortem-1": true,
+    "security-16-lending-postmortem-2": true,
+    "security-17-lending-postmortem-3": true,
+    "security-18-decimal-scale-mismatch": true,
+    "security-19-permissionless-listing": false,
+    "security-20-borrowing-market": false,
+    "security-21-malicious-permit": true,
+    "security-22-permit2-batch": true,
+    "security-23-decimal-verifying-contract": true,
+    "security-24-siwe-domain": true,
+    "security-25-safe-delegatecall": true,
+    "transactions-01-selector-string": true,
+    "transactions-02-abi-encode-static": true,
+    "transactions-03-decode-calldata": true,
+    "transactions-04-dynamic-types": true,
+    "transactions-05-struct-argument": true,
+    "transactions-06-token-decimals": true,
+    "transactions-07-bounded-approve": true,
+    "transactions-08-permit-2612": true,
+    "transactions-09-event-signature": true,
+    "transactions-10-read-a-receipt": true,
+    "transactions-11-internal-transactions": true,
+    "transactions-12-effective-gas-price": true,
+    "transactions-13-nonce-replacement": true,
+    "transactions-14-gwei-to-wei": true,
+    "transactions-15-intrinsic-gas": true,
+    "transactions-16-create2-truncation": true,
+    "transactions-17-eip55-checksum": true,
+    "transactions-18-storage-packing": true,
+    "transactions-19-nested-calldata": true,
+    "transactions-20-decode-a-revert": true,
+    "transactions-21-decode-raw-tx": true,
+    "transactions-22-legacy-v-chainid": true,
+    "transactions-23-serialize-zero-tx": false,
+    "transactions-24-7702-self-nonce": true,
+    "transactions-25-safe-tx-hash": true
    }
   },
   {
@@ -237,33 +277,33 @@
    "model": "opus",
    "harness": "claude code",
    "skill": null,
-   "started": "2026-09-21T02:25:00+00:00",
-   "manifest": "2e23c19c009f",
+   "started": "2026-09-21T17:05:31+00:00",
+   "manifest": "4aa67fc4f695",
    "pillars": {
     "concepts": {
-     "pass": 19,
-     "total": 20
+     "pass": 24,
+     "total": 25
     },
     "transactions": {
-     "pass": 20,
-     "total": 20
+     "pass": 24,
+     "total": 25
     },
     "building": {
-     "pass": 13,
-     "total": 20
+     "pass": 18,
+     "total": 25
     },
     "security": {
-     "pass": 18,
-     "total": 20
+     "pass": 23,
+     "total": 25
     }
    },
    "total": {
-    "pass": 70,
-    "total": 80
+    "pass": 89,
+    "total": 100
    },
    "label": "Opus 5",
    "file": "results/opus-5.json",
-   "evals_run": 80,
+   "evals_run": 100,
    "verdicts": {
     "building-01-no-infinite-approvals": true,
     "building-02-approve-flow-states": true,
@@ -285,6 +325,11 @@
     "building-18-create2-address-myth": true,
     "building-19-deploy-verify-ship": false,
     "building-20-existing-eoa-smart-account": true,
+    "building-21-5792-fallback": true,
+    "building-22-sign-transaction": true,
+    "building-23-compact-signature": true,
+    "building-24-4337-2d-nonce": true,
+    "building-25-hash-message-string": true,
     "concepts-01-nothing-is-automatic": true,
     "concepts-02-walkaway-test": true,
     "concepts-03-keeper-bounty-math": true,
@@ -305,6 +350,11 @@
     "concepts-18-admin-power-mechanisms": true,
     "concepts-19-why-slashing": true,
     "concepts-20-honesty-live-data": true,
+    "concepts-21-7702-chainid-zero": true,
+    "concepts-22-7702-no-recursion": true,
+    "concepts-23-7702-bad-tuple": true,
+    "concepts-24-4337-banned-opcodes": true,
+    "concepts-25-1271-replay-safe": true,
     "security-01-reentrancy": true,
     "security-02-read-only-reentrancy": true,
     "security-03-cross-function-reentrancy": true,
@@ -325,6 +375,11 @@
     "security-18-decimal-scale-mismatch": true,
     "security-19-permissionless-listing": false,
     "security-20-borrowing-market": false,
+    "security-21-malicious-permit": true,
+    "security-22-permit2-batch": true,
+    "security-23-decimal-verifying-contract": true,
+    "security-24-siwe-domain": true,
+    "security-25-safe-delegatecall": true,
     "transactions-01-selector-string": true,
     "transactions-02-abi-encode-static": true,
     "transactions-03-decode-calldata": true,
@@ -344,7 +399,12 @@
     "transactions-17-eip55-checksum": true,
     "transactions-18-storage-packing": true,
     "transactions-19-nested-calldata": true,
-    "transactions-20-decode-a-revert": true
+    "transactions-20-decode-a-revert": true,
+    "transactions-21-decode-raw-tx": true,
+    "transactions-22-legacy-v-chainid": true,
+    "transactions-23-serialize-zero-tx": false,
+    "transactions-24-7702-self-nonce": true,
+    "transactions-25-safe-tx-hash": true
    }
   },
   {
@@ -352,33 +412,33 @@
    "model": "fable",
    "harness": "claude code",
    "skill": null,
-   "started": "2026-09-21T00:34:32+00:00",
-   "manifest": "2e23c19c009f",
+   "started": "2026-09-21T17:02:07+00:00",
+   "manifest": "4aa67fc4f695",
    "pillars": {
     "concepts": {
-     "pass": 20,
-     "total": 20
+     "pass": 25,
+     "total": 25
     },
     "transactions": {
-     "pass": 17,
-     "total": 20
+     "pass": 22,
+     "total": 25
     },
     "building": {
-     "pass": 13,
-     "total": 20
+     "pass": 18,
+     "total": 25
     },
     "security": {
-     "pass": 18,
-     "total": 20
+     "pass": 23,
+     "total": 25
     }
    },
    "total": {
-    "pass": 68,
-    "total": 80
+    "pass": 88,
+    "total": 100
    },
    "label": "Fable 5.1",
    "file": "results/fable-5.1.json",
-   "evals_run": 80,
+   "evals_run": 100,
    "verdicts": {
     "building-01-no-infinite-approvals": true,
     "building-02-approve-flow-states": true,
@@ -400,6 +460,11 @@
     "building-18-create2-address-myth": true,
     "building-19-deploy-verify-ship": false,
     "building-20-existing-eoa-smart-account": true,
+    "building-21-5792-fallback": true,
+    "building-22-sign-transaction": true,
+    "building-23-compact-signature": true,
+    "building-24-4337-2d-nonce": true,
+    "building-25-hash-message-string": true,
     "concepts-01-nothing-is-automatic": true,
     "concepts-02-walkaway-test": true,
     "concepts-03-keeper-bounty-math": true,
@@ -420,6 +485,11 @@
     "concepts-18-admin-power-mechanisms": true,
     "concepts-19-why-slashing": true,
     "concepts-20-honesty-live-data": true,
+    "concepts-21-7702-chainid-zero": true,
+    "concepts-22-7702-no-recursion": true,
+    "concepts-23-7702-bad-tuple": true,
+    "concepts-24-4337-banned-opcodes": true,
+    "concepts-25-1271-replay-safe": true,
     "security-01-reentrancy": true,
     "security-02-read-only-reentrancy": true,
     "security-03-cross-function-reentrancy": true,
@@ -440,6 +510,11 @@
     "security-18-decimal-scale-mismatch": true,
     "security-19-permissionless-listing": false,
     "security-20-borrowing-market": false,
+    "security-21-malicious-permit": true,
+    "security-22-permit2-batch": true,
+    "security-23-decimal-verifying-contract": true,
+    "security-24-siwe-domain": true,
+    "security-25-safe-delegatecall": true,
     "transactions-01-selector-string": true,
     "transactions-02-abi-encode-static": true,
     "transactions-03-decode-calldata": false,
@@ -459,7 +534,12 @@
     "transactions-17-eip55-checksum": true,
     "transactions-18-storage-packing": true,
     "transactions-19-nested-calldata": false,
-    "transactions-20-decode-a-revert": true
+    "transactions-20-decode-a-revert": true,
+    "transactions-21-decode-raw-tx": true,
+    "transactions-22-legacy-v-chainid": true,
+    "transactions-23-serialize-zero-tx": true,
+    "transactions-24-7702-self-nonce": true,
+    "transactions-25-safe-tx-hash": true
    }
   },
   {
@@ -467,33 +547,33 @@
    "model": "sonnet",
    "harness": "claude code",
    "skill": null,
-   "started": "2026-09-21T01:06:03+00:00",
-   "manifest": "2e23c19c009f",
+   "started": "2026-09-21T17:06:48+00:00",
+   "manifest": "4aa67fc4f695",
    "pillars": {
     "concepts": {
-     "pass": 19,
-     "total": 20
+     "pass": 24,
+     "total": 25
     },
     "transactions": {
-     "pass": 19,
-     "total": 20
+     "pass": 23,
+     "total": 25
     },
     "building": {
-     "pass": 11,
-     "total": 20
+     "pass": 16,
+     "total": 25
     },
     "security": {
-     "pass": 18,
-     "total": 20
+     "pass": 22,
+     "total": 25
     }
    },
    "total": {
-    "pass": 67,
-    "total": 80
+    "pass": 85,
+    "total": 100
    },
    "label": "Sonnet 5",
    "file": "results/sonnet-5.json",
-   "evals_run": 80,
+   "evals_run": 100,
    "verdicts": {
     "building-01-no-infinite-approvals": true,
     "building-02-approve-flow-states": true,
@@ -515,6 +595,11 @@
     "building-18-create2-address-myth": true,
     "building-19-deploy-verify-ship": false,
     "building-20-existing-eoa-smart-account": true,
+    "building-21-5792-fallback": true,
+    "building-22-sign-transaction": true,
+    "building-23-compact-signature": true,
+    "building-24-4337-2d-nonce": true,
+    "building-25-hash-message-string": true,
     "concepts-01-nothing-is-automatic": true,
     "concepts-02-walkaway-test": true,
     "concepts-03-keeper-bounty-math": true,
@@ -535,6 +620,11 @@
     "concepts-18-admin-power-mechanisms": true,
     "concepts-19-why-slashing": true,
     "concepts-20-honesty-live-data": true,
+    "concepts-21-7702-chainid-zero": true,
+    "concepts-22-7702-no-recursion": true,
+    "concepts-23-7702-bad-tuple": true,
+    "concepts-24-4337-banned-opcodes": true,
+    "concepts-25-1271-replay-safe": true,
     "security-01-reentrancy": true,
     "security-02-read-only-reentrancy": true,
     "security-03-cross-function-reentrancy": true,
@@ -555,6 +645,11 @@
     "security-18-decimal-scale-mismatch": true,
     "security-19-permissionless-listing": false,
     "security-20-borrowing-market": false,
+    "security-21-malicious-permit": true,
+    "security-22-permit2-batch": false,
+    "security-23-decimal-verifying-contract": true,
+    "security-24-siwe-domain": true,
+    "security-25-safe-delegatecall": true,
     "transactions-01-selector-string": true,
     "transactions-02-abi-encode-static": true,
     "transactions-03-decode-calldata": false,
@@ -574,7 +669,12 @@
     "transactions-17-eip55-checksum": true,
     "transactions-18-storage-packing": true,
     "transactions-19-nested-calldata": true,
-    "transactions-20-decode-a-revert": true
+    "transactions-20-decode-a-revert": true,
+    "transactions-21-decode-raw-tx": true,
+    "transactions-22-legacy-v-chainid": true,
+    "transactions-23-serialize-zero-tx": true,
+    "transactions-24-7702-self-nonce": true,
+    "transactions-25-safe-tx-hash": false
    }
   },
   {
@@ -582,33 +682,33 @@
    "model": "haiku",
    "harness": "claude code",
    "skill": "https://ethskills.com/SKILL.md",
-   "started": "2026-09-21T03:48:22+00:00",
-   "manifest": "2e23c19c009f",
+   "started": "2026-09-21T17:09:26+00:00",
+   "manifest": "4aa67fc4f695",
    "pillars": {
     "concepts": {
-     "pass": 18,
-     "total": 20
+     "pass": 23,
+     "total": 25
     },
     "transactions": {
-     "pass": 14,
-     "total": 20
+     "pass": 16,
+     "total": 25
     },
     "building": {
-     "pass": 8,
-     "total": 20
+     "pass": 13,
+     "total": 25
     },
     "security": {
-     "pass": 13,
-     "total": 20
+     "pass": 16,
+     "total": 25
     }
    },
    "total": {
-    "pass": 53,
-    "total": 80
+    "pass": 68,
+    "total": 100
    },
    "label": "Haiku 4.5 + ethskills",
    "file": "results/haiku-4.5+ethskills.json",
-   "evals_run": 80,
+   "evals_run": 100,
    "verdicts": {
     "building-01-no-infinite-approvals": true,
     "building-02-approve-flow-states": false,
@@ -630,6 +730,11 @@
     "building-18-create2-address-myth": false,
     "building-19-deploy-verify-ship": false,
     "building-20-existing-eoa-smart-account": true,
+    "building-21-5792-fallback": true,
+    "building-22-sign-transaction": true,
+    "building-23-compact-signature": true,
+    "building-24-4337-2d-nonce": true,
+    "building-25-hash-message-string": true,
     "concepts-01-nothing-is-automatic": true,
     "concepts-02-walkaway-test": true,
     "concepts-03-keeper-bounty-math": true,
@@ -650,6 +755,11 @@
     "concepts-18-admin-power-mechanisms": true,
     "concepts-19-why-slashing": true,
     "concepts-20-honesty-live-data": true,
+    "concepts-21-7702-chainid-zero": true,
+    "concepts-22-7702-no-recursion": true,
+    "concepts-23-7702-bad-tuple": true,
+    "concepts-24-4337-banned-opcodes": true,
+    "concepts-25-1271-replay-safe": true,
     "security-01-reentrancy": true,
     "security-02-read-only-reentrancy": true,
     "security-03-cross-function-reentrancy": true,
@@ -670,6 +780,11 @@
     "security-18-decimal-scale-mismatch": true,
     "security-19-permissionless-listing": false,
     "security-20-borrowing-market": false,
+    "security-21-malicious-permit": false,
+    "security-22-permit2-batch": false,
+    "security-23-decimal-verifying-contract": true,
+    "security-24-siwe-domain": true,
+    "security-25-safe-delegatecall": true,
     "transactions-01-selector-string": true,
     "transactions-02-abi-encode-static": true,
     "transactions-03-decode-calldata": false,
@@ -689,7 +804,12 @@
     "transactions-17-eip55-checksum": true,
     "transactions-18-storage-packing": true,
     "transactions-19-nested-calldata": true,
-    "transactions-20-decode-a-revert": true
+    "transactions-20-decode-a-revert": true,
+    "transactions-21-decode-raw-tx": false,
+    "transactions-22-legacy-v-chainid": true,
+    "transactions-23-serialize-zero-tx": false,
+    "transactions-24-7702-self-nonce": false,
+    "transactions-25-safe-tx-hash": true
    }
   },
   {
@@ -697,33 +817,33 @@
    "model": "haiku",
    "harness": "claude code",
    "skill": null,
-   "started": "2026-09-21T00:34:37+00:00",
-   "manifest": "2e23c19c009f",
+   "started": "2026-09-21T17:08:25+00:00",
+   "manifest": "4aa67fc4f695",
    "pillars": {
     "concepts": {
-     "pass": 17,
-     "total": 20
+     "pass": 22,
+     "total": 25
     },
     "transactions": {
-     "pass": 13,
-     "total": 20
+     "pass": 15,
+     "total": 25
     },
     "building": {
-     "pass": 5,
-     "total": 20
+     "pass": 10,
+     "total": 25
     },
     "security": {
-     "pass": 12,
-     "total": 20
+     "pass": 15,
+     "total": 25
     }
    },
    "total": {
-    "pass": 47,
-    "total": 80
+    "pass": 62,
+    "total": 100
    },
    "label": "Haiku 4.5",
    "file": "results/haiku-4.5.json",
-   "evals_run": 80,
+   "evals_run": 100,
    "verdicts": {
     "building-01-no-infinite-approvals": false,
     "building-02-approve-flow-states": false,
@@ -745,6 +865,11 @@
     "building-18-create2-address-myth": true,
     "building-19-deploy-verify-ship": false,
     "building-20-existing-eoa-smart-account": true,
+    "building-21-5792-fallback": true,
+    "building-22-sign-transaction": true,
+    "building-23-compact-signature": true,
+    "building-24-4337-2d-nonce": true,
+    "building-25-hash-message-string": true,
     "concepts-01-nothing-is-automatic": true,
     "concepts-02-walkaway-test": true,
     "concepts-03-keeper-bounty-math": true,
@@ -765,6 +890,11 @@
     "concepts-18-admin-power-mechanisms": true,
     "concepts-19-why-slashing": true,
     "concepts-20-honesty-live-data": true,
+    "concepts-21-7702-chainid-zero": true,
+    "concepts-22-7702-no-recursion": true,
+    "concepts-23-7702-bad-tuple": true,
+    "concepts-24-4337-banned-opcodes": true,
+    "concepts-25-1271-replay-safe": true,
     "security-01-reentrancy": true,
     "security-02-read-only-reentrancy": true,
     "security-03-cross-function-reentrancy": true,
@@ -785,6 +915,11 @@
     "security-18-decimal-scale-mismatch": true,
     "security-19-permissionless-listing": false,
     "security-20-borrowing-market": false,
+    "security-21-malicious-permit": false,
+    "security-22-permit2-batch": false,
+    "security-23-decimal-verifying-contract": true,
+    "security-24-siwe-domain": true,
+    "security-25-safe-delegatecall": true,
     "transactions-01-selector-string": true,
     "transactions-02-abi-encode-static": false,
     "transactions-03-decode-calldata": false,
@@ -804,7 +939,12 @@
     "transactions-17-eip55-checksum": true,
     "transactions-18-storage-packing": true,
     "transactions-19-nested-calldata": false,
-    "transactions-20-decode-a-revert": true
+    "transactions-20-decode-a-revert": true,
+    "transactions-21-decode-raw-tx": true,
+    "transactions-22-legacy-v-chainid": false,
+    "transactions-23-serialize-zero-tx": false,
+    "transactions-24-7702-self-nonce": false,
+    "transactions-25-safe-tx-hash": true
    }
   }
  ]

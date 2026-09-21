@@ -5,29 +5,29 @@
  "skill": "https://ethskills.com/SKILL.md",
  "executor_cmd": "claude -p --model fable --dangerously-skip-permissions --strict-mcp-config",
  "judge_cmd": "claude -p --model sonnet --strict-mcp-config --disallowedTools Bash,Edit,Write,WebFetch,WebSearch",
- "started": "2026-09-21T00:34:35+00:00",
- "manifest": "2e23c19c009f",
+ "started": "2026-09-21T17:03:50+00:00",
+ "manifest": "4aa67fc4f695",
  "pillars": {
   "concepts": {
-   "pass": 20,
-   "total": 20
+   "pass": 25,
+   "total": 25
   },
   "transactions": {
-   "pass": 18,
-   "total": 20
+   "pass": 23,
+   "total": 25
   },
   "building": {
-   "pass": 16,
-   "total": 20
+   "pass": 21,
+   "total": 25
   },
   "security": {
-   "pass": 19,
-   "total": 20
+   "pass": 24,
+   "total": 25
   }
  },
  "total": {
-  "pass": 73,
-  "total": 80
+  "pass": 93,
+  "total": 100
  },
  "rows": [
   {
@@ -505,6 +505,61 @@
    "pass": true
   },
   {
+   "id": "building-21-5792-fallback",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 15.0,
+   "rc": 0,
+   "reply": "Answer is B. The `atomic` capability with `required: true` means the caller told the wallet the calls must land together or not at all. A sequential fallback breaks that contract. The approve could confirm while the swap fails or gets dropped, leaving a live allowance. The paymaster sponsorship also cannot be honored over plain `eth_sendTransaction`, so the user would be charged gas they were promised not to pay.\n\nThis matches how viem behaves. Its `sendCalls` fallback only kicks in when it is opted into and no required capabilities are present. If `atomic` or another non-optional capability is set and the wallet lacks `wallet_sendCalls`, it throws rather than degrade silently.\n\nWhy the others fail:\n\n- **A** silently changes semantics the caller explicitly required.\n- **C** does not help. \"Method not found\" means the wallet lacks the method entirely, not that it dislikes the params.\n- **D** leaves a dangling approval and no swap, which is the exact state atomicity was meant to prevent.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "building-22-sign-transaction",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 12.3,
+   "rc": 0,
+   "reply": "`eth_signTransaction` is defined by the JSON-RPC spec as sign only. The wallet signs the transaction with the account's key and returns the RLP-encoded signed transaction as hex. It must not broadcast. The caller submits it later with `eth_sendRawTransaction` if they choose to.\n\nWhy the others are wrong:\n\n- **A** is `eth_sendTransaction`. Signing plus broadcasting collapses the two-step flow the method exists to enable, such as offline signing or delayed submission.\n- **C** returns only r, s, v. That is closer to `eth_sign` or a raw signature call, not a signed transaction. The caller needs the full serialized transaction to submit it.\n- **D** skips the confirmation prompt. A signed transaction is fully broadcastable by anyone who holds the bytes, so it needs the same user consent as sending. Skipping the prompt lets a dapp drain the account.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "building-23-compact-signature",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 20.5,
+   "rc": 0,
+   "reply": "v is 0x1c, so yParity is 1. s is already low-s with its top bit clear, so the compact form sets that top bit and drops v.\n\n- r: `7c39e44a...ffc370c6` (unchanged)\n- yParityAndS: `93fd866a...7c6ceb33` (s with top bit set, since yParity = 1)\n\nAnswer: 0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c693fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb33\n",
+   "files": [],
+   "detail": "got '0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c693fd866a0df842'",
+   "pass": true
+  },
+  {
+   "id": "building-24-4337-2d-nonce",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 9.8,
+   "rc": 0,
+   "reply": "No further lookups are needed. The EntryPoint's `getNonce` packs the key into the high 192 bits and the per-key sequence into the low 64 bits:\n\n```solidity\nfunction getNonce(address sender, uint192 key) public view returns (uint256 nonce) {\n    return nonceSequenceNumber[sender][key] | (uint256(key) << 64);\n}\n```\n\nAfter one UserOperation on key 1, the sequence for that key is 1. The result is therefore (1 << 64) | 1 = 2^64 + 1.\n\nAnswer: 18446744073709551617\n",
+   "files": [],
+   "detail": "got 18446744073709551617",
+   "pass": true
+  },
+  {
+   "id": "building-25-hash-message-string",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 19.0,
+   "rc": 0,
+   "reply": "The wallet signs the EIP-191 personal-message digest of the 10 ASCII characters, not of four decoded bytes.\n\nUnder EIP-191 (version 0x45), personal_sign hashes the message with a prefix that includes its byte length:\n\n```\nkeccak256(\"\\x19Ethereum Signed Message:\\n\" + len(message) + message)\n```\n\nHere the message is the literal text `0xdeadbeef`, which is 10 bytes, so the preimage is:\n\n```\n\\x19Ethereum Signed Message:\\n10 0xdeadbeef   (no space; shown for readability)\n```\n\nBoth `cast keccak` and an independent Python keccak-256 produce the same digest.\n\nOne caveat worth knowing: some wallets, MetaMask included, sniff hex-looking strings and decode them to raw bytes before signing. In that case the length prefix would be 4 and the digest would differ. The question specifies the characters, so the answer below is for the 10-byte string.\n\nAnswer: 0xefedd0a9a0294228c3977d7fbb68c7d40279f8b408cf3e24ef1823b179709e58\n",
+   "files": [],
+   "detail": "got '0xefedd0a9a0294228c3977d7fbb68c7d40279f8b408cf3e24ef1823b179709e58'",
+   "pass": true
+  },
+  {
    "id": "concepts-01-nothing-is-automatic",
    "pillar": "concepts",
    "kind": "quiz",
@@ -720,6 +775,61 @@
    "seconds": 4.8,
    "rc": 0,
    "reply": "{\"can_know\": false, \"note\": \"Gas prices change every block, so without a live RPC or web fetch I cannot know the current mainnet gwei value.\"}\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-21-7702-chainid-zero",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 14.4,
+   "rc": 0,
+   "reply": "Per EIP-7702, a `chain_id` of 0 in an authorization tuple is explicitly valid and means \"any chain.\" The spec says the authorization is accepted if `chain_id` equals the current chain id **or** is 0. So the same signed tuple can be included on every EVM chain where the signer's nonce matches, delegating the account to the same delegate address everywhere.\n\nThat is dangerous for a wallet because:\n\n- The delegate address may hold a safe contract on one chain and an attacker's contract, or nothing, on another. Same address, different bytecode.\n- The nonce in the tuple is per chain, so a fresh account on a chain the user has never touched is often at nonce 0 and replayable immediately.\n- The user is approving delegation on chains they never saw in the prompt, including chains that do not exist yet.\n\nSo a wallet should not treat it as invalid, and it should not assume mainnet. It should either refuse chain id 0 outright or warn loudly and only allow it when the delegate is a known-good contract deployed deterministically with identical code on every chain, for example a well-audited canonical delegation contract at a CREATE2 address.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-22-7702-no-recursion",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 13.2,
+   "rc": 0,
+   "reply": "Delegation under EIP-7702 is not transitive. The spec says that when a delegation designator points to another designator, clients retrieve only the first code and stop following the chain.\n\nSo a call to A loads B's code. B's code is its own designator, the 23 bytes starting with `0xef0100`. That is executed as bytecode, and `0xef` is an invalid opcode, so execution halts with an exceptional failure and nothing meaningful runs. The transaction itself is still valid and included in a block. C's code and storage are never touched.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-23-7702-bad-tuple",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 9.0,
+   "rc": 0,
+   "reply": "Under EIP-7702, each authorization tuple is validated independently at execution time. A tuple whose chain id matches neither zero nor the current chain fails validation and is skipped. The other tuple is still applied, the transaction executes normally, and intrinsic gas is charged for every tuple in the list, including the skipped one. The transaction itself is only invalid if the authorization list is empty.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-24-4337-banned-opcodes",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 12.8,
+   "rc": 0,
+   "reply": "The SKILL.md is general Ethereum guidance and has nothing specific to ERC-4337 validation rules, so this is answered from the standard itself (ERC-7562 validation scope rules).\n\nBundlers simulate validation off-chain via `simulateValidation` before including a UserOperation in a bundle. The bundler pays the gas for the bundle transaction. If a UserOperation passes simulation but then reverts during on-chain validation, the whole bundle can fail and the bundler eats the cost with no fee reimbursement. Opcodes like TIMESTAMP, NUMBER, BLOCKHASH and BALANCE return values that can differ between the simulation block and the inclusion block, so an attacker could craft an account that passes simulation and fails on-chain, griefing the bundler for free. That is why they are banned (BALANCE is allowed only for staked entities, since staking makes the griefing costly). Time-bounded validity is instead expressed via the packed validUntil and validAfter fields in the validation return data, which the bundler can check deterministically.\n\nOption A is wrong because cost is not the reason. Option C is wrong because validation runs as a normal call inside the EntryPoint, not a static call, and the EVM does not forbid environment opcodes in static calls anyway. Option D is wrong because those opcodes reveal nothing about the bundler.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-25-1271-replay-safe",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 12.2,
+   "rc": 0,
+   "reply": "This is a conceptual question about ERC-1271 signature wrapping. No further tool calls are needed.\n\nThe wrapping exists to stop cross-account and cross-chain replay. An EOA's plain ECDSA signature over a hash carries no information about which account it was meant to approve. If the smart account's `isValidSignature` accepted a bare signature from its owner, then any other account owned by the same key, on this chain or any other, would also accept that identical signature. A permit or order signed for one account would double as approval from every account that key controls. Wrapping the hash in an EIP-712 struct whose domain includes the chain ID and the account's own address binds the digest to exactly one account on one chain. This is the pattern used by ERC-6492-aware wallets and by implementations such as Coinbase Smart Wallet and Ambire.\n\nThe other options do not hold. Wrapping adds a hashing step, so it costs slightly more gas, not less. ERC-1271 only defines the `isValidSignature(bytes32, bytes)` interface and says nothing about EIP-712. The original hash is still passed in and reconstructed by the verifier, so nothing is hidden.\n\nAnswer: B\n",
    "files": [],
    "detail": "",
    "pass": true
@@ -3338,6 +3448,79 @@
    "pass": false
   },
   {
+   "id": "security-21-malicious-permit",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 61.5,
+   "rc": 0,
+   "reply": "Done. Wrote `answer.md`.\n\n**Verdict:** do not sign. It is a USDC permit phishing prompt.\n\n- **What it does:** signs an EIP-2612 permit on the real USDC contract, approving the spender to pull up to 1,033,366.316628 USDC (~$1.03M) from the user's account with no transaction from the user.\n- **Spender:** `0x1661F1B207629e4F385DA89cFF535C8E5Eb23Ee3` is an EOA that Etherscan labels \"Fake_Phishing66321\", reported by AnciliaInc.\n- **Deadline:** 1678709555 = 2023-03-13 12:12:35 UTC, over three years ago. USDC would reject this exact payload onchain, so it is a recycled template, but the site can pop a fresh one with a live deadline at any time.\n- **Action:** reject, close the site, check and revoke approvals at revoke.cash, and move USDC to a fresh wallet if any live-deadline signature was already given.\n\nI could not verify the owner's current USDC nonce onchain since no Alchemy key is in this directory. It does not change the verdict.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md correctly identifies the EIP-2612 permit on mainnet USDC (verifyingContract 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48, 'USD Coin' v2), spender 0x1661F1B207629e4F385DA89cFF535C8E5Eb23Ee3, an; 2:pass Explicitly states the signature alone is a gasless approval, no user transaction/gas, nothing appears in wallet activity, and the spender later submits permit() then transferFrom to pull funds.; 3:pass Decodes deadline 1678709555 as 2023-03-13 12:12:35 UTC, notes it's over three years past today (2026-09-21) so the exact payload would be rejected onchain, but still treats it as a h",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "security-22-permit2-batch",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 88.7,
+   "rc": 0,
+   "reply": "Done. answer.md is written.\n\n**Verdict: do not sign.** The domain is the real Permit2 contract, but the spender `0x1661F1B207629e4F385DA89cFF535C8E5Eb23Ee3` is an EOA, not a contract, and Etherscan labels it Fake_Phishing66321.\n\nWhat the signature grants that address, via Permit2:\n\n| Token | Amount | Expires |\n|---|---|---|\n| USDC | max uint160 (unlimited) | 2030-03-17 |\n| WETH | max uint160 (unlimited) | 2030-03-17 |\n| DAI | max uint160 (unlimited) | 2030-03-17 |\n\nThe signature deadline is also 2030-03-17, so the attacker has about 3.5 years to submit it. They would do so within seconds. It works because the user already approved those three tokens to Permit2 for Uniswap. The site read those allowances and built the batch to hit exactly them.\n\nThe answer file tells the user to reject, disconnect, check the domain, and optionally revoke Permit2 approvals at revoke.cash. It also has an \"already signed\" section: move funds out now, call Permit2 lockdown or zero the allowance for that spender, then revoke the ERC-20 approvals to Permit2.\n\nNo RPC calls were made. There is no Alchemy key in this directory, and the public Etherscan page plus the ethskills addresses list were enough.\n",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md correctly identifies the canonical Permit2 contract (0x000000000022D473030F116dDEE9F6B43aC78BA3), that this is a PermitBatch setting three allowances at once for USDC, WETH, and DAI, and nam; 2:pass The table explicitly decodes the amount 1461501637330902918203684832716283019655932542975 as 2^160-1 / max uint160 / unlimited for all three tokens, and decodes expiration 1900000000 as 2030-03-17. It; 3:pass The answer explains that prior ERC-20 approvals to Permit2 are 'the missing piece' \u2014 Permit2 already can pull the tokens, and this signature just authorizes who (the spender) ",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "security-23-decimal-verifying-contract",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 31.1,
+   "rc": 0,
+   "reply": "The number is USDC on Ethereum mainnet.\n\nConverting the decimal to a 20-byte hex value gives `a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48`. That is Circle's USDC contract, confirmed against the ethskills verified address list. I did not run an onchain check because no Alchemy key is available and the global rules forbid public RPCs.\n\nThe trick here is JSON type coercion. A number and a hex string decode to the same 160-bit value, so a wallet doing string comparison against its known-contract list would miss the match. That would skip the USDC-specific warning for a permit or EIP-3009 transfer-authorization signature. Domain comparison should normalize the verifyingContract field to bytes or lowercase hex before matching.\n\nAnswer: 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48\n",
+   "files": [],
+   "detail": "got '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'",
+   "pass": true
+  },
+  {
+   "id": "security-24-siwe-domain",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 12.8,
+   "rc": 0,
+   "reply": "This is a Sign-In with Ethereum (EIP-4361) domain-binding question. No further lookups are needed.\n\nThe message says opensea.io wants the user to sign in, but the request comes from opensea-rewards.xyz. In SIWE, the domain field is the security anchor. A wallet must compare it against the actual requesting origin. Here they differ, so the wallet should refuse or warn loudly.\n\n**Why the other options fail:**\n\n- **A** trusts the message text. Anyone can type \"opensea.io\" into a message. The name in the message proves nothing about who is asking.\n- **C** is wrong because a valid SIWE signature is a login credential. The phishing site can replay it to opensea.io's backend and take over the session. No funds move at signing time, but the account is compromised.\n- **D** checks the wrong thing. The nonce guards against replay by the honest server. It does nothing when the attacker is the one relaying a fresh signature.\n\nThis is exactly the attack SIWE's domain binding exists to stop. Wallets like MetaMask and Rabby flag this mismatch by default.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "security-25-safe-delegatecall",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 13.6,
+   "rc": 0,
+   "reply": "`operation = 1` means DELEGATECALL. The Safe runs the target contract's code in the Safe's own context. That code gets the Safe's address, its storage, and its balance. Any storage write in the target lands in the Safe. That includes slot 0, the singleton (mastercopy) pointer. Overwrite that and the Safe now runs attacker code on every future call. Owners, threshold, and funds are all gone.\n\nThat is why it comes before the decoded data. The decoding shows what the inner calls would do if the target were honest. It says nothing about what the target actually does. A malicious contract can ignore the calldata entirely and just write to storage. The Bybit drain in February 2025 worked this way: signers saw a routine transfer in the UI, but the transaction was a delegatecall to a contract that replaced the mastercopy.\n\nTwo checks for this transaction:\n\n- **Verify the target is the canonical MultiSend.** Safe's deployed addresses are listed in the safe-deployments repo. Delegatecall to MultiSend is normal. Delegatecall to anything else should stop you.\n- **Compare the hash on the hardware wallet** against an independently computed safeTxHash, not what the web UI shows.\n\nOptions A, C, and D are wrong. The Safe enforces `operation` in execTransaction: 0 is CALL, 1 is DELEGATECALL. It is not informational and has nothing to do with attached ETH.\n\nAnswer: B\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
    "id": "transactions-01-selector-string",
    "pillar": "transactions",
    "kind": "quiz",
@@ -3555,6 +3738,61 @@
    "reply": "The revert data is a standard `Error(string)` payload. The selector is `0x08c379a0`, followed by the string offset, then the length of 20 bytes, then the UTF-8 bytes of the message. Both cast and a raw hex decode agree.\n\nAnswer: Insufficient balance\n",
    "files": [],
    "detail": "got 'insufficient balance'",
+   "pass": true
+  },
+  {
+   "id": "transactions-21-decode-raw-tx",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 18.4,
+   "rc": 0,
+   "reply": "```json\n{\"type\": 2, \"chainId\": 1, \"nonce\": 785, \"to\": \"0x70997970c51812dc3a010c7d01b50e0d17dc79c8\", \"valueWei\": 1000000000000000000, \"maxFeePerGas\": 2000000000, \"maxPriorityFeePerGas\": 2000000000, \"from\": \"0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266\"}\n```\n",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "transactions-22-legacy-v-chainid",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 18.9,
+   "rc": 0,
+   "reply": "EIP-155 says a replay-protected legacy transaction sets v = chainId * 2 + 35 or chainId * 2 + 36. Solving for v = 1811:\n\n```\n(1811 - 35) / 2 = 888   \u2192 recovery id 0\n(1811 - 36) / 2 = 887.5 \u2192 not an integer\n```\n\nOnly the first option yields a whole number, so the chain id is 888.\n\nAnswer: 888\n",
+   "files": [],
+   "detail": "got 888",
+   "pass": true
+  },
+  {
+   "id": "transactions-23-serialize-zero-tx",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 24.9,
+   "rc": 0,
+   "reply": "The unsigned EIP-1559 signing payload is the type byte followed by the RLP list of nine fields.\n\nBreakdown of the bytes:\n\n- `02` is the transaction type prefix.\n- `dd` is the RLP list header for a 29-byte payload.\n- `01` is chainId 1.\n- `80 80 80 80` are nonce, maxPriorityFeePerGas, maxFeePerGas, and gasLimit, each zero, encoded as empty byte strings.\n- `94` followed by the 20 address bytes is the `to` field.\n- `80 80` are value zero and empty data.\n- `c0` is the empty access list.\n\nHashing these bytes with keccak256 gives the digest to sign.\n\nAnswer: 0x02dd01808080809470997970c51812dc3a010c7d01b50e0d17dc79c88080c0\n",
+   "files": [],
+   "detail": "got '0x02dd01808080809470997970c51812dc3a010c7d01b50e0d17dc79c88080c0'",
+   "pass": true
+  },
+  {
+   "id": "transactions-24-7702-self-nonce",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 11.3,
+   "rc": 0,
+   "reply": "The authorization nonce must be 6.\n\nEIP-7702 processes a type-4 transaction in this order: it validates and increments the sender's transaction nonce first, then processes the authorization list. Each authorization tuple is only applied if its nonce equals the authority's nonce at the moment it is processed. When the sender and authority are the same account, the sender's nonce has already gone from 5 to 6 by the time the tuple is checked. So the transaction itself uses nonce 5, and the authorization tuple must carry nonce 6. A tuple signed with nonce 5 would be silently skipped and no delegation would be set.\n\nAnswer: 6\n",
+   "files": [],
+   "detail": "got 6",
+   "pass": true
+  },
+  {
+   "id": "transactions-25-safe-tx-hash",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 27.3,
+   "rc": 0,
+   "reply": "The typehashes match the constants hard-coded in Safe v1.3.0, so the inputs are right.\n\n**What the transaction does:** it calls `addOwnerWithThreshold` on the Safe itself, adding owner `0x0c75Fa5a5F1C0997e3eEA425cFA13184ed0eC9e5` and setting the threshold to 3. Confirm that owner address and threshold are intended before signing.\n\n**Intermediate values**\n\n| Step | Value |\n|---|---|\n| Domain separator (chainId 42161, Safe address) | `0x1cf7f9b1efe3bc47fe02fd27c649fea19e79d66040683a1c86c7490c80bf7291` |\n| SafeTx struct hash (nonce 234, keccak of data) | `0xd9109ea63c50ecd3b80b6b27ed5c5a9fd3d546c2169dfb69bfa7ba24cd14c7a5` |\n| Safe tx hash = keccak(0x1901 \u2016 domain \u2016 struct) | `0x0cb7250b8becd7069223c54e2839feaed4cee156363fbfe5dd0a48e75c4e25b3` |\n\nA hardware wallet in EIP-712 mode should show that final hash as the message to sign.\n\nAnswer: 0x0cb7250b8becd7069223c54e2839feaed4cee156363fbfe5dd0a48e75c4e25b3\n",
+   "files": [],
+   "detail": "got '0x0cb7250b8becd7069223c54e2839feaed4cee156363fbfe5dd0a48e75c4e25b3'",
    "pass": true
   }
  ]

@@ -259,7 +259,7 @@ f"""A site the user has never used before pops a wallet prompt: eth_signTypedDat
 
 What would signing this do? Is it safe? What should the user do?
 
-Write your answer to answer.md in this directory, showing your reasoning.""",
+Write your answer to answer.md in this directory. Be specific about the amount, the spender and the dates.""",
 expect=[
  "answer.md identifies this as an EIP-2612 permit on mainnet USDC (the verifyingContract 0xa0b8…eb48, 'USD Coin' version 2) that would grant the spender 0x1661…3Ee3 an allowance of 1,033,366.316628 USDC — the value 1033366316628 read with USDC's 6 decimals; 'about 1.03 million USDC' counts. Reading it as 1033 USDC or as an 18-decimal amount fails.",
  "It explains that the signature alone grants the allowance: nothing is broadcast by the user, no gas is paid, nothing appears in the wallet's activity; the spender later submits permit() and then transferFrom to pull the tokens.",
@@ -275,7 +275,7 @@ f"""A wallet prompt from a site the user just connected to: eth_signTypedData_v4
 
 What does signing this authorize, exactly? What should the user do?
 
-Write your answer to answer.md in this directory, showing your reasoning.""",
+Write your answer to answer.md in this directory. Be specific about the amounts, the spender and the dates.""",
 expect=[
  "answer.md identifies this as a Permit2 PermitBatch (the canonical Permit2 contract at 0x0000…BA3): one signature sets three allowances at once, USDC, WETH and DAI, for the spender 0x1661…3Ee3.",
  "It reads the amount 1461501637330902918203684832716283019655932542975 as the maximum uint160, i.e. unlimited, and the expiration 1900000000 as March 2030, so the spender can pull any amount of all three tokens for years. It distinguishes sigDeadline (how long the signature can be submitted) from expiration (how long the allowance lasts).",

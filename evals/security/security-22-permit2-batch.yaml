@@ -10,7 +10,7 @@ prompt: |
 
   What does signing this authorize, exactly? What should the user do?
 
-  Write your answer to answer.md in this directory, showing your reasoning.
+  Write your answer to answer.md in this directory. Be specific about the amounts, the spender and the dates.
 expect:
 - 'answer.md identifies this as a Permit2 PermitBatch (the canonical Permit2 contract at 0x0000…BA3): one signature
   sets three allowances at once, USDC, WETH and DAI, for the spender 0x1661…3Ee3.'

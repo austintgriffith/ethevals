@@ -5,29 +5,29 @@
  "skill": null,
  "executor_cmd": "codex exec --model gpt-6-astra --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check -o .ethevals-reply.txt - >/dev/null 2>&1; cat .ethevals-reply.txt",
  "judge_cmd": "claude -p --model sonnet --strict-mcp-config --disallowedTools Bash,Edit,Write,WebFetch,WebSearch",
- "started": "2026-09-21T03:03:59+00:00",
- "manifest": "2e23c19c009f",
+ "started": "2026-09-21T17:02:07+00:00",
+ "manifest": "4aa67fc4f695",
  "pillars": {
   "concepts": {
-   "pass": 20,
-   "total": 20
+   "pass": 25,
+   "total": 25
   },
   "transactions": {
-   "pass": 20,
-   "total": 20
+   "pass": 24,
+   "total": 25
   },
   "building": {
-   "pass": 16,
-   "total": 20
+   "pass": 21,
+   "total": 25
   },
   "security": {
-   "pass": 18,
-   "total": 20
+   "pass": 23,
+   "total": 25
   }
  },
  "total": {
-  "pass": 74,
-  "total": 80
+  "pass": 93,
+  "total": 100
  },
  "rows": [
   {
@@ -475,6 +475,61 @@
    "pass": true
   },
   {
+   "id": "building-21-5792-fallback",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 14.5,
+   "rc": 0,
+   "reply": "B) Throw. Falling back to separate transactions would violate required atomicity and discard sponsorship: the approval could succeed while the swap fails. Required guarantees must be preserved. [EIP-5792](https://eips.ethereum.org/EIPS/eip-5792)\n\nAnswer: B",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "building-22-sign-transaction",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 12.8,
+   "rc": 0,
+   "reply": "B is correct. `eth_signTransaction` returns the raw signed transaction without broadcasting it. The caller can later submit it using `eth_sendRawTransaction`. See [EIP-1474](https://eips.ethereum.org/EIPS/eip-1474#eth_signtransaction).\n\nAnswer: B",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "building-23-compact-signature",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 19.6,
+   "rc": 0,
+   "reply": "`v = 0x1c = 28`, so `yParity = 1`. [ERC-2098](https://eips.ethereum.org/EIPS/eip-2098) sets the highest bit of `s`, changing its first byte from `0x13` to `0x93`, and removes `v`.\n\nAnswer: 0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c693fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb33",
+   "files": [],
+   "detail": "got '0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c693fd866a0df842'",
+   "pass": true
+  },
+  {
+   "id": "building-24-4337-2d-nonce",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 13.1,
+   "rc": 0,
+   "reply": "`getNonce` returns `(key << 64) | sequence`. After one operation on key `1`, the sequence is `1`, giving `2^64 + 1`. [ERC-4337](https://ercs.ethereum.org/ERCS/erc-4337)\n\nAnswer: 18446744073709551617",
+   "files": [],
+   "detail": "got 18446744073709551617",
+   "pass": true
+  },
+  {
+   "id": "building-25-hash-message-string",
+   "pillar": "building",
+   "kind": "quiz",
+   "seconds": 17.4,
+   "rc": 0,
+   "reply": "The wallet signs `keccak256(\"\\x19Ethereum Signed Message:\\n10\" || \"0xdeadbeef\")`, using the ten text characters as the message.\n\nAnswer: 0xefedd0a9a0294228c3977d7fbb68c7d40279f8b408cf3e24ef1823b179709e58",
+   "files": [],
+   "detail": "got '0xefedd0a9a0294228c3977d7fbb68c7d40279f8b408cf3e24ef1823b179709e58'",
+   "pass": true
+  },
+  {
    "id": "concepts-01-nothing-is-automatic",
    "pillar": "concepts",
    "kind": "quiz",
@@ -690,6 +745,61 @@
    "seconds": 5.0,
    "rc": 0,
    "reply": "{\"can_know\":false,\"note\":\"I cannot know the current Ethereum mainnet gas price without live data access.\"}",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-21-7702-chainid-zero",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 13.9,
+   "rc": 0,
+   "reply": "**B.** `chainId = 0` is a wildcard: the authorization can be replayed on any chain supporting EIP-7702, provided the account nonce and other validity checks pass. First inclusion does not bind it to that chain. [EIP-7702](https://eips.ethereum.org/EIPS/eip-7702#behavior)\n\nA wallet should reject untrusted requests or clearly warn about cross-chain delegation. The same delegate address can contain different code on different chains; the EIP specifically calls for wallet-audited delegate code and advises against exposing arbitrary dapp-requested authorization signing. [Wallet guidance](https://eips.ethereum.org/EIPS/eip-7702#interaction-with-applications-and-wallets)\n\nAnswer: B",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-22-7702-no-recursion",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 13.4,
+   "rc": 0,
+   "reply": "Only one delegation hop is followed. The EVM loads B\u2019s 23-byte delegation designator and stops resolving; execution fails on its initial `0xef` opcode. C\u2019s code never runs. This is an execution failure, not transaction invalidity. [EIP-7702](https://eips.ethereum.org/EIPS/eip-7702)\n\nAnswer: B",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-23-7702-bad-tuple",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 11.7,
+   "rc": 0,
+   "reply": "B. The mismatched tuple is skipped, the valid tuple is applied, and execution proceeds with gas charged for both tuples. An empty authorization list invalidates the transaction; ordinary transaction validity rules still apply. [EIP-7702](https://eips.ethereum.org/EIPS/eip-7702)\n\nAnswer: B",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-24-4337-banned-opcodes",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 12.1,
+   "rc": 0,
+   "reply": "These restrictions prevent validation from passing simulation and then failing at inclusion because environmental values changed, exposing the bundler to gas griefing. [ERC-7562](https://ercs.ethereum.org/ERCS/erc-7562) defines these protections; time bounds use `validAfter` and `validUntil` in the validation return value.\n\nAnswer: B",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "concepts-25-1271-replay-safe",
+   "pillar": "concepts",
+   "kind": "quiz",
+   "seconds": 5.3,
+   "rc": 0,
+   "reply": "The wrapper binds K\u2019s signature to the specific smart account and chain. Without that binding, the same signature could validate for other accounts owned by K, allowing an approval intended for one account to be replayed as another account\u2019s approval.\n\nAnswer: B",
    "files": [],
    "detail": "",
    "pass": true
@@ -2355,6 +2465,79 @@
    "pass": false
   },
   {
+   "id": "security-21-malicious-permit",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 41.7,
+   "rc": 0,
+   "reply": "Wrote [answer.md](answer.md) with the amount, spender, deadline, and recommended actions.\n\nKey finding: it requests a **1,033,366.316628 USDC** allowance, but expired on **March 13, 2023 at 12:12:35 UTC**. This exact permit cannot be redeemed today. Reject the unfamiliar site\u2019s prompt.",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md correctly identifies the EIP-2612 permit, mainnet chainId 1, USDC verifyingContract 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48, 'USD Coin' version 2, spender 0x1661F1B207629e4F385DA89cFF535C; 2:pass Answer states signing 'does not itself send a transaction or transfer funds' and explains that if submitted, someone would call USDC's permit() to set the allowance and then use transferFrom to move f; 3:pass Answer converts 1678709555 to March 13, 2023, notes it's expired relative to today (Sept 21, 2026), and still explicitly instructs to reject the prompt and treat it as hostile",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "security-22-permit2-batch",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 55.7,
+   "rc": 0,
+   "reply": "Wrote [answer.md](answer.md) with exact amounts, spender, deadlines, and remediation steps.\n\nRecommendation: reject it\u2014it grants unlimited USDC, WETH, and DAI spending permission through March 17, 2030.",
+   "files": [
+    "answer.md"
+   ],
+   "expects": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "detail": "1:pass answer.md explicitly identifies the Permit2 AllowanceTransfer batch, names the verifying contract 0x000000000022D473030F116dDEE9F6B43aC78BA3 as the standard Permit2 address, lists USDC/WETH/DAI in a t; 2:pass answer.md states the amount equals 2^160-1 (max uint160, i.e. unlimited) and converts 1900000000 to March 17, 2030; it explicitly distinguishes sigDeadline ('limits signature submission') from expirat; 3:pass answer.md notes existing token approvals to Permit2 supply the underlying access, that the spender can withdraw 'without another wallet confirmation, potentially in the same t",
+   "ungraded": false,
+   "pass": true
+  },
+  {
+   "id": "security-23-decimal-verifying-contract",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 21.5,
+   "rc": 0,
+   "reply": "The exact decimal integer converts to the Ethereum mainnet **USDC** contract address listed by [Circle](https://github.com/circlefin/skills/blob/master/plugins/circle/skills/use-usdc/SKILL.md). Conversion must preserve integer precision; JavaScript `Number` would round this value.\n\nAnswer: 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+   "files": [],
+   "detail": "got '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'",
+   "pass": true
+  },
+  {
+   "id": "security-24-siwe-domain",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 12.3,
+   "rc": 0,
+   "reply": "The wallet should reject the request: `opensea-rewards.xyz` does not match the message\u2019s `opensea.io` domain. SIWE requires origin matching to prevent phishing; a fresh nonce or use of `personal_sign` does not remove that risk. [ERC-4361](https://eips.ethereum.org/EIPS/eip-4361)\n\nAnswer: B",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "security-25-safe-delegatecall",
+   "pillar": "security",
+   "kind": "quiz",
+   "seconds": 13.4,
+   "rc": 0,
+   "reply": "**B.** `operation = 1` means **DELEGATECALL**: the target\u2019s code executes using the Safe\u2019s address and storage. Check it first because it determines the target\u2019s authority; benign-looking decoded transfers and zero ETH value do not prevent malicious code from overwriting the singleton/mastercopy slot. That takeover mechanism was used in the [Bybit attack](https://www.certik.com/blog/bybit-incident-technical-analysis).\n\nLegitimate MultiSend transactions also use DELEGATECALL, so the flag alone does not establish malice\u2014you must verify the actual target code and signed payload.\n\nAnswer: B",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
    "id": "transactions-01-selector-string",
    "pillar": "transactions",
    "kind": "quiz",
@@ -2572,6 +2755,61 @@
    "reply": "Answer: Insufficient balance",
    "files": [],
    "detail": "got 'insufficient balance'",
+   "pass": true
+  },
+  {
+   "id": "transactions-21-decode-raw-tx",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 23.6,
+   "rc": 0,
+   "reply": "{\"type\":2,\"chainId\":1,\"nonce\":785,\"to\":\"0x70997970c51812dc3a010c7d01b50e0d17dc79c8\",\"valueWei\":1000000000000000000,\"maxFeePerGas\":2000000000,\"maxPriorityFeePerGas\":2000000000,\"from\":\"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266\"}",
+   "files": [],
+   "detail": "",
+   "pass": true
+  },
+  {
+   "id": "transactions-22-legacy-v-chainid",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 6.5,
+   "rc": 0,
+   "reply": "For an EIP-155 legacy transaction, `v = 2 \u00d7 chain_id + 35 + recovery_parity`.\n\nWith `v = 1811`, the recovery parity is 0, so `(1811 \u2212 35) / 2 = 888`.\n\nAnswer: 888",
+   "files": [],
+   "detail": "got 888",
+   "pass": true
+  },
+  {
+   "id": "transactions-23-serialize-zero-tx",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 8.4,
+   "rc": 0,
+   "reply": "Answer: 0x02dd80808080809470997970c51812dc3a010c7d01b50e0d17dc79c88080c0",
+   "files": [],
+   "detail": "got '0x02dd80808080809470997970c51812dc3a010c7d01b50e0d17dc79c88080c0'",
+   "pass": false
+  },
+  {
+   "id": "transactions-24-7702-self-nonce",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 12.4,
+   "rc": 0,
+   "reply": "The transaction uses nonce 5, which increments the sender\u2019s nonce to 6 before authorizations are processed. Because the sender and authorization signer are the same account, the authorization tuple must carry nonce 6. See [EIP-7702](https://eips.ethereum.org/EIPS/eip-7702).\n\nAnswer: 6",
+   "files": [],
+   "detail": "got 6",
+   "pass": true
+  },
+  {
+   "id": "transactions-25-safe-tx-hash",
+   "pillar": "transactions",
+   "kind": "quiz",
+   "seconds": 42.1,
+   "rc": 0,
+   "reply": "The owners sign the EIP-712 digest `keccak256(0x1901 || domainSeparator || safeTxStructHash)`, using chain ID `42161`, the Safe as verifying contract, and nonce `234`.\n\nAnswer: 0x0cb7250b8becd7069223c54e2839feaed4cee156363fbfe5dd0a48e75c4e25b3",
+   "files": [],
+   "detail": "got '0x0cb7250b8becd7069223c54e2839feaed4cee156363fbfe5dd0a48e75c4e25b3'",
    "pass": true
   }
  ]
