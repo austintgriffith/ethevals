@@ -14,6 +14,14 @@ PILLAR_META = {
     "security": ("Security", "Everyone catches reentrancy. Inflation attacks, stale oracles, signature replay, upgrade collisions, rounding, and the rest."),
 }
 
+MODEL_LABELS = {"fable-5.1": "Fable 5.1", "opus-5": "Opus 5", "sonnet-5": "Sonnet 5", "haiku-4.5": "Haiku 4.5", "gpt-6-astra": "GPT-6 Astra",
+                "gpt-5.5": "GPT-5.5", "gpt-5.6": "GPT-5.6", "kimi-k2": "Kimi K2", "glm-5": "GLM-5", "deepseek-v4": "DeepSeek V4"}
+
+def label(name):
+    """'fable-5.1+ethskills' -> 'Fable 5.1 + ethskills'. Unknown slugs are shown as typed."""
+    base, *rest = name.split("+")
+    return " + ".join([MODEL_LABELS.get(base, base)] + rest)
+
 def summary(e):
     if e.get("summary"): return e["summary"]
     t = re.sub(r"\s+", " ", e["prompt"]).strip()
@@ -32,7 +40,7 @@ def main():
         if f.endswith("index.json"): continue
         d = json.load(open(f))
         rows = [r for r in d.get("rows", []) if not r.get("dead") and not r.get("ungraded")]
-        runs.append({k: d.get(k) for k in ("name", "model", "harness", "skill", "started", "manifest", "pillars", "total")}
+        runs.append({k: d.get(k) for k in ("name", "model", "harness", "skill", "started", "manifest", "pillars", "total")} | {"label": label(d["name"])}
                     | {"file": os.path.relpath(f, ROOT), "evals_run": len(rows), "verdicts": {r["id"]: bool(r["pass"]) for r in rows}})
     runs.sort(key=lambda r: -(r["total"]["pass"] if r.get("total") else 0))
     json.dump({"generated": cat["generated"], "manifest": cat["manifest"], "runs": runs}, open(os.path.join(ROOT, "results", "index.json"), "w"), indent=1)

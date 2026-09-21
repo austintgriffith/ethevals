@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-21T03:54:09+00:00",
+ "generated": "2026-09-21T03:54:38+00:00",
  "manifest": "2e23c19c009f",
  "runs": [
   {
@@ -31,6 +31,7 @@
     "pass": 74,
     "total": 80
    },
+   "label": "GPT-6 Astra",
    "file": "results/gpt-6-astra.json",
    "evals_run": 80,
    "verdicts": {
@@ -145,6 +146,7 @@
     "pass": 73,
     "total": 80
    },
+   "label": "Fable 5.1 + ethskills",
    "file": "results/fable-5.1+ethskills.json",
    "evals_run": 80,
    "verdicts": {
@@ -259,6 +261,7 @@
     "pass": 70,
     "total": 80
    },
+   "label": "Opus 5",
    "file": "results/opus-5.json",
    "evals_run": 80,
    "verdicts": {
@@ -373,6 +376,7 @@
     "pass": 68,
     "total": 80
    },
+   "label": "Fable 5.1",
    "file": "results/fable-5.1.json",
    "evals_run": 80,
    "verdicts": {
@@ -487,6 +491,7 @@
     "pass": 67,
     "total": 80
    },
+   "label": "Sonnet 5",
    "file": "results/sonnet-5.json",
    "evals_run": 80,
    "verdicts": {
@@ -601,6 +606,7 @@
     "pass": 53,
     "total": 80
    },
+   "label": "Haiku 4.5 + ethskills",
    "file": "results/haiku-4.5+ethskills.json",
    "evals_run": 80,
    "verdicts": {
@@ -715,6 +721,7 @@
     "pass": 47,
     "total": 80
    },
+   "label": "Haiku 4.5",
    "file": "results/haiku-4.5.json",
    "evals_run": 80,
    "verdicts": {

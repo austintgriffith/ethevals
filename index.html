@@ -7,12 +7,14 @@
 <meta name="description" content="Evals for LLMs, agents, skills and harnesses across the four pillars of Ethereum knowledge: concepts, transactions, building, security.">
 <meta property="og:title" content="ETHEVALS">
 <meta property="og:description" content="How much does your AI actually know about Ethereum? Evals across concepts, transactions, building and security.">
+<meta property="og:image" content="https://ethevals.com/og-image.png">
 <meta property="og:url" content="https://ethevals.com">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ETHEVALS">
 <meta name="twitter:description" content="How much does your AI actually know about Ethereum?">
+<meta name="twitter:image" content="https://ethevals.com/og-image.png">
 <style>
 :root {
   /* Ether blue / purple, teal secondary. Same shape as ethskills' amber CRT. */
@@ -297,11 +299,13 @@ function renderCards(cat, res) {
     const d = el('div', 'card');
     const pct = Math.round(100 * c.total.pass / c.total.total);
     const tags = [`<span class="tag">${esc(c.harness)}</span>`, c.skill ? `<span class="tag skill">skill: ${esc(c.skill.replace(/^https?:\/\//, '').replace(/\/SKILL\.md$/, ''))}</span>` : '<span class="tag">vanilla</span>'];
+    const base = runs.find(r => r.name === c.name.split('+')[0] && !r.skill);
+    if (c.skill && base && base.total) { const d = c.total.pass - base.total.pass; tags.push(`<span class="tag ${d > 0 ? 'skill' : 'sample'}">${d >= 0 ? '+' : ''}${d} vs vanilla</span>`); }
     if (c.manifest !== cat.manifest) tags.push('<span class="tag sample">older eval set</span>');
     if (c.evals_run < c.total.total) tags.push(`<span class="tag sample">partial: ${c.evals_run}/${c.total.total}</span>`);
     d.innerHTML = `
       <div>
-        <div class="card-name">${esc(c.name)}</div>
+        <div class="card-name">${esc(c.label || c.name)}</div>
         <div class="card-tags">${tags.join('')}</div>
       </div>
       <div class="card-total"><b>${pct}%</b><small>${c.total.pass} / ${c.total.total}</small></div>
