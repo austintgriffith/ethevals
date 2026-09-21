@@ -113,7 +113,7 @@ h2 {
 .legend span::before { content: ''; display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: var(--pc); margin-right: 0.4rem; vertical-align: -1px; }
 
 /* results cards */
-.cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+.cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; align-items: start; }
 @media (max-width: 620px) { .cards { grid-template-columns: 1fr; } }
 .card {
   border: 1px solid var(--border); border-radius: 4px; padding: 0.85rem 0.9rem 0.9rem 0.9rem;
@@ -136,6 +136,21 @@ h2 {
 .bars .trk { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
 .bars .fil { height: 100%; background: var(--pc); border-radius: 3px; }
 .bars .val { color: var(--fg); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* card drilldown */
+.card { cursor: pointer; }
+.card.open { background: var(--hover); }
+.drill { grid-column: 1 / -1; display: none; border-top: 1px solid var(--border); margin-top: 0.5rem; padding-top: 0.6rem; font-size: 11px; }
+.card.open .drill { display: block; }
+.drill-h { color: var(--dim); text-transform: uppercase; letter-spacing: 1.5px; font-size: 10px; margin: 0.5rem 0 0.25rem 0; }
+.drill-h:first-child { margin-top: 0; }
+.drill ul { list-style: none; }
+.drill li { padding: 0.15rem 0; color: var(--fg); display: flex; gap: 0.5rem; align-items: baseline; }
+.drill li::before { content: '✕'; color: var(--fail); font-size: 10px; flex-shrink: 0; }
+.drill li.ok::before { content: '✓'; color: var(--pass); }
+.drill li.na::before { content: '·'; color: var(--dim); }
+.drill li .p { color: var(--pc); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; width: 6.5rem; }
+.drill a { color: var(--dim); }
 
 /* eval catalog */
 details.pillar-list { border: 1px solid var(--border); border-radius: 4px; margin-bottom: 0.75rem; }
@@ -198,7 +213,7 @@ details.pillar-list summary:hover { background: var(--hover); }
 <div class="pillars" id="pillars"></div>
 
 <h2>Results</h2>
-<p class="section-text">One card per configuration. A model alone and the same model with a skill installed are two different cards, because the gap between them is the point. Scores are out of 20 per pillar.</p>
+<p class="section-text">One card per configuration. A model alone and the same model with a skill installed are two different cards, because the gap between them is the point. Scores are out of 20 per pillar. Click a card to see which evals it missed.</p>
 <p class="section-text" id="results-note">Loading results…</p>
 <div class="cards" id="cards" style="margin-top:1.25rem"></div>
 <div class="legend">
@@ -294,7 +309,16 @@ function renderCards(cat, res) {
         <span class="lbl">${esc(p.name)}</span>
         <span class="trk"><span class="fil" style="--pc:${PILLAR_COLOR[p.id]};width:${100 * s.pass / (s.total || 1)}%"></span></span>
         <span class="val">${s.pass} / ${s.total}</span>`; }).join('')}</div>`;
-    d.title = `${c.model} · ${c.harness} · ${c.started || ''}`;
+    d.title = `${c.model} · ${c.harness} · ${c.started || ''} · click for the eval-by-eval breakdown`;
+    const v = c.verdicts || {};
+    const missed = cat.evals.filter(e => v[e.id] === false);
+    const notRun = cat.evals.filter(e => !(e.id in v));
+    const row = e => `<li class="${v[e.id] ? 'ok' : (e.id in v ? '' : 'na')}"><span class="p" style="--pc:${PILLAR_COLOR[e.pillar]}">${esc(e.pillar)}</span>${esc(e.title)}<span class="eval-k">${e.kind}</span></li>`;
+    d.insertAdjacentHTML('beforeend', `<div class="drill">
+      <div class="drill-h">Missed ${missed.length}</div><ul>${missed.map(row).join('') || '<li class="ok">nothing</li>'}</ul>
+      ${notRun.length ? `<div class="drill-h">Not run ${notRun.length}</div><ul>${notRun.map(row).join('')}</ul>` : ''}
+      <div class="drill-h">Record</div><a href="${esc(c.file)}">${esc(c.file)}</a> · started ${esc((c.started || '').slice(0, 10))}</div>`);
+    d.addEventListener('click', ev => { if (ev.target.closest('a')) return; d.classList.toggle('open'); });
     cardsEl.appendChild(d);
   });
 }

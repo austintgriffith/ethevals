@@ -5,8 +5,8 @@
  "skill": null,
  "executor_cmd": "claude -p --model fable --dangerously-skip-permissions --strict-mcp-config",
  "judge_cmd": "claude -p --model sonnet --strict-mcp-config --disallowedTools Bash,Edit,Write,WebFetch,WebSearch",
- "started": "2026-09-20T21:03:46+00:00",
- "manifest": "cdb4dd24b5cf",
+ "started": "2026-09-21T00:34:32+00:00",
+ "manifest": "2e23c19c009f",
  "pillars": {
   "concepts": {
    "pass": 20,
@@ -17,7 +17,7 @@
    "total": 20
   },
   "building": {
-   "pass": 14,
+   "pass": 13,
    "total": 20
   },
   "security": {
@@ -26,7 +26,7 @@
   }
  },
  "total": {
-  "pass": 69,
+  "pass": 68,
   "total": 80
  },
  "rows": [
@@ -89,23 +89,72 @@
    "pass": true
   },
   {
-   "id": "building-04-balance-read",
+   "id": "building-04-se2-staking-dapp",
    "pillar": "building",
-   "kind": "quiz",
-   "seconds": 65.8,
+   "kind": "goal",
+   "seconds": 1700.8,
    "rc": 0,
-   "reply": "Wrote `answer.md` in this directory. Summary of what it says:\n\n- **Silent undefined:** the hook resolves the contract by name from the merged `deployedContracts` + `externalContracts` map under the target chain id. No `USDC` key under 8453 means `useDeployedContractInfo` returns undefined, wagmi's `useReadContract` gets no address or ABI, and the query is disabled. Disabled queries never fire and never error. TypeScript flags `\"USDC\"` as an invalid `ContractName`, but `next dev` renders through it.\n- **Fix self-destructed:** `deployedContracts.ts` is generated. `yarn deploy` runs `generateTsAbis.ts` after hardhat deploy, which rebuilds the whole file from `packages/hardhat/deployments/` and overwrites it. USDC has no artifact there, so it was dropped.\n- **Correct registration:** `packages/nextjs/contracts/externalContracts.ts`, keyed `8453: { USDC: { address, abi } }` with `satisfies GenericContractsDeclaration`. Address is `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`, a proxy, so use the FiatTokenV2_2 ABI. The file includes a trimmed ERC-20 ABI entry ready to paste.\n- **Also noted:** `scaffold.config.ts` must target `chains.base`, and USDC is 6 decimals.\n",
+   "reply": "Done. Two commits on a fresh git repo in the workspace, working tree clean, no remote configured so nothing was pushed.\n\n**What was built**\n\n- `packages/hardhat/contracts/Staker.sol`: deposit USDC, `withdraw()` returns the caller's full position. No owner, no pause, no rewards. Checks-effects-interactions with OpenZeppelin `SafeERC20`, custom errors, immutable token.\n- `packages/hardhat/contracts/MockUSDC.sol`: \"USD Coin\" / \"USDC\" / 6 decimals with an open `mint`. Deployed only on chain 31337, under the deployment name `USDC` so the frontend uses one contract name everywhere.\n- Deploy scripts pick Circle's real USDC on Base and Base Sepolia, refuse unknown chains, and read `decimals()` off the address before deploying so a typo can't ship an unusable vault.\n- Tests in `packages/hardhat/test/Staker.ts` run the real deploy scripts and cover stake, withdraw, events, allowance and balance reverts, double withdraw, and user isolation. 12 passing.\n- `/stake` page shows wallet USDC, ETH balance for gas, and staked position. Approve then stake with exact-amount approvals, withdraw all, Max button, input validation, and alerts for wrong network, zero ETH, missing contract, and RPC read errors. A \"Get 1,000 test USDC\" button appears on the local chain only.\n- Real USDC for Base and Base Sepolia added to `externalContracts.ts`. Base RPCs in the Hardhat config moved to Alchemy. README rewritten with the local flow and a go-live checklist.\n\n**Verified**: Hardhat and Next type-checks, lint on both packages, the test suite, and a production `next build` all pass. The Carlos reviewer's must-fix (daisyUI 4 class names on daisyUI 5) and should-fixes are applied in the second commit.\n\n**Two things to know**\n\n- This machine runs Node 25, whose built-in `localStorage` breaks the template's server rendering. The build passes with `NODE_OPTIONS=--no-experimental-webstorage`. I added an `.nvmrc` pinning Node 22 and a README note. Vercel's default Node is unaffected.\n- `scaffold.config.ts` still targets hardhat for local dev. Go-live is: `yarn deploy --network base`, commit the regenerated `deployedContracts.ts`, switch `targetNetworks` to `[chains.base]`, build, deploy. Steps are in the README.\n\nOne decision to flag: `withdraw()` is full-position only, as the spec described. Partial withdrawals would be a small addition if wanted.\n",
    "files": [
-    "answer.md"
+    ".nvmrc",
+    "README.md",
+    "packages/hardhat/contracts/MockUSDC.sol",
+    "packages/hardhat/contracts/Staker.sol",
+    "packages/hardhat/deploy/00_deploy_usdc.ts",
+    "packages/hardhat/deploy/01_deploy_staker.ts",
+    "packages/hardhat/deployments/default/.chain",
+    "packages/hardhat/deployments/default/Staker.json",
+    "packages/hardhat/deployments/default/USDC.json",
+    "packages/hardhat/generated/abis/MockUSDC.ts",
+    "packages/hardhat/generated/abis/Staker.ts",
+    "packages/hardhat/generated/abis/index.ts",
+    "packages/hardhat/hardhat.config.ts",
+    "packages/hardhat/test/Staker.ts",
+    "packages/hardhat/tsconfig.tsbuildinfo",
+    "packages/hardhat/types/ethers-contracts/MockUSDC.ts",
+    "packages/hardhat/types/ethers-contracts/Staker.ts",
+    "packages/hardhat/types/ethers-contracts/common.ts",
+    "packages/hardhat/types/ethers-contracts/factories/MockUSDC__factory.ts",
+    "packages/hardhat/types/ethers-contracts/factories/Staker__factory.ts",
+    "packages/hardhat/types/ethers-contracts/factories/index.ts",
+    "packages/hardhat/types/ethers-contracts/hardhat.d.ts",
+    "packages/hardhat/types/ethers-contracts/index.ts",
+    "packages/nextjs/app/blockexplorer/address/[address]/page.tsx",
+    "packages/nextjs/app/layout.tsx",
+    "packages/nextjs/app/page.tsx",
+    "packages/nextjs/app/stake/_components/MintTestUsdcButton.tsx",
+    "packages/nextjs/app/stake/_components/StakeDashboard.tsx",
+    "packages/nextjs/app/stake/_components/StakeForm.tsx",
+    "packages/nextjs/app/stake/_components/WithdrawCard.tsx",
+    "packages/nextjs/app/stake/page.tsx",
+    "packages/nextjs/components/Header.tsx",
+    "packages/nextjs/components/ScaffoldEthAppWithProviders.tsx",
+    "packages/nextjs/contracts/deployedContracts.ts",
+    "packages/nextjs/contracts/externalContracts.ts",
+    "packages/nextjs/next-env.d.ts",
+    "packages/nextjs/next.config.ts",
+    "packages/nextjs/public/manifest.json",
+    "packages/nextjs/scaffold.config.ts",
+    "packages/nextjs/services/web3/wagmiConfig.tsx",
+    "packages/nextjs/styles/globals.css",
+    "packages/nextjs/tsconfig.json",
+    "packages/nextjs/tsconfig.tsbuildinfo",
+    "packages/nextjs/types/abitype/abi.d.ts",
+    "packages/nextjs/utils/scaffold-eth/getMetadata.ts",
+    "packages/nextjs/utils/usdc.ts"
    ],
    "expects": [
     true,
     true,
-    true
+    true,
+    true,
+    true,
+    true,
+    false
    ],
-   "detail": "1:pass answer.md explains that useScaffoldReadContract resolves contracts by name via useDeployedContractInfo against the merged deployedContracts/externalContracts map keyed by chain id; an unregistered 'US; 2:pass answer.md explicitly states deployedContracts.ts is autogenerated (quotes the file's own header warning against manual edits) and traces yarn deploy -> hardhat deploy -> generateTsAbis.ts, which rebui; 3:pass answer.md specifies the correct registration is in packages/nextjs/contracts/externalContracts.ts, keyed under chain id 8453, with address 0x833589fCD6eDb6E08f4c7C32D4f71b54bd",
+   "detail": "1:pass StakeForm.tsx calls approve with args: [stakerAddress, amount] where amount is the parsed user-input stake amount (parseUsdc(amountInput)), not maxUint256 or any large constant. No unlimited-approval ; 2:pass The ETH balance is rendered via SE-2's stock <Balance address={address} chain={targetNetwork} /> component from @scaffold-ui/components, which is the canonical scaffold-eth component that derives a US; 3:pass All write flows (MintTestUsdcButton uses useTransactor directly; StakeForm/WithdrawCard use useScaffoldWriteContract, which internally wraps useTransactor) rely on scaffold-et",
    "ungraded": false,
-   "pass": true
+   "pass": false
   },
   {
    "id": "building-05-button-lifecycle",

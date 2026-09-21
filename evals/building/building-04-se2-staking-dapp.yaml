@@ -1,0 +1,65 @@
+id: building-04-se2-staking-dapp
+pillar: building
+title: Build a staking dApp on Scaffold-ETH 2
+workspace: se2-usdc-staking
+kind: goal
+prompt: |
+  This workspace is a fresh Scaffold-ETH 2 project. Build a USDC staking
+  dApp on top of it:
+
+  - A Staker contract: users deposit USDC and can withdraw their full
+    position at any time. Keep it minimal — no rewards logic needed.
+  - A /stake page in the Next.js app where a user can stake, withdraw, and
+    see their wallet USDC balance, their ETH balance (they need it for
+    gas), and their staked position.
+
+  The app targets Base, where USDC is
+  0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913. For local development you may
+  deploy a mock token, but keep it faithful to the real one.
+
+  Treat this as a real product: the page goes in front of real users at the
+  end of the week. You do not need to deploy anywhere or run the app —
+  finished, committed code is the deliverable.
+expect:
+- The approve call's amount is the amount being staked (or a small bounded multiple of it). Approving
+  maxUint256, type(uint256).max, 2**256-1, a hardcoded very large constant, or any 'unlimited' allowance
+  anywhere in the delivered frontend or contracts is a FAIL.
+- Amounts shown to the user carry USD context alongside the token amount; the ETH gas balance in particular
+  shows a USD value from a real price source (SE-2's native-currency price), not a 1:1 stablecoin shortcut,
+  and bare token units with no USD context anywhere are a fail.
+- Failed or rejected transactions surface a human-readable message in the UI near the triggering action;
+  raw revert data, raw error objects, or silent failures are a fail.
+- 'Page metadata is the staking app''s own: the tab title and OG/social tags (title, description) are
+  set for the staking app, not left as Scaffold-ETH 2 template defaults. Two template sites carry the
+  default: the ''Scaffold-ETH 2 App'' title exported from the root app/layout.tsx, and the ''%s | Scaffold-ETH
+  2'' titleTemplate in utils/scaffold-eth/getMetadata.ts, which Next.js appends to titles set on child
+  routes (the root default renders as-is). A pass changes the root app/layout.tsx title and description;
+  a run that leaves the titleTemplate suffix in place still passes, since the suffix is generic framework
+  attribution rather than the app''s title. No app/layout.tsx change in the diff is a fail, and metadata
+  set on app/stake/page.tsx alone does not pass: the home page and every shared link still carry the root
+  default. Other layout files (app/blockexplorer/layout.tsx, a new app/stake/layout.tsx) do not count.
+  Graded on the metadata alone — updated visible branding does not satisfy this line.'
+- 'Visible branding is the staking app''s own: the header/logo text and any product name rendered on the
+  page name the staking app, not Scaffold-ETH 2. Two template sites render the default: components/Header.tsx
+  (''Scaffold-ETH'' / ''Ethereum dev stack'' next to the SE2 logo) and the home-page hero in app/page.tsx
+  (''Scaffold-ETH 2''). A pass needs both replaced in the diff: for the header, either a Header.tsx hunk
+  that removes or replaces those two strings, or a hunk that stops rendering the template header (swapping
+  <Header /> in components/ScaffoldEthAppWithProviders.tsx for the app''s own); for the hero, an app/page.tsx
+  hunk that removes or replaces the string. The judge sees only the diff: a file left untouched still
+  ships its default and is a fail, and so is a hunk in that file that leaves the default lines alone (a
+  nav link added to menuLinks, say) — the strings never appear in such a diff, and their absence is not
+  evidence they were changed. Graded on visible branding alone — updated metadata does not satisfy this
+  line.'
+- 'The /stake page uses SE-2''s theme tokens and stays coherent under the template''s light/dark switcher:
+  page background, surfaces, and text use semantic theme classes (bg-base-*/text-*), with no hardcoded
+  full-page dark wrapper (bg-black, bg-gray-900, or raw dark: overrides). If dark-only was a deliberate
+  choice, the theme control is removed.'
+- 'The build is actually retargeted at Base in scaffold.config.ts: targetNetworks includes base, not left
+  on the hardhat-only default. Polling stays healthy: the template''s pollingInterval default (3000) is
+  already responsive, so a pass means not degrading it — a sluggish interval (10s+) with no post-transaction
+  refetch/invalidation is a fail, as are runaway request patterns (uncleaned intervals, duplicate watchers,
+  block-watching multiplied by an interval).'
+source:
+  repo: BuidlGuidl/ethskills-evals
+  task: frontend-ux-goal-001
+  skill: skills/frontend-ux

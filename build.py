@@ -31,7 +31,9 @@ def main():
     for f in sorted(glob.glob(os.path.join(ROOT, "results", "*.json"))):
         if f.endswith("index.json"): continue
         d = json.load(open(f))
-        runs.append({k: d.get(k) for k in ("name", "model", "harness", "skill", "started", "manifest", "pillars", "total")} | {"file": os.path.relpath(f, ROOT), "evals_run": len(d.get("rows", []))})
+        rows = [r for r in d.get("rows", []) if not r.get("dead") and not r.get("ungraded")]
+        runs.append({k: d.get(k) for k in ("name", "model", "harness", "skill", "started", "manifest", "pillars", "total")}
+                    | {"file": os.path.relpath(f, ROOT), "evals_run": len(rows), "verdicts": {r["id"]: bool(r["pass"]) for r in rows}})
     runs.sort(key=lambda r: -(r["total"]["pass"] if r.get("total") else 0))
     json.dump({"generated": cat["generated"], "manifest": cat["manifest"], "runs": runs}, open(os.path.join(ROOT, "results", "index.json"), "w"), indent=1)
     print(f"evals/index.json: {len(evals)} evals; results/index.json: {len(runs)} runs; manifest {cat['manifest']}")
