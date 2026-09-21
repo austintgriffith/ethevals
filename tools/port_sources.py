@@ -41,7 +41,7 @@ PORTS = [
   # ---- building (ethskills-evals, judged) ----
   ("building-02-approve-flow-states", "The approve-then-stake flow", "ethskills-evals", "frontend-ux-quiz-003"),
   ("building-03-usdc-decimals", "USDC has six decimals", "ethskills-evals", "frontend-ux-quiz-002"),
-  ("building-04-balance-read", "Reading a token balance", "ethskills-evals", "qa-quiz-001"),
+  ("building-04-se2-staking-dapp", "Build a staking dApp on Scaffold-ETH 2", "ethskills-evals", "frontend-ux-goal-001"),
   ("building-05-button-lifecycle", "The approve button lifecycle", "ethskills-evals", "frontend-ux-quiz-001"),
   ("building-06-ens-input", "ENS in address inputs", "ethskills-evals", "frontend-ux-quiz-005"),
   ("building-07-double-fire", "Pending state that still double-fires", "ethskills-evals", "qa-quiz-002"),
@@ -73,10 +73,17 @@ PORTS = [
   ("security-14-sandwich-slippage", "Sandwiches and slippage", "eth-evals", "security-k-03"),
   ("security-15-lending-postmortem-1", "Lending post-mortem: the sequencer", "ethskills-evals", "audit-quiz-001"),
   ("security-16-lending-postmortem-2", "Lending post-mortem: the clock", "ethskills-evals", "audit-quiz-002"),
-  ("security-17-lending-postmortem-3", "Lending post-mortem: the loop", "ethskills-evals", "audit-quiz-003"),
+  ("security-17-lending-postmortem-3", "Lending post-mortem: the signature", "ethskills-evals", "audit-quiz-003"),
   ("security-19-permissionless-listing", "Permissionless token listing", "ethskills-evals", "security-goal-001"),
   ("security-20-borrowing-market", "Build a borrowing market", "ethskills-evals", "security-goal-002"),
 ]
+
+# ethskills-evals tasks that need a workspace template: source task -> (template dir, our workspace dir, extra expect lines prepended)
+TEMPLATES = {
+  "frontend-ux-goal-001": ("templates/se-2", "se2-usdc-staking", [
+    "The approve call's amount is the amount being staked (or a small bounded multiple of it). Approving maxUint256, type(uint256).max, 2**256-1, a hardcoded very large constant, or any 'unlimited' allowance anywhere in the delivered frontend or contracts is a FAIL.",
+  ]),
+}
 
 def load_eth_evals(src):
     out = {}
@@ -123,10 +130,17 @@ def main():
         else:
             t = se.get(sid)
             if not t: print("MISSING", sid, file=sys.stderr); continue
-            if t.get("template"): print("SKIP (needs template)", sid, file=sys.stderr); continue
+            extra = []
+            if t.get("template"):
+                if sid not in TEMPLATES: print("SKIP (needs template)", sid, file=sys.stderr); continue
+                tdir, wdir, extra = TEMPLATES[sid]
+                dst = os.path.join(a.out, pillar, wdir)
+                if not os.path.isdir(dst):
+                    import shutil; shutil.copytree(os.path.join(a.src, "ethskills-evals", tdir), dst)
+                doc["workspace"] = wdir
             doc["kind"] = "goal" if "-goal-" in sid else "quiz"
             doc["prompt"] = Lit(t["input"].rstrip() + "\n")
-            doc["expect"] = [str(e) for e in t["expect"]]
+            doc["expect"] = extra + [str(e) for e in t["expect"]]
             doc["source"] = {"repo": "BuidlGuidl/ethskills-evals", "task": sid, "skill": t.get("skill")}
         path = os.path.join(a.out, pillar, oid + ".yaml")
         with open(path, "w") as fh:

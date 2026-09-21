@@ -1,6 +1,6 @@
 id: security-17-lending-postmortem-3
 pillar: security
-title: 'Lending post-mortem: the loop'
+title: 'Lending post-mortem: the signature'
 kind: quiz
 prompt: |
   Support ticket I cannot close, and I need to know what to tell the user.

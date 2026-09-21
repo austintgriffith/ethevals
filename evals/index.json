@@ -1,6 +1,6 @@
 {
- "generated": "2026-09-20T21:36:12+00:00",
- "manifest": "cdb4dd24b5cf",
+ "generated": "2026-09-21T00:35:06+00:00",
+ "manifest": "2e23c19c009f",
  "pillars": [
   {
    "id": "concepts",
@@ -571,16 +571,16 @@
    }
   },
   {
-   "id": "building-04-balance-read",
+   "id": "building-04-se2-staking-dapp",
    "pillar": "building",
-   "title": "Reading a token balance",
-   "kind": "quiz",
+   "title": "Build a staking dApp on Scaffold-ETH 2",
+   "kind": "goal",
    "graded": "judge",
-   "summary": "A Scaffold-ETH 2 dApp (hardhat flavor) live on Base. The /payouts page reads the user's USDC balance like this: const { data: usdcBalance } = useScaffoldReadContract({ co\u2026",
+   "summary": "This workspace is a fresh Scaffold-ETH 2 project. Build a USDC staking dApp on top of it: - A Staker contract: users deposit USDC and can withdraw their full position at \u2026",
    "source": {
     "repo": "BuidlGuidl/ethskills-evals",
-    "task": "qa-quiz-001",
-    "skill": "skills/qa"
+    "task": "frontend-ux-goal-001",
+    "skill": "skills/frontend-ux"
    }
   },
   {
@@ -1000,7 +1000,7 @@
   {
    "id": "security-17-lending-postmortem-3",
    "pillar": "security",
-   "title": "Lending post-mortem: the loop",
+   "title": "Lending post-mortem: the signature",
    "kind": "quiz",
    "graded": "judge",
    "summary": "Support ticket I cannot close, and I need to know what to tell the user. Our lending market lets a relayer submit a borrow that the borrower authorised off-chain, so borr\u2026",

@@ -44,7 +44,6 @@ def manifest(evals):
     h = hashlib.sha256()
     for e in evals:
         h.update(json.dumps({k: v for k, v in e.items() if not k.startswith("_")}, sort_keys=True).encode())
-    h.update(open(__file__, "rb").read())
     return h.hexdigest()[:12]
 
 # ------------------------------------------------------------------ deterministic graders (ported from clawdbotatg/eth-evals, MIT)
@@ -209,7 +208,7 @@ def seed_workspace(ev, skill_text):
     seed = snapshot(ws)
     return ws, seed
 
-SKIP_NAMES = {".git", "node_modules", ".ethevals-reply.txt", ".claude", ".codex"}
+SKIP_NAMES = {".git", "node_modules", ".ethevals-reply.txt", ".claude", ".codex", ".next", ".yarn", "dist", "cache", "artifacts", "typechain-types", "out"}
 def snapshot(ws):
     out = {}
     for base, dirs, files in os.walk(ws):
@@ -338,6 +337,9 @@ def main():
     if a.regrade:
         path = os.path.join(RESULTS_DIR, re.sub(r"[^a-z0-9+._-]", "-", a.name.lower()) + ".json")
         doc = json.load(open(path)); by_id = {e["id"]: e for e in load_evals()}; flips = 0
+        dropped = [r["id"] for r in doc["rows"] if r["id"] not in by_id]
+        if dropped: print(f"  dropping rows for evals no longer in the set: {dropped}")
+        doc["rows"] = [r for r in doc["rows"] if r["id"] in by_id]
         for r in doc["rows"]:
             ev = by_id.get(r["id"])
             if not ev or "grader" not in ev or r.get("dead"): continue
@@ -362,7 +364,8 @@ def main():
     os.makedirs(RESULTS_DIR, exist_ok=True)
     out_path = os.path.join(RESULTS_DIR, re.sub(r"[^a-z0-9+._-]", "-", a.name.lower()) + ".json")
     prev = json.load(open(out_path)) if a.resume and os.path.exists(out_path) else None
-    rows = {r["id"]: r for r in (prev or {}).get("rows", []) if not r.get("dead") and not r.get("ungraded")}
+    current = {e["id"] for e in load_evals()}
+    rows = {r["id"]: r for r in (prev or {}).get("rows", []) if not r.get("dead") and not r.get("ungraded") and r["id"] in current}
     todo = [e for e in evals if e["id"] not in rows]
     print(f"{a.name}: {len(todo)} evals to run, {len(rows)} kept, concurrency {a.concurrency}\n  executor: {cmd}\n  judge:    {a.judge_cmd}")
 
