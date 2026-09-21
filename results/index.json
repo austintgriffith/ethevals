@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-21T00:35:06+00:00",
+ "generated": "2026-09-21T01:05:35+00:00",
  "manifest": "2e23c19c009f",
  "runs": [
   {
@@ -32,11 +32,12 @@
     "total": 80
    },
    "file": "results/fable-5.1+ethskills.json",
-   "evals_run": 79,
+   "evals_run": 80,
    "verdicts": {
     "building-01-no-infinite-approvals": true,
     "building-02-approve-flow-states": true,
     "building-03-usdc-decimals": true,
+    "building-04-se2-staking-dapp": false,
     "building-05-button-lifecycle": true,
     "building-06-ens-input": true,
     "building-07-double-fire": true,
@@ -145,11 +146,12 @@
     "total": 80
    },
    "file": "results/fable-5.1.json",
-   "evals_run": 79,
+   "evals_run": 80,
    "verdicts": {
     "building-01-no-infinite-approvals": true,
     "building-02-approve-flow-states": true,
     "building-03-usdc-decimals": true,
+    "building-04-se2-staking-dapp": false,
     "building-05-button-lifecycle": false,
     "building-06-ens-input": true,
     "building-07-double-fire": true,
@@ -258,11 +260,12 @@
     "total": 80
    },
    "file": "results/haiku-4.5.json",
-   "evals_run": 79,
+   "evals_run": 80,
    "verdicts": {
     "building-01-no-infinite-approvals": false,
     "building-02-approve-flow-states": false,
     "building-03-usdc-decimals": true,
+    "building-04-se2-staking-dapp": false,
     "building-05-button-lifecycle": false,
     "building-06-ens-input": false,
     "building-07-double-fire": false,

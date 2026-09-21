@@ -208,7 +208,7 @@ def seed_workspace(ev, skill_text):
     seed = snapshot(ws)
     return ws, seed
 
-SKIP_NAMES = {".git", "node_modules", ".ethevals-reply.txt", ".claude", ".codex", ".next", ".yarn", "dist", "cache", "artifacts", "typechain-types", "out"}
+SKIP_NAMES = {".git", "node_modules", ".ethevals-reply.txt", ".claude", ".codex", ".next", ".yarn", "dist", "cache", "artifacts", "typechain-types", "ethers-contracts", "generated", "out"}
 def snapshot(ws):
     out = {}
     for base, dirs, files in os.walk(ws):
