@@ -1,0 +1,27 @@
+id: concepts-24-4337-banned-opcodes
+pillar: concepts
+title: Why validation bans TIMESTAMP
+kind: quiz
+summary: Simulation has to predict inclusion.
+prompt: |
+  ERC-4337 bundlers reject a UserOperation whose validateUserOp reads TIMESTAMP, NUMBER, BLOCKHASH or BALANCE (unstaked). Why?
+  A) Those opcodes are too expensive inside validation
+  B) The bundler simulates validation before inclusion and eats the gas if it fails on-chain; opcodes whose result changes between simulation and inclusion let a UserOperation pass simulation and then fail, a griefing vector — time bounds are expressed instead through validUntil and validAfter in the validation return value
+  C) The EVM forbids environment opcodes in static calls, and validation runs as a static call
+  D) They would reveal the bundler's identity to the account
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: C'
+source:
+  repo: austintgriffith/ethevals
+  task: concepts-24-4337-banned-opcodes

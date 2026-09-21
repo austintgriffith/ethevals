@@ -1,0 +1,27 @@
+id: concepts-21-7702-chainid-zero
+pillar: concepts
+title: Authorization for every chain
+kind: quiz
+summary: chainId 0 is not 'unset'.
+prompt: |
+  An EIP-7702 authorization tuple a dapp asks the wallet to sign has chainId = 0. What does that mean, and how should a wallet treat it?
+  A) It is invalid; a chain id must be 1 or higher, so the wallet can just reject it
+  B) It is valid on every chain: the same signed tuple can be included on any EVM chain to delegate the account there, so the wallet should refuse or warn loudly unless the delegate contract is known-good everywhere
+  C) It means Ethereum mainnet by convention
+  D) It binds the authorization to whichever chain first includes it
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: D'
+source:
+  repo: austintgriffith/ethevals
+  task: concepts-21-7702-chainid-zero

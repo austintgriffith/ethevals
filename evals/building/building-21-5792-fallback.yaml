@@ -1,0 +1,27 @@
+id: building-21-5792-fallback
+pillar: building
+title: Batching that cannot batch
+kind: quiz
+summary: A wallet without wallet_sendCalls must not silently split an atomic batch.
+prompt: |
+  Your dapp sends a batch through EIP-5792 wallet_sendCalls with the atomic capability required (approve then swap, all or nothing) and a paymasterService capability so the user pays no gas. The connected wallet returns "method not found" for wallet_sendCalls. What should your client library do?
+  A) Fall back to one eth_sendTransaction per call so the flow still works
+  B) Throw: the caller required atomic execution and a capability the wallet cannot honor; falling back would run the calls non-atomically (approve can land without the swap) and silently drop the sponsorship
+  C) Retry wallet_sendCalls with the older parameter shape
+  D) Send only the first call and let the user retry the rest
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: C'
+source:
+  repo: austintgriffith/ethevals
+  task: building-21-5792-fallback

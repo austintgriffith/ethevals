@@ -1,0 +1,23 @@
+id: building-23-compact-signature
+pillar: building
+title: ERC-2098 compact signature
+kind: quiz
+summary: Fold v into the top bit of s. Dropping v is not the same thing.
+prompt: |
+  A signer produced this 65-byte ECDSA signature, r || s || v:
+
+  0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c613fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb331c
+
+  Convert it to the 64-byte ERC-2098 compact form.
+  End your reply with a line of the form "Answer: 0x<hex>".
+grader:
+  type: exact
+  expect: '0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c693fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb33'
+reference: 'Answer: 0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c693fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb33'
+checks:
+  must_fail:
+  - 'Answer: 0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c613fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb33'
+  - 'Answer: 0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c613fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb331c'
+source:
+  repo: austintgriffith/ethevals
+  task: building-23-compact-signature

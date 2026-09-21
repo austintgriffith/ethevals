@@ -1,0 +1,27 @@
+id: concepts-23-7702-bad-tuple
+pillar: concepts
+title: A bad tuple is not a bad transaction
+kind: quiz
+summary: Invalid authorizations are skipped; an empty list is invalid.
+prompt: |
+  A type-4 transaction carries two authorization tuples. One was signed for a different chain id. What happens when the transaction is included?
+  A) The whole transaction is invalid and cannot be included
+  B) The mismatched tuple is skipped, the other is applied, the transaction executes normally and is charged for both tuples; only an empty authorization list makes the transaction itself invalid
+  C) The transaction reverts and the sender pays nothing
+  D) Both tuples are applied, because authorizations are validated at signing time, not at inclusion
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: D'
+source:
+  repo: austintgriffith/ethevals
+  task: concepts-23-7702-bad-tuple

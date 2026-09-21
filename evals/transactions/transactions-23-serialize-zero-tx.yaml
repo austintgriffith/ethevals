@@ -1,0 +1,19 @@
+id: transactions-23-serialize-zero-tx
+pillar: transactions
+title: Serialize a transaction
+kind: quiz
+summary: RLP encodes zero as an empty string. Most models write 00.
+prompt: |
+  Serialize, unsigned and ready for hashing, an EIP-1559 transaction with these fields: chainId 1, nonce 0, maxPriorityFeePerGas 0, maxFeePerGas 0, gasLimit 0, to 0x70997970C51812dc3A010C7d01b50e0d17dc79C8, value 0, empty data, empty access list. Give the exact typed-envelope bytes as one hex string.
+  End your reply with a line of the form "Answer: 0x<hex>".
+grader:
+  type: exact
+  expect: '0x02dd01808080809470997970c51812dc3a010c7d01b50e0d17dc79c88080c0'
+reference: 'Answer: 0x02dd01808080809470997970c51812dc3a010c7d01b50e0d17dc79c88080c0'
+checks:
+  must_fail:
+  - 'Answer: 0x02e1010000000000009470997970c51812dc3a010c7d01b50e0d17dc79c8000000c0'
+  - 'Answer: 02dd01808080809470997970c51812dc3a010c7d01b50e0d17dc79c88080c0'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-23-serialize-zero-tx

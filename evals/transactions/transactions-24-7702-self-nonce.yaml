@@ -1,0 +1,20 @@
+id: transactions-24-7702-self-nonce
+pillar: transactions
+title: EIP-7702 authorization nonce
+kind: quiz
+summary: The transaction increments the nonce before the tuple is checked.
+prompt: |
+  An EOA whose current nonce is 5 wants to delegate itself to an EIP-7702 implementation and pays for the type-4 transaction itself: the transaction sender and the authorization signer are the same account. What nonce must the authorization tuple carry for the delegation to take effect?
+  End your reply with a line of the form "Answer: <integer>".
+grader:
+  type: bigint
+  expect: 6
+reference: 'Answer: 6'
+checks:
+  must_fail:
+  - 'Answer: 5'
+  - 'Answer: 0'
+  - 'Answer: 7'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-24-7702-self-nonce

@@ -1,0 +1,38 @@
+id: security-24-siwe-domain
+pillar: security
+title: Sign-in domain binding
+kind: quiz
+summary: The message names one site; the request comes from another.
+prompt: |
+  A wallet receives a personal_sign request from the origin https://opensea-rewards.xyz. The message is:
+
+  opensea.io wants you to sign in with your Ethereum account:
+  0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
+
+  URI: https://opensea.io
+  Version: 1
+  Chain ID: 1
+  Nonce: 8f3c1a9b
+  Issued At: 2026-09-21T10:00:00Z
+
+  What should the wallet do?
+  A) Sign: the message names opensea.io, which is a legitimate site
+  B) Refuse or warn loudly: in Sign-In with Ethereum the domain in the message must be the origin making the request; a mismatch means the requesting site is collecting a signature that logs the user in to opensea.io from somewhere else
+  C) Sign: personal_sign cannot move funds, so there is nothing to protect
+  D) Sign after checking the nonce has not been used before
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: C'
+source:
+  repo: austintgriffith/ethevals
+  task: security-24-siwe-domain

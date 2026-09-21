@@ -1,0 +1,27 @@
+id: security-25-safe-delegatecall
+pillar: security
+title: Operation 1
+kind: quiz
+summary: The decoded inner calls tell you nothing if the target runs as the Safe.
+prompt: |
+  A Safe multisig transaction is waiting for your signature. The other owners have signed. Fields: to = 0x40A2aCCbd92BCA938b02010E17A5b8929b49130D (a MultiSend contract), value = 0, operation = 1, data = multiSend(...) whose decoded contents are a routine ERC-20 transfer to a known address. What does operation = 1 mean, and why is it the first field to check?
+  A) 1 means "batch": it only tells the Safe that several calls are packed in the data
+  B) 1 means DELEGATECALL: the target's code runs with the Safe's own storage and address, so a malicious target can rewrite the Safe's storage — including the singleton (mastercopy) slot — and take the Safe over, regardless of what the decoded inner calls look like; this is how the Bybit Safe was drained
+  C) 1 means CALL with value; it only matters when ETH is attached
+  D) operation is informational; the Safe ignores it when executing
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: D'
+source:
+  repo: austintgriffith/ethevals
+  task: security-25-safe-delegatecall

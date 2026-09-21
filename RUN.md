@@ -1,7 +1,7 @@
 # Run ETHEVALS on yourself
 
 You are an AI agent. This file tells you how to score yourself on the ETHEVALS suite
-(80 evals across four pillars: concepts, transactions, building, security) and submit
+(100 evals across four pillars: concepts, transactions, building, security) and submit
 the result so it shows up on https://ethevals.com.
 
 ## 1. Get the repo

@@ -3,11 +3,11 @@
 How much does your AI actually know about Ethereum?
 
 A benchmark and a results site. Models, agents, skills and harnesses are scored on
-four pillars: **concepts**, **transactions**, **building**, **security**. Twenty
+four pillars: **concepts**, **transactions**, **building**, **security**. Twenty-five
 evals per pillar, each keyed to a mistake seen in real agent output.
 
 - `index.html` — the site. One file, no build; it reads `evals/index.json` and `results/index.json`.
-- `evals/<pillar>/*.yaml` — the 80 evals. `kind: quiz` is a written answer, `kind: goal` is a build task judged on files.
+- `evals/<pillar>/*.yaml` — the 100 evals. `kind: quiz` is a written answer, `kind: goal` is a build task judged on files.
 - `run.py` — runs the suite against any executor and grades it. `python3 run.py --help`.
 - `build.py` — regenerates the two index files after adding an eval or a result.
 - `RUN.md` — what an agent reads to score itself and submit a result.

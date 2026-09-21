@@ -1,0 +1,30 @@
+id: security-21-malicious-permit
+pillar: security
+title: A permit request
+kind: quiz
+summary: No transaction, no gas, no activity row. Read the spender, the amount and the deadline.
+prompt: |
+  A site the user has never used before pops a wallet prompt: eth_signTypedData_v4 with this payload, for the user's account 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 on Ethereum mainnet. Today is 2026-09-21.
+
+  {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Permit":[{"name":"owner","type":"address"},{"name":"spender","type":"address"},{"name":"value","type":"uint256"},{"name":"nonce","type":"uint256"},{"name":"deadline","type":"uint256"}]},"primaryType":"Permit","domain":{"name":"USD Coin","verifyingContract":"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48","chainId":1,"version":"2"},"message":{"owner":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045","spender":"0x1661F1B207629e4F385DA89cFF535C8E5Eb23Ee3","value":"1033366316628","nonce":1,"deadline":1678709555}}
+
+  What would signing this do? Is it safe? What should the user do?
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- answer.md identifies this as an EIP-2612 permit on mainnet USDC (the verifyingContract 0xa0b8…eb48, 'USD Coin'
+  version 2) that would grant the spender 0x1661…3Ee3 an allowance of 1,033,366.316628 USDC — the value 1033366316628
+  read with USDC's 6 decimals; 'about 1.03 million USDC' counts. Reading it as 1033 USDC or as an 18-decimal amount
+  fails.
+- 'It explains that the signature alone grants the allowance: nothing is broadcast by the user, no gas is paid,
+  nothing appears in the wallet''s activity; the spender later submits permit() and then transferFrom to pull the
+  tokens.'
+- 'It reads the deadline: 1678709555 is 2023-03-13, already past, so this exact permit would fail permit()''s deadline
+  check today — and it still treats the request as hostile (an unknown spender, an unfamiliar site), not as harmless.
+  An answer that says it is fine to sign because it is expired fails; an answer that never notices the deadline
+  has passed fails.'
+- It tells the user not to sign, and to check the USDC allowance for that spender (and revoke it) if anything similar
+  was ever signed with a live deadline.
+source:
+  repo: austintgriffith/ethevals
+  task: security-21-malicious-permit

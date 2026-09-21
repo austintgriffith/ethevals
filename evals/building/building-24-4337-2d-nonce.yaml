@@ -1,0 +1,20 @@
+id: building-24-4337-2d-nonce
+pillar: building
+title: Two-dimensional nonces
+kind: quiz
+summary: Key in the high 192 bits, sequence in the low 64.
+prompt: |
+  ERC-4337 EntryPoint nonces are two-dimensional: a 192-bit key and a 64-bit sequence. An account has executed exactly one UserOperation on key 1 and nothing else. What does EntryPoint.getNonce(account, 1) return?
+  End your reply with a line of the form "Answer: <integer, plain decimal>".
+grader:
+  type: bigint
+  expect: 18446744073709551617
+reference: 'Answer: 18446744073709551617'
+checks:
+  must_fail:
+  - 'Answer: 1'
+  - 'Answer: 2'
+  - 'Answer: 18446744073709551616'
+source:
+  repo: austintgriffith/ethevals
+  task: building-24-4337-2d-nonce

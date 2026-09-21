@@ -1,0 +1,29 @@
+id: security-22-permit2-batch
+pillar: security
+title: A Permit2 batch
+kind: quiz
+summary: One signature, three tokens, unlimited, for years. Explain the two layers.
+prompt: |
+  A wallet prompt from a site the user just connected to: eth_signTypedData_v4 with this payload, for the user's account 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 on Ethereum mainnet. The user has previously approved USDC, WETH and DAI to the Permit2 contract while using Uniswap. Today is 2026-09-21.
+
+  {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"PermitBatch":[{"name":"details","type":"PermitDetails[]"},{"name":"spender","type":"address"},{"name":"sigDeadline","type":"uint256"}],"PermitDetails":[{"name":"token","type":"address"},{"name":"amount","type":"uint160"},{"name":"expiration","type":"uint48"},{"name":"nonce","type":"uint48"}]},"primaryType":"PermitBatch","domain":{"name":"Permit2","chainId":1,"verifyingContract":"0x000000000022D473030F116dDEE9F6B43aC78BA3"},"message":{"details":[{"token":"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48","amount":"1461501637330902918203684832716283019655932542975","expiration":"1900000000","nonce":"0"},{"token":"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2","amount":"1461501637330902918203684832716283019655932542975","expiration":"1900000000","nonce":"0"},{"token":"0x6B175474E89094C44Da98b954EedeAC495271d0F","amount":"1461501637330902918203684832716283019655932542975","expiration":"1900000000","nonce":"0"}],"spender":"0x1661F1B207629e4F385DA89cFF535C8E5Eb23Ee3","sigDeadline":"1900000000"}}
+
+  What does signing this authorize, exactly? What should the user do?
+
+  Write your answer to answer.md in this directory, showing your reasoning.
+expect:
+- 'answer.md identifies this as a Permit2 PermitBatch (the canonical Permit2 contract at 0x0000…BA3): one signature
+  sets three allowances at once, USDC, WETH and DAI, for the spender 0x1661…3Ee3.'
+- It reads the amount 1461501637330902918203684832716283019655932542975 as the maximum uint160, i.e. unlimited,
+  and the expiration 1900000000 as March 2030, so the spender can pull any amount of all three tokens for years.
+  It distinguishes sigDeadline (how long the signature can be submitted) from expiration (how long the allowance
+  lasts).
+- 'It explains the two layers: because the user already approved these tokens to Permit2, this signature is all
+  the spender needs — the spender submits it to Permit2 and then calls Permit2''s transferFrom, with no further
+  action or transaction from the user. Revoking means revoking the spender inside Permit2 (approve 0 / lockdown)
+  or revoking the token approvals to Permit2 itself.'
+- It treats an unknown spender receiving unlimited batch allowances from a just-connected site as a drain pattern
+  and tells the user not to sign.
+source:
+  repo: austintgriffith/ethevals
+  task: security-22-permit2-batch

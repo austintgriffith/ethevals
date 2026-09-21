@@ -1,0 +1,20 @@
+id: security-23-decimal-verifying-contract
+pillar: security
+title: A decimal is still an address
+kind: quiz
+summary: Normalize before you match against a list.
+prompt: |
+  A dapp sends eth_signTypedData_v4 whose domain contains "verifyingContract": 917551056842671309452305380979543736893630245704 — a JSON number, not a hex string. Wallet security checks compare the domain against a list of known token contracts. Which contract's domain is this?
+  End your reply with a line of the form "Answer: <checksummed 0x address>".
+grader:
+  type: exact
+  expect: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+reference: 'Answer: 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+checks:
+  must_pass:
+  - 'Answer: 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+  must_fail:
+  - 'Answer: 917551056842671309452305380979543736893630245704'
+source:
+  repo: austintgriffith/ethevals
+  task: security-23-decimal-verifying-contract

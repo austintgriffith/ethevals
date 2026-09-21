@@ -1,0 +1,27 @@
+id: concepts-22-7702-no-recursion
+pillar: concepts
+title: Delegation does not chain
+kind: quiz
+summary: One hop. The second designator is not code.
+prompt: |
+  Under EIP-7702, account A is delegated to B (A's code is 0xef0100 followed by B's address), and B is itself an EOA delegated to C. A transaction calls A. What runs?
+  A) C's code: delegation resolves transitively until real bytecode is found
+  B) Only one hop is followed: the EVM loads B's code, which is B's own 23-byte delegation designator, not C's code; the designator is not executable, so the call fails without running anything useful
+  C) The transaction is invalid and never enters a block
+  D) B's code, but with C's storage
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: C'
+source:
+  repo: austintgriffith/ethevals
+  task: concepts-22-7702-no-recursion

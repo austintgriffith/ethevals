@@ -1,0 +1,20 @@
+id: transactions-22-legacy-v-chainid
+pillar: transactions
+title: Chain id from a legacy v
+kind: quiz
+summary: EIP-155 folds the chain id into v. Unfold it.
+prompt: |
+  A legacy (type 0) transaction carries v = 1811 in its signature. Which chain id was it signed for?
+  End your reply with a line of the form "Answer: <integer>".
+grader:
+  type: bigint
+  expect: 888
+reference: 'Answer: 888'
+checks:
+  must_fail:
+  - 'Answer: 1776'
+  - 'Answer: 905'
+  - 'Answer: 1811'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-22-legacy-v-chainid

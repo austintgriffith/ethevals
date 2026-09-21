@@ -1,0 +1,27 @@
+id: building-22-sign-transaction
+pillar: building
+title: eth_signTransaction
+kind: quiz
+summary: Signing is not sending.
+prompt: |
+  You are implementing eth_signTransaction in a wallet. Which behaviour is correct?
+  A) Sign the transaction, broadcast it, and return the transaction hash
+  B) Sign the transaction and return the raw signed transaction bytes; do not broadcast — the caller decides if and when to submit it with eth_sendRawTransaction
+  C) Return only the signature components r, s and v
+  D) Behave like eth_sendTransaction but skip the confirmation prompt, since the dapp is only asking for a signature
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: D'
+source:
+  repo: austintgriffith/ethevals
+  task: building-22-sign-transaction

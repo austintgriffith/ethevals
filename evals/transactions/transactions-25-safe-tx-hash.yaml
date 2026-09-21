@@ -1,0 +1,36 @@
+id: transactions-25-safe-tx-hash
+pillar: transactions
+title: Safe transaction hash
+kind: quiz
+summary: The hash the hardware wallet shows. bytes are hashed inside the struct; the domain has no name or version.
+prompt: |
+  A Safe (v1.3.0+) at 0x111CEEee040739fD91D29C34C33E6B3E112F2177 on Arbitrum One (chain id 42161) has a pending transaction:
+
+    to            0x111CEEee040739fD91D29C34C33E6B3E112F2177
+    value         0
+    data          0x0d582f130000000000000000000000000c75fa5a5f1c0997e3eea425cfa13184ed0ec9e50000000000000000000000000000000000000000000000000000000000000003
+    operation     0
+    safeTxGas     0
+    baseGas       0
+    gasPrice      0
+    gasToken      0x0000000000000000000000000000000000000000
+    refundReceiver 0x0000000000000000000000000000000000000000
+    nonce         234
+
+  The Safe signs EIP-712 typed data with domain type EIP712Domain(uint256 chainId,address verifyingContract) and primary type SafeTx(address to,uint256 value,bytes data,uint8 operation,uint256 safeTxGas,uint256 baseGas,uint256 gasPrice,address gasToken,address refundReceiver,uint256 nonce).
+
+  Compute the Safe transaction hash the owners sign, the value a hardware wallet would display for verification.
+  End your reply with a line of the form "Answer: 0x<hex>".
+grader:
+  type: exact
+  expect: '0x0cb7250b8becd7069223c54e2839feaed4cee156363fbfe5dd0a48e75c4e25b3'
+reference: 'Answer: 0x0cb7250b8becd7069223c54e2839feaed4cee156363fbfe5dd0a48e75c4e25b3'
+checks:
+  must_pass:
+  - 'Answer: 0x0CB7250B8BECD7069223C54E2839FEAED4CEE156363FBFE5DD0A48E75C4E25B3'
+  must_fail:
+  - 'Answer: 0xd9109ea63c50ecd3b80b6b27ed5c5a9fd3d546c2169dfb69bfa7ba24cd14c7a5'
+  - 'Answer: 0x1cf7f9b1efe3bc47fe02fd27c649fea19e79d66040683a1c86c7490c80bf7291'
+source:
+  repo: austintgriffith/ethevals
+  task: transactions-25-safe-tx-hash

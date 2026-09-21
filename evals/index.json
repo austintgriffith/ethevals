@@ -1,30 +1,30 @@
 {
- "generated": "2026-09-21T03:54:38+00:00",
- "manifest": "2e23c19c009f",
+ "generated": "2026-09-21T16:42:41+00:00",
+ "manifest": "724efe1c57d2",
  "pillars": [
   {
    "id": "concepts",
    "name": "Concepts",
    "desc": "What gets built on Ethereum and why it holds up. Incentive design, the walkaway test, decentralization, MEV, EIP-1559, EIP-712, the fork roadmap.",
-   "count": 20
+   "count": 25
   },
   {
    "id": "transactions",
    "name": "Transactions",
    "desc": "Reading the chain. Calldata, selectors, ABIs, events, receipts, gas, what a block explorer is really showing you.",
-   "count": 20
+   "count": 25
   },
   {
    "id": "building",
    "name": "Building",
    "desc": "Shipping a dApp real users can touch. Approvals, decimals, USD context, RPCs, indexing, keys, and the whole way to production.",
-   "count": 20
+   "count": 25
   },
   {
    "id": "security",
    "name": "Security",
    "desc": "Everyone catches reentrancy. Inflation attacks, stale oracles, signature replay, upgrade collisions, rounding, and the rest.",
-   "count": 20
+   "count": 25
   }
  ],
  "evals": [
@@ -287,6 +287,66 @@
    }
   },
   {
+   "id": "concepts-21-7702-chainid-zero",
+   "pillar": "concepts",
+   "title": "Authorization for every chain",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "chainId 0 is not 'unset'.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "concepts-21-7702-chainid-zero"
+   }
+  },
+  {
+   "id": "concepts-22-7702-no-recursion",
+   "pillar": "concepts",
+   "title": "Delegation does not chain",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "One hop. The second designator is not code.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "concepts-22-7702-no-recursion"
+   }
+  },
+  {
+   "id": "concepts-23-7702-bad-tuple",
+   "pillar": "concepts",
+   "title": "A bad tuple is not a bad transaction",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Invalid authorizations are skipped; an empty list is invalid.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "concepts-23-7702-bad-tuple"
+   }
+  },
+  {
+   "id": "concepts-24-4337-banned-opcodes",
+   "pillar": "concepts",
+   "title": "Why validation bans TIMESTAMP",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Simulation has to predict inclusion.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "concepts-24-4337-banned-opcodes"
+   }
+  },
+  {
+   "id": "concepts-25-1271-replay-safe",
+   "pillar": "concepts",
+   "title": "One owner, many accounts",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Why a smart account wraps the hash before the owner signs it.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "concepts-25-1271-replay-safe"
+   }
+  },
+  {
    "id": "transactions-01-selector-string",
    "pillar": "transactions",
    "title": "Selector from signature",
@@ -530,6 +590,66 @@
    "source": {
     "repo": "austintgriffith/ethevals",
     "task": "transactions-20-decode-a-revert"
+   }
+  },
+  {
+   "id": "transactions-21-decode-raw-tx",
+   "pillar": "transactions",
+   "title": "Decode a signed raw transaction",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A signed raw transaction is bytes. Read the envelope, the fields and the sender out of it.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-21-decode-raw-tx"
+   }
+  },
+  {
+   "id": "transactions-22-legacy-v-chainid",
+   "pillar": "transactions",
+   "title": "Chain id from a legacy v",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "EIP-155 folds the chain id into v. Unfold it.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-22-legacy-v-chainid"
+   }
+  },
+  {
+   "id": "transactions-23-serialize-zero-tx",
+   "pillar": "transactions",
+   "title": "Serialize a transaction",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "RLP encodes zero as an empty string. Most models write 00.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-23-serialize-zero-tx"
+   }
+  },
+  {
+   "id": "transactions-24-7702-self-nonce",
+   "pillar": "transactions",
+   "title": "EIP-7702 authorization nonce",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "The transaction increments the nonce before the tuple is checked.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-24-7702-self-nonce"
+   }
+  },
+  {
+   "id": "transactions-25-safe-tx-hash",
+   "pillar": "transactions",
+   "title": "Safe transaction hash",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "The hash the hardware wallet shows. bytes are hashed inside the struct; the domain has no name or version.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "transactions-25-safe-tx-hash"
    }
   },
   {
@@ -792,6 +912,66 @@
    }
   },
   {
+   "id": "building-21-5792-fallback",
+   "pillar": "building",
+   "title": "Batching that cannot batch",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A wallet without wallet_sendCalls must not silently split an atomic batch.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "building-21-5792-fallback"
+   }
+  },
+  {
+   "id": "building-22-sign-transaction",
+   "pillar": "building",
+   "title": "eth_signTransaction",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Signing is not sending.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "building-22-sign-transaction"
+   }
+  },
+  {
+   "id": "building-23-compact-signature",
+   "pillar": "building",
+   "title": "ERC-2098 compact signature",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Fold v into the top bit of s. Dropping v is not the same thing.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "building-23-compact-signature"
+   }
+  },
+  {
+   "id": "building-24-4337-2d-nonce",
+   "pillar": "building",
+   "title": "Two-dimensional nonces",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Key in the high 192 bits, sequence in the low 64.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "building-24-4337-2d-nonce"
+   }
+  },
+  {
+   "id": "building-25-hash-message-string",
+   "pillar": "building",
+   "title": "personal_sign of a hex-looking string",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "The characters, not the bytes. The prefix length follows.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "building-25-hash-message-string"
+   }
+  },
+  {
    "id": "security-01-reentrancy",
    "pillar": "security",
    "title": "Reentrancy",
@@ -1046,6 +1226,66 @@
     "repo": "BuidlGuidl/ethskills-evals",
     "task": "security-goal-002",
     "skill": "skills/security"
+   }
+  },
+  {
+   "id": "security-21-malicious-permit",
+   "pillar": "security",
+   "title": "A permit request",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "No transaction, no gas, no activity row. Read the spender, the amount and the deadline.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "security-21-malicious-permit"
+   }
+  },
+  {
+   "id": "security-22-permit2-batch",
+   "pillar": "security",
+   "title": "A Permit2 batch",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "One signature, three tokens, unlimited, for years. Explain the two layers.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "security-22-permit2-batch"
+   }
+  },
+  {
+   "id": "security-23-decimal-verifying-contract",
+   "pillar": "security",
+   "title": "A decimal is still an address",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Normalize before you match against a list.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "security-23-decimal-verifying-contract"
+   }
+  },
+  {
+   "id": "security-24-siwe-domain",
+   "pillar": "security",
+   "title": "Sign-in domain binding",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "The message names one site; the request comes from another.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "security-24-siwe-domain"
+   }
+  },
+  {
+   "id": "security-25-safe-delegatecall",
+   "pillar": "security",
+   "title": "Operation 1",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "The decoded inner calls tell you nothing if the target runs as the Safe.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "security-25-safe-delegatecall"
    }
   }
  ]

@@ -1,0 +1,27 @@
+id: concepts-25-1271-replay-safe
+pillar: concepts
+title: One owner, many accounts
+kind: quiz
+summary: Why a smart account wraps the hash before the owner signs it.
+prompt: |
+  A smart account owned by the EOA K does not let K sign an ERC-1271 hash directly. It wraps it first: K signs hashTypedData(domain{chainId, verifyingContract: this account}, Message(bytes32 hash)). Why?
+  A) It saves gas in isValidSignature
+  B) K may own other accounts on this and other chains; a bare signature by K over the hash would satisfy isValidSignature on every account K owns, so a signature produced for one account could be replayed as another account's approval (a permit, an order). Binding the account's own domain into the digest makes it valid for one account on one chain.
+  C) ERC-1271 requires the signed data to be EIP-712 typed data
+  D) It hides the original message from the verifier
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: B
+  - type: regex
+    pattern: ^\(?B\b
+reference: 'Answer: B'
+checks:
+  must_fail:
+  - 'Answer: A'
+  - 'Answer: C'
+source:
+  repo: austintgriffith/ethevals
+  task: concepts-25-1271-replay-safe
