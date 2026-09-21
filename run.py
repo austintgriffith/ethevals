@@ -190,7 +190,7 @@ EXECUTORS = {
     "opencode": lambda model: f"opencode run --model {model}",
 }
 
-DEAD_RE = re.compile(r"spend limit|usage limit|rate limit|quota|not logged in|Please run /login|API Error", re.I)
+DEAD_RE = re.compile(r"spend limit|usage limit|hit your .*limit|not logged in|Please run /login|API Error", re.I)
 
 JUDGE_DEFAULT = "claude -p --model sonnet --strict-mcp-config --disallowedTools Bash,Edit,Write,WebFetch,WebSearch"
 
@@ -269,7 +269,8 @@ def run_one(ev, cmd, judge_cmd, skill_text):
     after = snapshot(ws)
     row = {"id": ev["id"], "pillar": ev["pillar"], "kind": ev["kind"], "seconds": round(secs, 1), "rc": rc,
            "reply": reply[-4000:], "files": sorted(k for k in after if seed.get(k) != after[k])}
-    if rc != 0 or DEAD_RE.search(reply[-600:]):
+    if rc != 0 or (len(reply.strip()) < 400 and DEAD_RE.search(reply)):
+        # a real answer can mention "rate limit"; a quota wall is a short banner
         # the executor did not finish (timeout, crash, quota wall): ungradeable, not a zero
         row.update(pass_=False, detail=(err or reply[-200:]).strip()[:200], dead=True)
     elif "grader" in ev:
