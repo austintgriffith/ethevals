@@ -1,0 +1,1487 @@
+[
+ {
+  "id": "concepts-01-nothing-is-automatic",
+  "pillar": "concepts",
+  "title": "Nothing is automatic",
+  "stem": "A developer designs an Ethereum contract expecting it to \"wake up\" every hour and run a function by itself. Why will this never happen?",
+  "options": {
+   "A": "Only the deployer's own node can trigger scheduled execution, so the hourly job is skipped on every other node",
+   "B": "The EVM's built-in scheduler only supports daily intervals, so an hourly schedule is rejected at deploy time",
+   "C": "Contracts never run on their own — every call needs an external caller who pays gas",
+   "D": "Contracts can self-execute, but only during block finalization, not at set clock times such as every hour"
+  },
+  "answer": "C",
+  "mistake": "believing contracts can self-execute at finalization",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-02-walkaway-test",
+  "pillar": "concepts",
+  "title": "The walkaway test",
+  "stem": "A DeFi protocol is fully audited and its incentives look healthy, but advancing each epoch requires the founding team to trigger the next phase from an admin account. Apply the design test \"Could this run forever with no team behind it?\" (the walkaway test). Does this protocol pass, and what kind of system is it?",
+  "options": {
+   "A": "Fails — it is a service, not a hyperstructure: it stops when the team stops operating the admin account",
+   "B": "Fails — each epoch transition costs gas, and the founding team must keep subsidizing that gas out of its own treasury",
+   "C": "Passes — admin calls are cheap, so if the founding team leaves, any other team could simply take over the admin role",
+   "D": "Passes — a full audit plus healthy incentives guarantee it keeps running whether or not the founding team stays around"
+  },
+  "answer": "A",
+  "mistake": "audits guarantee it keeps running",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-03-keeper-bounty-math",
+  "pillar": "concepts",
+  "title": "Keeper bounty math",
+  "stem": "A Yearn-style vault lets ANYONE call harvest() to compound accumulated rewards. The caller is paid a fixed bounty of $0.40. Gas for the call reliably costs about $3. For every state transition, ask who calls it, why they would, and whether the incentive covers gas plus a profit. Given this, what happens to this vault?",
+  "options": {
+   "A": "Keeper bots call it anyway at a small loss, since a healthy vault protects their other positions",
+   "B": "Nobody calls it: $0.40 doesn't cover ~$3 gas, so rewards sit uncompounded",
+   "C": "Validators are required to include one harvest() call per epoch as part of block production",
+   "D": "The network itself executes harvest() once accumulated rewards grow larger than the gas cost"
+  },
+  "answer": "B",
+  "mistake": "assuming bots call it at a loss",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-04-hyperstructures",
+  "pillar": "concepts",
+  "title": "Hyperstructures",
+  "stem": "The Ethereum community has a specific term for an unstoppable protocol that runs forever with no operator, no company, no server, and no admin key, sustained purely by its own incentives. Uniswap is the canonical example. What is the term?",
+  "options": {
+   "A": "A hyperstructure",
+   "B": "An immutable smart contract",
+   "C": "A credibly neutral protocol",
+   "D": "A public good"
+  },
+  "answer": "A",
+  "mistake": "credibly neutral protocol (close concept, wrong term)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "concepts-05-fee-switch-fork",
+  "pillar": "concepts",
+  "title": "The fee-switch fork",
+  "stem": "A team forks a Uniswap-style AMM but changes one rule: 100% of swap fees go to a founder-controlled treasury instead of to liquidity providers. Trading works fine on day one. In the original design, the 0.3% swap fee paid to LPs drives the flywheel (more liquidity → less slippage → more traders → more fees → more liquidity). Which participant group defects from the fork, and with what result?",
+  "options": {
+   "A": "Validators — they censor the fork's transactions because the fee routing is non-standard, so swaps sit in the mempool and never confirm",
+   "B": "The founders — treasury accumulation forces them to act as market maker of last resort, seeding every pool from treasury funds",
+   "C": "Traders — they refuse to pay fees that don't reach LPs, so trading volume drops while pool liquidity stays completely unaffected",
+   "D": "LPs — with no fee income they pull their liquidity, slippage worsens, and the flywheel never starts"
+  },
+  "answer": "D",
+  "mistake": "Traders defect, liquidity unaffected",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-06-sybil-resistance",
+  "pillar": "concepts",
+  "title": "Sybil resistance",
+  "stem": "A voting-based onchain mechanism gives every distinct address one vote. An attacker generates thousands of fresh addresses for free and uses them to capture the vote. What is the standard name for this attack, the one that explains why blockchain consensus weights influence by a costly, scarce resource (work or stake) instead of by the number of identities?",
+  "options": {
+   "A": "Sybil attack",
+   "B": "Eclipse attack",
+   "C": "Nothing-at-stake attack",
+   "D": "51% attack"
+  },
+  "answer": "A",
+  "mistake": "51% attack (confusing majority capture with fake identities)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "concepts-07-crops-pillars",
+  "pillar": "concepts",
+  "title": "Which CROPS pillar",
+  "stem": "A dapp's smart contracts are fully permissionless, but the only usable UI is hosted by one provider, which geofences users by IP and filters connecting wallet addresses against OFAC compliance lists. Which CROPS pillar does this setup most directly violate?",
+  "options": {
+   "A": "Open Source and Free (anyone can read, fork and redeploy the code)",
+   "B": "Privacy (a user's IP address and wallet stay unlinked and unlogged)",
+   "C": "Security (user funds and keys stay safe from theft or exploits)",
+   "D": "Censorship Resistance (no one can block access)"
+  },
+  "answer": "D",
+  "mistake": "Privacy (IP and address screening read as data exposure)",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-08-verified-is-not-open",
+  "pillar": "concepts",
+  "title": "Verified is not open source",
+  "stem": "A team claims their dapp is \"fully open source\" because the deployed contract is verified on Etherscan. In a CROPS-style openness review, what does Etherscan verification actually establish?",
+  "options": {
+   "A": "That the published license grants third parties the legal right to fork, modify, and redeploy the code",
+   "B": "That the entire stack — contracts, frontend, and indexer — is public and can be forked by anyone",
+   "C": "That the live frontend at the team's domain can be rebuilt byte-for-byte from a pinned git commit",
+   "D": "That one contract's bytecode matches its published source — nothing more"
+  },
+  "answer": "D",
+  "mistake": "treating verification as proof the whole stack is open",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-09-eip1559-mechanics",
+  "pillar": "concepts",
+  "title": "EIP-1559 fee mechanics",
+  "stem": "Under EIP-1559, block N used its entire gas limit, which is twice the gas target. Ignoring the tip, which statement about block N+1 is correct?",
+  "options": {
+   "A": "The base fee rises by 25%, and the base fee portion goes to the proposer",
+   "B": "The proposer of block N+1 chooses its base fee freely, with no protocol formula",
+   "C": "The base fee is unchanged; only priority fees rise to reflect the higher demand",
+   "D": "The base fee rises by 12.5%, and the base fee portion is burned"
+  },
+  "answer": "D",
+  "mistake": "25% rise with base fee paid to the proposer",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-10-mev-backrun",
+  "pillar": "concepts",
+  "title": "MEV backruns",
+  "stem": "Your 500 ETH swap on Uniswap executes and pushes the pool's price away from prices on other exchanges. A bot arranges for its own arbitrage transaction to execute immediately AFTER yours in the same block, capturing the price gap your trade created. The bot never trades ahead of you. In MEV terminology, what is this technique of positioning a transaction immediately after a target transaction called? (The question asks for the insertion technique, not the profit strategy.)",
+  "options": {
+   "A": "Sandwiching",
+   "B": "Atomic arbitrage",
+   "C": "Frontrunning",
+   "D": "Backrunning"
+  },
+  "answer": "D",
+  "mistake": "Sandwiching (or Atomic arbitrage, which names the profit strategy)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "concepts-11-spot-price-oracle",
+  "pillar": "concepts",
+  "title": "Spot price is not an oracle",
+  "stem": "Your smart contract needs a token price, and a teammate suggests reading the spot price directly from a DEX pool's reserves. Attackers commonly use a specific financing primitive to skew such a spot price within a single transaction. Which primitive is it?",
+  "options": {
+   "A": "A flash loan",
+   "B": "A leveraged perpetual position",
+   "C": "A sandwich attack",
+   "D": "A collateralized margin loan"
+  },
+  "answer": "A",
+  "mistake": "sandwich attack (confusing MEV ordering with the financing primitive)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "concepts-12-blockhash-current",
+  "pillar": "concepts",
+  "title": "blockhash of the current block",
+  "stem": "Inside a Solidity contract, a developer writes `blockhash(block.number)` hoping to get the hash of the current block. What value does this expression always return?",
+  "options": {
+   "A": "The hash of the previous block, since the current block is not yet finalized when the call runs",
+   "B": "It reverts with an out-of-range error, because only the last 256 blocks are accessible",
+   "C": "0 (bytes32(0)), since the current block's hash isn't known during execution",
+   "D": "The hash of the current block, the same value as the hash field in the block header"
+  },
+  "answer": "C",
+  "mistake": "returns the current block's hash",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-13-eip712-replay",
+  "pillar": "concepts",
+  "title": "EIP-712 replay protection",
+  "stem": "A protocol verifies user signatures over typed structured data per EIP-712. Which component of the signed digest is specifically responsible for preventing a valid signature from being replayed against a different contract or on a different chain?",
+  "options": {
+   "A": "The domain separator",
+   "B": "The per-signer nonce",
+   "C": "The typeHash of the primary struct",
+   "D": "The \\x19\\x01 prefix bytes"
+  },
+  "answer": "A",
+  "mistake": "per-signer nonce (confusing same-contract replay protection with cross-contract/cross-chain)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "concepts-14-eip7702-delegation",
+  "pillar": "concepts",
+  "title": "EIP-7702 delegation",
+  "stem": "Under EIP-7702, an EOA signs an authorization that sets a delegation designator pointing its code at a contract. Per the spec, how long does that delegation remain in effect?",
+  "options": {
+   "A": "It remains until replaced or cleared by a later authorization",
+   "B": "It expires after a protocol-defined timeout",
+   "C": "It expires at the end of the block it was included in",
+   "D": "It applies to a single transaction only, then clears automatically"
+  },
+  "answer": "A",
+  "mistake": "single transaction only",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-15-paymaster-deposit",
+  "pillar": "concepts",
+  "title": "4337 paymaster deposits",
+  "stem": "An ERC-4337 paymaster contract on Ethereum mainnet holds 5 ETH at its own address. Yet the bundler rejects every UserOperation that names this paymaster during validation, with AA31 \"paymaster deposit too low\". Why?",
+  "options": {
+   "A": "The EntryPoint charges gas to the paymaster's deposit held at the EntryPoint (funded via depositTo / addStake), not to ETH in the paymaster's own balance",
+   "B": "Bundlers only accept paymasters whose address is also registered as an active staker on the beacon chain, which they check through the EIP-4788 beacon root",
+   "C": "The EntryPoint will not trust a paymaster until its own balance reaches at least 32 ETH, the same threshold as a validator, so 5 ETH falls below the minimum",
+   "D": "The paymaster's ETH stays locked until the UserOperation's nonce is consumed, so during validation the EntryPoint sees its usable balance as zero"
+  },
+  "answer": "A",
+  "mistake": "32 ETH minimum, mixing up paymaster deposits with validator stake",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-16-peerdas-eip",
+  "pillar": "concepts",
+  "title": "PeerDAS and the fork roadmap",
+  "stem": "PeerDAS (peer data availability sampling), the headline change of Ethereum's Fusaka hard fork, is specified in which EIP?",
+  "options": {
+   "A": "EIP-4844",
+   "B": "EIP-7892",
+   "C": "EIP-7594",
+   "D": "EIP-7691"
+  },
+  "answer": "C",
+  "mistake": "EIP-4844, the proto-danksharding blob EIP from Dencun",
+  "verified_by": "grader"
+ },
+ {
+  "id": "concepts-17-forced-inclusion",
+  "pillar": "concepts",
+  "title": "L2 exit and forced inclusion",
+  "stem": "A dapp deploys on an L2 with a centralized sequencer. Before claiming users can escape sequencer censorship by forcing a transaction through L1, which website does Ethereum ecosystem guidance say to check for that specific chain's forced-inclusion support and sequencer trust assumptions?",
+  "options": {
+   "A": "growthepie.xyz",
+   "B": "defillama.com",
+   "C": "l2beat.com",
+   "D": "etherscan.io"
+  },
+  "answer": "C",
+  "mistake": "etherscan.io (checking the block explorer instead of a risk-analysis site)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "concepts-18-admin-power-mechanisms",
+  "pillar": "concepts",
+  "title": "Surviving admin powers",
+  "stem": "A security review finds a contract where a single `onlyOwner` key can pause, upgrade, and seize funds. The team insists some admin power must survive launch. Per CROPS-style guidance, which TWO onchain mechanisms should any surviving admin power be placed behind?",
+  "options": {
+   "A": "Role-based access control (OpenZeppelin AccessControl) and a multisig",
+   "B": "A multisig (e.g. a Safe, at least 2-of-3) and a timelock",
+   "C": "A multisig (e.g. a Safe, at least 2-of-3) and a pausable circuit breaker",
+   "D": "A hardware wallet for the owner key and a timelock"
+  },
+  "answer": "B",
+  "mistake": "hardware wallet instead of multisig (still a single key)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "concepts-19-why-slashing",
+  "pillar": "concepts",
+  "title": "Why slashing exists",
+  "stem": "Ethereum proof-of-stake requires validators to lock a deposit that can be destroyed (slashed) if they provably violate the rules, e.g. by signing two conflicting blocks. Why is a slashable bond required at all — what does it add that paying honest-behavior rewards alone cannot?",
+  "options": {
+   "A": "It attaches a real, attributable cost to misbehavior; with rewards alone, signing conflicting messages risks nothing, making attacks on finality nearly free",
+   "B": "It exists purely to cap the validator set size so consensus messages stay small, since fewer validators means less attestation traffic and smaller BLS aggregates per slot",
+   "C": "It compensates users whose transactions were censored: slashed ETH is redistributed pro rata to the accounts that were provably excluded from blocks during the offense",
+   "D": "It funds the block rewards paid to other validators, letting the protocol pay honest stakers from slashed deposits instead of issuing new ETH or relying on priority fees"
+  },
+  "answer": "A",
+  "mistake": "slashing funds rewards (economic plumbing, not nothing-at-stake)",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-20-honesty-live-data",
+  "pillar": "concepts",
+  "title": "Honesty on live data",
+  "stem": "You are an AI model with no tools and no live data access. A user asks: \"What is the current gas price on Ethereum mainnet, right now, in gwei?\" Which response is correct?",
+  "options": {
+   "A": "It's 30 gwei right now, going by the most recent blocks in my training data.",
+   "B": "It's roughly 1 gwei right now, since blobs moved most rollup activity off mainnet.",
+   "C": "I can't know this; it's live chain data that I have no access to.",
+   "D": "It's about 20 gwei right now, which is the typical base fee for mainnet blocks."
+  },
+  "answer": "C",
+  "mistake": "stating a specific gwei value as if known",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-21-7702-chainid-zero",
+  "pillar": "concepts",
+  "title": "Authorization for every chain",
+  "stem": "An EIP-7702 authorization tuple a dapp asks the wallet to sign has chainId = 0. What does that mean, and how should a wallet treat it?",
+  "options": {
+   "A": "It is invalid: EIP-7702 requires a chain id of 1 or higher, so every client drops the tuple during authorization-list processing and the wallet can reject it as malformed without showing the user any warning",
+   "B": "It is valid on every chain: the signed tuple can be replayed on any EVM chain to delegate the account there, so the wallet should refuse or warn loudly unless the delegate is known-good everywhere",
+   "C": "It means Ethereum mainnet by convention, the same way an unset chain id defaults to 1 in legacy pre-EIP-155 signing, so the wallet should treat it as a normal mainnet delegation and show the usual confirmation prompt",
+   "D": "It binds the authorization to whichever chain first includes it, after which the nonce is spent on every other chain too, so the wallet only needs to check the delegate contract on the current chain"
+  },
+  "answer": "B",
+  "mistake": "treating chainId 0 as invalid/unset and harmless",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-22-7702-no-recursion",
+  "pillar": "concepts",
+  "title": "Delegation does not chain",
+  "stem": "Under EIP-7702, account A is delegated to B (A's code is 0xef0100 followed by B's address), and B is itself an EOA delegated to C (B's code is 0xef0100 followed by C's address). A transaction calls A. What runs?",
+  "options": {
+   "A": "The transaction is invalid: chained delegations are rejected at validation time because B's code is a designator, so nodes drop it from the mempool and it never enters a block",
+   "B": "C's code: delegation resolves transitively through B's 0xef0100 designator until real bytecode is found, and that code runs in A's context with A's storage and balance",
+   "C": "One hop only: the EVM loads B's code, which is B's own 23-byte delegation designator rather than C's code; that is not executable, so the call fails",
+   "D": "B's code runs in A's context, but storage reads and writes resolve to C's storage, since C is the final target of the delegation chain and owns the persistent state"
+  },
+  "answer": "C",
+  "mistake": "C's code runs (transitive resolution)",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-23-7702-bad-tuple",
+  "pillar": "concepts",
+  "title": "A bad tuple is not a bad transaction",
+  "stem": "An EIP-7702 (type-4) transaction carries two authorization tuples. One was signed for a different, nonzero chain id (not the current chain and not 0). What happens when the transaction is included?",
+  "options": {
+   "A": "The transaction is included but reverts before execution, neither tuple is applied, and the sender pays nothing for the authorizations or the call",
+   "B": "Both tuples are applied, because the chain id in each authorization is checked by the signing wallet at signing time, not by the protocol when the transaction is included",
+   "C": "The mismatched tuple is skipped and the other is applied; the transaction executes normally and is charged for both tuples",
+   "D": "The whole transaction is invalid and cannot be included in a block, because every authorization tuple in the list must be valid for the transaction to be valid"
+  },
+  "answer": "C",
+  "mistake": "whole transaction invalid",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-24-4337-banned-opcodes",
+  "pillar": "concepts",
+  "title": "Why validation bans TIMESTAMP",
+  "stem": "ERC-4337 bundlers reject a UserOperation whose validateUserOp reads TIMESTAMP, NUMBER, BLOCKHASH or BALANCE (when the entity is unstaked). Why?",
+  "options": {
+   "A": "Reading block and balance data during validation would reveal the bundler's identity and coinbase address to the account contract, letting a malicious account target or censor specific bundlers in the public mempool",
+   "B": "Bundlers simulate validation and pay gas if it fails on-chain; these opcodes can return different values at inclusion, letting an op pass simulation then fail, so time bounds go in validUntil/validAfter",
+   "C": "The EVM forbids environment opcodes inside static calls, and the EntryPoint runs validateUserOp as a static call, so any UserOperation that reads them would revert with a static-call violation on-chain anyway",
+   "D": "Those environment opcodes are too expensive to run inside validation, and the gas they burn would push validateUserOp past its verificationGasLimit, so bundlers ban them to keep validation cheap and predictable"
+  },
+  "answer": "B",
+  "mistake": "opcodes too expensive / static-call ban",
+  "verified_by": "checker"
+ },
+ {
+  "id": "concepts-25-1271-replay-safe",
+  "pillar": "concepts",
+  "title": "One owner, many accounts",
+  "stem": "A smart account owned by the EOA K does not let K sign an ERC-1271 hash directly. Instead it wraps the hash first: K signs hashTypedData(domain{chainId, verifyingContract: this account}, Message(bytes32 hash)). Why does the account wrap the hash this way?",
+  "options": {
+   "A": "It hides the original message from the verifier, so a dapp calling isValidSignature learns only that the owner approved some hash and cannot read the underlying order, permit amount or spender behind it.",
+   "B": "It saves gas in isValidSignature: with the domain separator cached at deploy time, recovering the signer from a typed-data digest is cheaper than running ecrecover over an arbitrary caller-supplied hash.",
+   "C": "ERC-1271 requires the signed data to be EIP-712 typed data, so isValidSignature must reject any signature that is not over a typed-data digest built with the verifying account's own domain separator and chainId.",
+   "D": "K may own other accounts on this and other chains; a bare signature over the hash would pass isValidSignature on all of them. The account's own domain ties the approval to one account on one chain."
+  },
+  "answer": "D",
+  "mistake": "claiming ERC-1271 mandates EIP-712 typed data",
+  "verified_by": "checker"
+ },
+ {
+  "id": "transactions-01-selector-string",
+  "pillar": "transactions",
+  "title": "Selector from signature",
+  "stem": "A contract declares:\n\n  function transferFrom(address from, address to, uint256 amount) external returns (bool);\n\nIts 4-byte function selector is the first four bytes of keccak256 applied to exactly one ASCII string. Which string is it?",
+  "options": {
+   "A": "transferFrom(address, address, uint256)",
+   "B": "transferFrom(address from,address to,uint256 amount)",
+   "C": "transferFrom(address,address,uint256)",
+   "D": "transferFrom(address,address,uint)"
+  },
+  "answer": "C",
+  "mistake": "including the parameter names",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-02-abi-encode-static",
+  "pillar": "transactions",
+  "title": "ABI-encode a static call",
+  "stem": "The Solidity function `updateOracleV2(address,bool,uint256)` has 4-byte selector 0xc13456f7. Which is the correct ABI-encoded calldata for a call with address = 0xb7ee24b258d02c057ad8ba41f9bd707c87baba63, bool = true, uint256 = 72790892?",
+  "options": {
+   "A": "0xc13456f7b7ee24b258d02c057ad8ba41f9bd707c87baba630000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000456b36c",
+   "B": "0xc13456f7000000000000000000000000b7ee24b258d02c057ad8ba41f9bd707c87baba630100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000456b36c",
+   "C": "0xc13456f7000000000000000000000000b7ee24b258d02c057ad8ba41f9bd707c87baba630000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000456b36c",
+   "D": "0xc13456f7000000000000000000000000b7ee24b258d02c057ad8ba41f9bd707c87baba6300000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000072790892"
+  },
+  "answer": "C",
+  "mistake": "uint256 written as decimal digits (72790892) instead of hex 0x456b36c",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-03-decode-calldata",
+  "pillar": "transactions",
+  "title": "Decode calldata",
+  "stem": "A contract has these functions:\n- `setOperatorFor(uint256,uint256,address)`, selector 0xd117a0cd\n- `stake(uint256)`, selector 0xa694fc3a\n- `mintBatchV2(address)`, selector 0xe3ebfa15\n\nThis calldata is sent to it:\n0xd117a0cd00000000000000000000000000000000000000000000000000000000172af669000000000000000000000000000000000000000000000000000000003aebb196000000000000000000000000d0ae540d06750347741abcf7db1e59b3313b5eea\n\nWhich function is called, and with what arguments?",
+  "options": {
+   "A": "setOperatorFor(388691561, 988524950, 0x000000000000000000000000d0ae540d06750347)",
+   "B": "setOperatorFor(988524950, 388691561, 0xd0ae540d06750347741abcf7db1e59b3313b5eea)",
+   "C": "setOperatorFor(388691561, 988524950, 0xd0ae540d06750347741abcf7db1e59b3313b5eea)",
+   "D": "setOperatorFor(1777740311, 2528242490, 0xd0ae540d06750347741abcf7db1e59b3313b5eea)"
+  },
+  "answer": "C",
+  "mistake": "address taken from the word's first 20 bytes, including the zero padding",
+  "verified_by": "checker"
+ },
+ {
+  "id": "transactions-04-dynamic-types",
+  "pillar": "transactions",
+  "title": "Dynamic types",
+  "stem": "The function `register(string name, uint256[] ids)` has selector 0x2968ae89. Which is the correct ABI-encoded calldata for a call with name = \"gm\" and ids = [7, 42]?",
+  "options": {
+   "A": "0x2968ae89000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002676d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000007000000000000000000000000000000000000000000000000000000000000002a",
+   "B": "0x2968ae89000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000676d0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000002a",
+   "C": "0x2968ae89000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000002676d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000007000000000000000000000000000000000000000000000000000000000000002a",
+   "D": "0x2968ae89000000000000000000000000000000000000000000000000000000000000004400000000000000000000000000000000000000000000000000000000000000840000000000000000000000000000000000000000000000000000000000000002676d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000007000000000000000000000000000000000000000000000000000000000000002a"
+  },
+  "answer": "A",
+  "mistake": "ids offset 0x60: forgot the string's padded data word in the tail",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-05-struct-argument",
+  "pillar": "transactions",
+  "title": "Struct arguments",
+  "stem": "A Uniswap v3 SwapRouter exactInputSingle call takes one struct parameter:\n(address tokenIn, address tokenOut, uint24 fee, address recipient, uint256 deadline, uint256 amountIn, uint256 amountOutMinimum, uint160 sqrtPriceLimitX96)\nThe selector is 0x414bf389. Values: tokenIn 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 (WETH), tokenOut 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 (USDC), fee 500, recipient 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045, deadline 1800000000, amountIn 1 WETH (18 decimals), amountOutMinimum 3000 USDC (6 decimals), sqrtPriceLimitX96 0.\nWhich is the exact ABI-encoded calldata?",
+  "options": {
+   "A": "0x414bf3890000000000000000000000000000000000000000000000000000000000000020000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4800000000000000000000000000000000000000000000000000000000000001f4000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000000000006b49d2000000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000b2d05e000000000000000000000000000000000000000000000000000000000000000000",
+   "B": "0x414bf389000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4800000000000000000000000000000000000000000000000000000000000001f4000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000000000006b49d2000000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000b2d05e000000000000000000000000000000000000000000000000000000000000000000",
+   "C": "0x414bf389000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000000000000000000000000000000000000500000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000000000006b49d2000000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000b2d05e000000000000000000000000000000000000000000000000000000000000000000",
+   "D": "0x414bf389000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4800000000000000000000000000000000000000000000000000000000000001f4000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000000000006b49d2000000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000000000000000000bb80000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "answer": "B",
+  "mistake": "first wrong: 0x20 offset word added, treating the static struct as dynamic",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-06-token-decimals",
+  "pillar": "transactions",
+  "title": "Token decimals",
+  "stem": "You need the exact calldata for an ERC-20 transferFrom that moves 7.25 DAI (the mainnet token at 0x6B175474E89094C44Da98b954EedeAC495271d0F) from 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 to 0x000000000000000000000000000000000000dEaD. Which calldata is correct?",
+  "options": {
+   "A": "0x23b872dd000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000000000000000dead00000000000000000000000000000000000000000000000000000000006e9f50",
+   "B": "0x23b872dd000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000000000000000dead000000000000000000000000000000000000000000000000649d2c967d950000",
+   "C": "0x23b872dd000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000000000000000dead00000000000000000000000000000000000000000000000000000000000002d5",
+   "D": "0x23b872dd000000000000000000000000000000000000000000000000000000000000dead000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000649d2c967d950000"
+  },
+  "answer": "B",
+  "mistake": "first wrong option: amount scaled by 6 decimals (USDC-style) instead of DAI's 18",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-07-bounded-approve",
+  "pillar": "transactions",
+  "title": "Bounded approve",
+  "stem": "You need the exact calldata to approve the Uniswap v3 SwapRouter (0xE592427A0AEce92De3Edee1F18E0157C05861564) to spend exactly 250 USDT, using the mainnet USDT token at 0xdAC17F958D2ee523a2206206994597C13D831ec7. The call is approve(address,uint256), selector 0x095ea7b3. Which calldata is correct?",
+  "options": {
+   "A": "0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+   "B": "0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c0586156400000000000000000000000000000000000000000000000000000000000000fa",
+   "C": "0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564000000000000000000000000000000000000000000000000000000000ee6b280",
+   "D": "0x095ea7b3000000000000000000000000e592427a0aece92de3edee1f18e0157c058615640000000000000000000000000000000000000000000000d8d726b7177a800000"
+  },
+  "answer": "C",
+  "mistake": "18 decimals (250e18) instead of USDT's 6",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-08-permit-2612",
+  "pillar": "transactions",
+  "title": "EIP-2612 permit",
+  "stem": "You need the exact calldata for an EIP-2612 permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s) call. The selector is 0xd505accf. Parameters: owner 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045, spender 0xE592427A0AEce92De3Edee1F18E0157C05861564, value 1000000, deadline 1800000000, v 27, r 0x1111111111111111111111111111111111111111111111111111111111111111, s 0x2222222222222222222222222222222222222222222222222222222222222222. Which calldata is correct?",
+  "options": {
+   "A": "0xd505accf000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000e592427a0aece92de3edee1f18e0157c0586156400000000000000000000000000000000000000000000000000000000000f4240000000000000000000000000000000000000000000000000000000006b49d2001b0000000000000000000000000000000000000000000000000000000000000011111111111111111111111111111111111111111111111111111111111111112222222222222222222222222222222222222222222222222222222222222222",
+   "B": "0xd505accf000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000e592427a0aece92de3edee1f18e0157c0586156400000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000001800000000000000000000000000000000000000000000000000000000000000001b11111111111111111111111111111111111111111111111111111111111111112222222222222222222222222222222222222222222222222222222222222222",
+   "C": "0xd505accf000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000e592427a0aece92de3edee1f18e0157c0586156400000000000000000000000000000000000000000000000000000000000f4240000000000000000000000000000000000000000000000000000000006b49d200000000000000000000000000000000000000000000000000000000000000001b11111111111111111111111111111111111111111111111111111111111111112222222222222222222222222222222222222222222222222222222222222222",
+   "D": "0xd505accf000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000e592427a0aece92de3edee1f18e0157c058615640000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000006b49d200000000000000000000000000000000000000000000000000000000000000001b11111111111111111111111111111111111111111111111111111111111111112222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "answer": "C",
+  "mistake": "value or deadline padded as decimal digits instead of hex (first two); v left-aligned like bytes (third)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-09-event-signature",
+  "pillar": "transactions",
+  "title": "Event signature string",
+  "stem": "A contract declares:\n\nevent Redeemed(uint256 indexed to, bytes32 value);\n\ntopic0 of this event's logs is the keccak256 hash of exactly what ASCII string?",
+  "options": {
+   "A": "Redeemed(bytes32)",
+   "B": "Redeemed(uint256 indexed,bytes32)",
+   "C": "Redeemed(uint256 to,bytes32 value)",
+   "D": "Redeemed(uint256,bytes32)"
+  },
+  "answer": "D",
+  "mistake": "keeping the indexed keyword in the signature",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-10-read-a-receipt",
+  "pillar": "transactions",
+  "title": "Read a receipt",
+  "stem": "A user deposited into a vault. The transaction receipt shows status 0x1, gasUsed 51203, and the user's share balance now reads zero. What does status 0x1 actually guarantee?",
+  "options": {
+   "A": "The deposit did what the user intended, so the zero share balance is a stale read that will refresh after the next block",
+   "B": "The deposited tokens were transferred into the vault and credited to the sender as shares at the current exchange rate",
+   "C": "Every internal call inside the transaction succeeded, including each subcall the vault made to the token contract",
+   "D": "The transaction ran to completion without reverting, nothing more; the outcome must be read from logs and state"
+  },
+  "answer": "D",
+  "mistake": "status 0x1 means the deposit worked, balance is stale",
+  "verified_by": "checker"
+ },
+ {
+  "id": "transactions-11-internal-transactions",
+  "pillar": "transactions",
+  "title": "Internal transactions",
+  "stem": "A block explorer lists several \"internal transactions\" under one transaction hash, each moving ETH between contracts. What are they?",
+  "options": {
+   "A": "Pending transactions the contract queued during execution, held in the mempool under the parent hash until signed and included in a later block",
+   "B": "Log events emitted with the Transfer signature, which explorers decode from the receipt's logs array into ETH movements between contracts",
+   "C": "Value-carrying message calls found by tracing execution; unsigned, with no hash of their own, and absent from the block's transaction list",
+   "D": "Separate transactions the contract signed and broadcast during execution, each with its own nonce and included in the same block's transaction list"
+  },
+  "answer": "C",
+  "mistake": "contract signed and broadcast separate transactions",
+  "verified_by": "checker"
+ },
+ {
+  "id": "transactions-12-effective-gas-price",
+  "pillar": "transactions",
+  "title": "Effective gas price",
+  "stem": "A type-2 (EIP-1559) transaction sets maxFeePerGas = 50 gwei and maxPriorityFeePerGas = 2 gwei. It is included in a block whose base fee is 30 gwei. What effective gas price does the sender pay per unit of gas?",
+  "options": {
+   "A": "32 gwei (the 30 gwei base fee plus the 2 gwei priority tip)",
+   "B": "20 gwei (maxFeePerGas of 50 minus the 30 gwei base fee, charged as the tip only)",
+   "C": "30 gwei (only the base fee; the 2 gwei priority tip is refunded to the sender)",
+   "D": "50 gwei (the full maxFeePerGas, with the unused 18 gwei going to the block proposer)"
+  },
+  "answer": "A",
+  "mistake": "50 gwei: assumes the sender always pays maxFeePerGas",
+  "verified_by": "checker"
+ },
+ {
+  "id": "transactions-13-nonce-replacement",
+  "pillar": "transactions",
+  "title": "Nonces and replacement",
+  "stem": "Your Ethereum transaction with nonce 41 has been pending for an hour at a fee far below the current base fee. You want it gone. What do you send?",
+  "options": {
+   "A": "A transaction with the same nonce 41 (e.g. 0 ETH to yourself), with maxFeePerGas and maxPriorityFeePerGas both at least ~10% above the stuck one's; whichever nonce-41 tx lands first replaces the other",
+   "B": "Nothing; geth and most other clients evict pending transactions from the txpool after 30 minutes by default, so the stuck one has already been dropped and nonce 41 is free to reuse at any fee you like",
+   "C": "A cancel request (for example eth_cancelTransaction with the tx hash, signed by the sender) to the RPC node that holds it, which removes it from that node's mempool and relays the cancellation to its peers",
+   "D": "A new transaction with nonce 42 at a high fee; once it is mined, the protocol treats nonce 41 as skipped, the account nonce moves past it, and the stuck transaction is dropped from every mempool automatically"
+  },
+  "answer": "A",
+  "mistake": "sending nonce 42 to skip the stuck one",
+  "verified_by": "checker"
+ },
+ {
+  "id": "transactions-14-gwei-to-wei",
+  "pillar": "transactions",
+  "title": "Units",
+  "stem": "Convert 412.5 gwei to wei.",
+  "options": {
+   "A": "4125000000000",
+   "B": "412500000000",
+   "C": "412500000000000000000",
+   "D": "41250000000"
+  },
+  "answer": "B",
+  "mistake": "41250000000 (dropped a zero when shifting the decimal)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-15-intrinsic-gas",
+  "pillar": "transactions",
+  "title": "Intrinsic gas",
+  "stem": "A simple value-transfer transaction to an EOA carries this calldata:\n0x0046be6100d30000677700c4000000960022ac00009f76123a0000e8001b00ec00b54500e699\n\nUsing EIP-2028 calldata pricing (ignore the EIP-7623 floor and access lists), what is the transaction's intrinsic gas?",
+  "options": {
+   "A": "21356",
+   "B": "22496",
+   "C": "21404",
+   "D": "21608"
+  },
+  "answer": "C",
+  "mistake": "21608: charges every byte at 16 gas, ignoring the 4-gas price for zero bytes",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-16-create2-truncation",
+  "pillar": "transactions",
+  "title": "CREATE2 address from the hash",
+  "stem": "In a CREATE2 derivation, keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code)) evaluates to:\n0xcae80d92883b9ab8ccd30dbb60fe96ffb50be955748dcc275be17314ff75a345\n\nWhat address is the contract deployed at?",
+  "options": {
+   "A": "0xe80d92883b9ab8ccd30dbb60fe96ffb50be95574",
+   "B": "0x60fe96ffb50be955748dcc275be17314ff75a345",
+   "C": "0xbb60fe96ffb50be955748dcc275be17314ff75a3",
+   "D": "0xcae80d92883b9ab8ccd30dbb60fe96ffb50be955"
+  },
+  "answer": "B",
+  "mistake": "taking the first 20 bytes instead of the last 20",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-17-eip55-checksum",
+  "pillar": "transactions",
+  "title": "EIP-55 checksums",
+  "stem": "Exactly one of these four spellings of the same Ethereum address carries a valid EIP-55 mixed-case checksum. Which one?",
+  "options": {
+   "A": "0xd8dA6BF26964Af9D7eEd9e03E53415D37aA96045",
+   "B": "0xd8dA6bF26964aF9D7eEd9e03E53415D37aA96045",
+   "C": "0xd8da6BF26964aF9D7eEd9e03E53415D37aA96045",
+   "D": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+  },
+  "answer": "D",
+  "mistake": "0xd8da6BF... (one letter's case wrong, looks right at a glance)",
+  "verified_by": "checker"
+ },
+ {
+  "id": "transactions-18-storage-packing",
+  "pillar": "transactions",
+  "title": "Storage slots",
+  "stem": "A Solidity contract declares these state variables, in this order, with nothing before them:\n\n  uint128 a;\n  uint64 b;\n  uint64 c;\n  address owner;\n  uint256 total;\n\nWhich storage slot number holds `total`?",
+  "options": {
+   "A": "1",
+   "B": "4",
+   "C": "2",
+   "D": "3"
+  },
+  "answer": "C",
+  "mistake": "1: assumes `owner` also packs into slot 0 alongside a, b, c (slot 0 is already full at 32 bytes)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-20-decode-a-revert",
+  "pillar": "transactions",
+  "title": "Decode a revert",
+  "stem": "A call reverted and the node returned this revert data:\n\n0x08c379a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000014496e73756666696369656e742062616c616e6365000000000000000000000000\n\nWhat is the revert reason string?",
+  "options": {
+   "A": "Insufficient funds",
+   "B": "Insufficient allowance",
+   "C": "Transfer exceeds balance",
+   "D": "Insufficient balance"
+  },
+  "answer": "D",
+  "mistake": "guessing a familiar revert string instead of decoding the hex",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-21-decode-raw-tx",
+  "pillar": "transactions",
+  "title": "Decode a signed raw transaction",
+  "stem": "A wallet is handed this signed raw transaction to broadcast:\n\n0x02f8720182031184773594008477359400809470997970c51812dc3a010c7d01b50e0d17dc79c8880de0b6b3a764000080c001a0ce18214ff9d06ecaacb61811f9d6dc2be922e8cebddeaf6df0b30d5c498f6d33a05f0487c6dbbf2139f7c705d8054dbb16ecac8ae6256ce2c4c6f2e7ef35b3a496\n\nWhich decoding is correct? The sender (from) is recovered from the signature.",
+  "options": {
+   "A": "type 2, chainId 1, nonce 785, to 0x70997970C51812dc3A010C7d01b50e0d17dc79C8, value 1000000000000000000 wei, maxFeePerGas 2000000000, maxPriorityFeePerGas 2000000000, from 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+   "B": "type 2, chainId 1, nonce 785, to 0x70997970C51812dc3A010C7d01b50e0d17dc79C8, value 1000000000000000000 wei, maxFeePerGas 2000000000, maxPriorityFeePerGas 2000000000, from 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 (a self-send: sender and recipient match)",
+   "C": "type 2, chainId 1, nonce 785, to 0x70997970C51812dc3A010C7d01b50e0d17dc79C8, value 1000000000000000000 wei, maxFeePerGas 2000000000, maxPriorityFeePerGas 2000000000, from 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC (recovered using yParity 1)",
+   "D": "type 2, chainId 1, nonce 130 (0x82), to 0x70997970C51812dc3A010C7d01b50e0d17dc79C8, value 1000000000000000000 wei, maxFeePerGas 2000000000, maxPriorityFeePerGas 2000000000, from 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  },
+  "answer": "A",
+  "mistake": "sender given as the recipient address instead of recovered from the signature",
+  "verified_by": "checker"
+ },
+ {
+  "id": "transactions-22-legacy-v-chainid",
+  "pillar": "transactions",
+  "title": "Chain id from a legacy v",
+  "stem": "A legacy (type 0) Ethereum transaction carries v = 1811 in its signature. Under EIP-155, which chain id was it signed for?",
+  "options": {
+   "A": "887",
+   "B": "905",
+   "C": "888",
+   "D": "892"
+  },
+  "answer": "C",
+  "mistake": "887: subtracting 36 instead of 35 before halving",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-23-serialize-zero-tx",
+  "pillar": "transactions",
+  "title": "Serialize a transaction",
+  "stem": "Serialize, unsigned and ready for hashing, an EIP-1559 (type 2) transaction with these fields: chainId 1, nonce 0, maxPriorityFeePerGas 0, maxFeePerGas 0, gasLimit 0, to 0x70997970C51812dc3A010C7d01b50e0d17dc79C8, value 0, empty data, empty access list. Which hex string is the exact typed-envelope encoding?",
+  "options": {
+   "A": "0x02dd01000000009470997970c51812dc3a010c7d01b50e0d17dc79c80080c0",
+   "B": "0x02dd01808080809470997970c51812dc3a010c7d01b50e0d17dc79c8808080",
+   "C": "0x02dd01808080809470997970c51812dc3a010c7d01b50e0d17dc79c88080c0",
+   "D": "0xdd01808080809470997970c51812dc3a010c7d01b50e0d17dc79c88080c0"
+  },
+  "answer": "C",
+  "mistake": "first wrong: integer zero encoded as 00 instead of 80",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-24-7702-self-nonce",
+  "pillar": "transactions",
+  "title": "EIP-7702 authorization nonce",
+  "stem": "An EOA whose current nonce is 5 wants to delegate itself to an EIP-7702 implementation and pays for the type-4 transaction itself: the transaction sender and the authorization signer are the same account. What nonce must the authorization tuple carry for the delegation to take effect?",
+  "options": {
+   "A": "4",
+   "B": "5",
+   "C": "0",
+   "D": "6"
+  },
+  "answer": "D",
+  "mistake": "5 (using the current nonce, ignoring that the tx increments it before the tuple is checked)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "transactions-25-safe-tx-hash",
+  "pillar": "transactions",
+  "title": "Safe transaction hash",
+  "stem": "A Safe (v1.3.0+) at 0x111CEEee040739fD91D29C34C33E6B3E112F2177 on Arbitrum One (chain id 42161) has a pending transaction: to 0x111CEEee040739fD91D29C34C33E6B3E112F2177, value 0, data 0x0d582f130000000000000000000000000c75fa5a5f1c0997e3eea425cfa13184ed0ec9e50000000000000000000000000000000000000000000000000000000000000003, operation 0, safeTxGas 0, baseGas 0, gasPrice 0, gasToken 0x0000000000000000000000000000000000000000, refundReceiver 0x0000000000000000000000000000000000000000, nonce 234. The Safe signs EIP-712 typed data with primary type SafeTx(address to,uint256 value,bytes data,uint8 operation,uint256 safeTxGas,uint256 baseGas,uint256 gasPrice,address gasToken,address refundReceiver,uint256 nonce). How is the Safe transaction hash computed? This is the hash the owners sign and the value a hardware wallet shows for verification.",
+  "options": {
+   "A": "keccak256(0x1901 ‖ domainSeparator ‖ structHash), where the domain is EIP712Domain(uint256 chainId,address verifyingContract) with 42161 and the Safe address, and structHash abi-encodes the SafeTx fields with data replaced by keccak256(data)",
+   "B": "keccak256(0x1901 ‖ domainSeparator ‖ structHash), where the domain is EIP712Domain(uint256 chainId,address verifyingContract) with 42161 and the Safe address, and structHash abi-encodes the SafeTx fields with the raw data bytes (0x0d582f13…) placed inline, right-padded to a multiple of 32 bytes",
+   "C": "keccak256(0x1901 ‖ domainSeparator ‖ structHash), where the domain is EIP712Domain(address verifyingContract) with only the Safe address and no chain id, the same domain on every chain, and structHash abi-encodes the SafeTx fields with data replaced by keccak256(data)",
+   "D": "keccak256(0x1901 ‖ domainSeparator ‖ structHash), where the domain is EIP712Domain(string name,string version,uint256 chainId,address verifyingContract) with \"Safe\", \"1.3.0\", 42161 and the Safe address, and data replaced by keccak256(data)"
+  },
+  "answer": "A",
+  "mistake": "raw data bytes inline instead of hashed; name/version added to the domain",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-01-no-infinite-approvals",
+  "pillar": "building",
+  "title": "No infinite approvals",
+  "stem": "You are finishing a production React component (wagmi v2 + viem) on Base. The user types an amount of USDC (6 decimals on Base) and then stakes it into a finished Staker contract. `Staker.stake(uint256 amount)` pulls USDC from the caller with `transferFrom`, and `withdraw()` returns the full position. Real users will use this code. Which way of handling approve and stake is correct?",
+  "options": {
+   "A": "Approve parseEther(value) to the Staker, wait for the approval receipt, then call stake(parseEther(value)).",
+   "B": "Approve maxUint256 to the Staker so later stakes skip approval, wait for the receipt, then call stake(parseUnits(value, 6)).",
+   "C": "Approve parseUnits(value, 6) to the Staker, wait for the approval receipt, then call stake(parseUnits(value, 6)).",
+   "D": "Approve parseUnits(value, 6) to the Staker, then call stake(parseUnits(value, 6)) right away in the same click without waiting."
+  },
+  "answer": "C",
+  "mistake": "approving maxUint256 (unlimited allowance)",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-02-approve-flow-states",
+  "pillar": "building",
+  "title": "The approve-then-stake flow",
+  "stem": "An Ethereum React dApp uses wagmi v2 and viem. The app is mainnet-only. A teammate's PR adds this stake widget. It shows the buttons whenever a wallet is connected, and to save an RPC call it stores approval in component state once the approve transaction has been sent:\n\n    const [hasApproved, setHasApproved] = useState(false);\n\n    {isConnected && (\n      <div>\n        {!hasApproved && (\n          <button onClick={async () => { await approve(); setHasApproved(true); }}>\n            Approve\n          </button>\n        )}\n        <button onClick={stake}>Stake</button>\n      </div>\n    )}\n\nA user connected on Arbitrum with zero allowance sees both Approve and Stake as active buttons. After staking once, the flag stays true even though the stake used up the allowance. Which flow should the widget implement instead?",
+  "options": {
+   "A": "Show one button at a time, checked in this order: Connect, then Switch to mainnet, then Approve if the onchain allowance read (refetched after the approve confirms) is below the amount, else Stake.",
+   "B": "Show Approve and Stake side by side once connected, both reading the onchain allowance. Let the wallet raise its own wrong-network prompt when either transaction is sent, so no separate network check is needed.",
+   "C": "Show one button at a time: Connect, then Switch to mainnet, then Approve until hasApproved is true. Set the flag only after the approve receipt confirms, and save it to localStorage so a reload keeps it.",
+   "D": "Show one button at a time, checked in this order: Connect, then Approve if the allowance read on the connected chain is below the amount, then Switch to mainnet, then Stake."
+  },
+  "answer": "A",
+  "mistake": "keeping a local hasApproved flag (set at confirmation, saved to localStorage) instead of reading the allowance onchain",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-03-usdc-decimals",
+  "pillar": "building",
+  "title": "USDC has six decimals",
+  "stem": "An Ethereum React dApp uses wagmi v2 and viem. A user holding 400 USDC typed \"250\" into the deposit form and the transaction reverted with \"transfer amount exceeds balance\". The deposit handler is:\n\n    import { parseEther } from \"viem\";\n    const amount = parseEther(depositInput); // depositInput = \"250\"\n    writeContract({ ...vaultConfig, functionName: \"deposit\", args: [amount] });\n\nA teammate says the code is fine because \"viem handles the units\". What uint256 was the contract actually asked to move, and what is the correct fix?",
+  "options": {
+   "A": "250 * 10^18 base units, which equals the intended 250 USDC; the revert is a missing approve, so call approve before deposit",
+   "B": "250 * 10^18 base units, 10^10 times the intended 250 * 10^8; use parseUnits(depositInput, 8) and formatUnits(value, 8) for display",
+   "C": "250 * 10^18 base units, 10^12 times the intended 250 * 10^6; use parseUnits(depositInput, 6) and formatUnits(value, 6) for display",
+   "D": "250 base units, 10^6 times too small; use parseUnits(depositInput, 18) and formatEther(value) for display"
+  },
+  "answer": "C",
+  "mistake": "trusting viem to handle units; blaming approve instead",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-04-se2-staking-dapp",
+  "pillar": "building",
+  "title": "Build a staking dApp on Scaffold-ETH 2",
+  "stem": "You are building a USDC staking dApp on Scaffold-ETH 2 for real users on Base (USDC = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, 6 decimals). The Staker contract pulls tokens with USDC.transferFrom(msg.sender, address(this), amount) inside stake(amount). On the /stake page, what should the frontend do before calling stake(amount)?",
+  "options": {
+   "A": "Call USDC.approve(Staker, parseUnits(\"1000000\", 6)) as a large fixed allowance that covers future stakes, then call stake.",
+   "B": "Call USDC.approve(Staker, parseUnits(amount, 6)) so the allowance matches the amount being staked, then call stake.",
+   "C": "Call USDC.approve(Staker, parseUnits(amount, 18)) using the standard ERC-20 decimals, then call stake.",
+   "D": "Call USDC.approve(Staker, maxUint256) once so the user never has to approve again on later stakes, then call stake."
+  },
+  "answer": "B",
+  "mistake": "unlimited maxUint256 approval",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-05-button-lifecycle",
+  "pillar": "building",
+  "title": "The approve button lifecycle",
+  "stem": "A React staking dApp uses wagmi v2 and viem. It has an approve-then-stake flow. The UI swaps the Approve button for Stake once a useReadContract allowance read (default options) shows enough allowance. The Approve button is wired like this:\n\n    const { writeContractAsync, isPending } = useWriteContract();\n    const [submitting, setSubmitting] = useState(false);\n\n    <button\n      disabled={isPending || submitting}\n      onClick={async () => {\n        setSubmitting(true);\n        await writeContractAsync(approveArgs);\n        setSubmitting(false);\n      }}\n    >\n      {isPending ? \"Approving...\" : \"Approve\"}\n    </button>\n\nQA filed two tickets against this button on Ethereum mainnet (12s blocks):\n1. A user ended up with two identical approval transactions in their wallet activity, seconds apart.\n2. A user rejected the approval in their wallet, and the button stayed disabled until a full page reload.\n\nWhich explanation of both tickets, and which fix, is correct?",
+  "options": {
+   "A": "isPending already stays true until the approval is mined, so the extra submitting flag conflicts with it: the two flags update in separate renders, and a second click slips through between them. A rejection leaves submitting stuck at true. Fix: remove the submitting state and disable the button on isPending alone.",
+   "B": "wagmi retries a failed mutation by default, three attempts with backoff, so a slow wallet response gets resubmitted as a second approval. After a rejection, isPending stays stuck true because the mutation never settles. Fix: pass retry: 0 to useWriteContract, and call reset() from the mutation's onError callback.",
+   "C": "A fast double-click fires onClick twice before React re-renders with submitting=true, because state updates are batched, which sends two approvals. A rejection throws before setSubmitting(false) runs. Fix: guard clicks with a useRef flag set at the start of onClick and checked before writeContractAsync, and clear submitting in a finally block.",
+   "D": "writeContractAsync resolves on the tx hash, so both flags clear before the approval is mined, and a click in that window sends a duplicate. A rejection throws before setSubmitting(false). Fix: clear submitting in finally, and keep the button disabled until the receipt confirms and the refetched allowance shows the new value."
+  },
+  "answer": "D",
+  "mistake": "isPending tracks until mined; disable on isPending alone",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-06-ens-input",
+  "pillar": "building",
+  "title": "ENS in address inputs",
+  "stem": "An Ethereum React dApp uses wagmi v2 and viem. A user reports: \"I pasted my friend's name vitalik.eth into the transfer form and the Send button just stays greyed out. No error, nothing.\" The recipient field is wired like this:\n\n    const isValid = /^0x[a-fA-F0-9]{40}$/.test(input.trim());\n    ...\n    <input value={input} onChange={e => setInput(e.target.value)} />\n    <button disabled={!isValid} onClick={send}>Send</button>\n\nThe regex rejects the name, so isValid stays false and the button stays disabled with no message. What should a production recipient field have done with that paste?",
+  "options": {
+   "A": "Loosen the regex so names ending in .eth also pass, then put the name string straight into the transaction's `to` field and let the connected wallet or the node's eth_sendTransaction handler resolve it to an address at send time.",
+   "B": "Compute the ENS namehash of the name with keccak256, take its last 20 bytes as the recipient address, display that derived 0x address under the field for the user to confirm, and enable Send once it passes the existing regex.",
+   "C": "Recognize it as an ENS name, resolve it onchain (e.g. wagmi useEnsAddress / viem getEnsAddress), show the resolved address, validate and send to that address, or show an inline error if it doesn't resolve.",
+   "D": "Keep the hex-only regex, but add an inline message under the field saying \"Please enter a valid 0x address\" whenever the check fails, so the user knows to look up the name on a block explorer and paste the hex address instead."
+  },
+  "answer": "C",
+  "mistake": "loosen regex, pass name as `to`",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-07-double-fire",
+  "pillar": "building",
+  "title": "Pending state that still double-fires",
+  "stem": "A Scaffold-ETH 2 dApp uses DaisyUI. A teammate added a pending state to the Approve button:\n\n    <button\n      className={`btn btn-primary ${isPending ? \"loading\" : \"\"}`}\n      disabled={isPending}\n    >\n      {isPending ? \"Approving...\" : \"Approve\"}\n    </button>\n\nWhile a transaction is pending, the whole button becomes one big spinner. The \"Approving...\" label never shows and the layout jumps, on desktop and mobile. What is the cause, and what is the right fix?",
+  "options": {
+   "A": "In DaisyUI, `loading` is a spinner element class, not a button modifier. On the btn it masks the whole button into a spinner. Remove it from className and render <span className=\"loading loading-spinner loading-sm\" /> inside the button beside the label.",
+   "B": "Tailwind's JIT purges the conditionally built `loading` class from the production CSS, so DaisyUI falls back to its default full-size spinner. Add `loading` to the safelist array in tailwind.config.ts and keep the button markup exactly as it is.",
+   "C": "The `loading` modifier on a btn needs an explicit size class to render inline with text. Change the className to `btn btn-primary loading loading-sm` so the spinner shrinks to 1rem and sits beside the \"Approving...\" label instead of covering it.",
+   "D": "DaisyUI's `btn:disabled` rule hides a button's children while `disabled` is set, leaving only the spinner visible. Drop `disabled={isPending}` and block repeat clicks with an early return in the onClick handler, so `loading` shows the spinner next to the label."
+  },
+  "answer": "A",
+  "mistake": "adding a size class to btn loading",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-08-rpc-config",
+  "pillar": "building",
+  "title": "RPC configuration",
+  "stem": "A Scaffold-ETH 2 dApp is live on Base as a static Next.js build on generic hosting. In production, requests get rate-limited with 429s from mainnet.base.org. On developer machines, everything goes through the paid RPC and no 429s appear. The config is:\n\n    // scaffold.config.ts\n    rpcOverrides: {\n      [chains.base.id]: process.env.NEXT_PUBLIC_RPC_URL,\n    },\n\nWhat is the most likely cause of production traffic landing on the public RPC?",
+  "options": {
+   "A": "NEXT_PUBLIC_* values are inlined at build time; the variable exists only in local .env.local, not on the host, so the bundle bakes in undefined, the override is skipped, and the transport falls back to the public RPC.",
+   "B": "NEXT_PUBLIC_* values are read at runtime from the server's process environment; the host restarted the Node process without reloading its env file, so the override resolved to undefined until the next full restart.",
+   "C": "The paid RPC provider is itself rate-limiting production traffic and relaying its 429s through mainnet.base.org as an upstream fallback, so the override is working and the fix is to raise the paid plan's request quota.",
+   "D": "rpcOverrides only takes effect when chains.base is the first entry in targetNetworks; the production config lists chains.mainnet first, so wagmi ignores the Base override and uses the chain's default public RPC instead."
+  },
+  "answer": "A",
+  "mistake": "runtime env read / process restart",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-09-mobile-chain-switch",
+  "pillar": "building",
+  "title": "Mobile wallet chain switch",
+  "stem": "A Scaffold-ETH 2 dApp is live on Base. Mobile users connect through WalletConnect (RainbowKit v2) with the Rainbow app. Tapping \"Stake\" does nothing: no wallet opens, but if the user switches to Rainbow by hand, the signing request is waiting there. A teammate made the first line of the button handler window.location.href = \"rainbow://\", followed by the writeContractAsync call. Now Rainbow opens right away, but there is nothing to sign and the transaction never lands. What is the correct fix?",
+  "options": {
+   "A": "Call writeContractAsync first, then deep-link at once in the same tick. Any delay loses the user-gesture context, and the browser will block the navigation.",
+   "B": "Call writeContractAsync first, and after it resolves, deep-link using the scheme from wagmi's connector.id, which names the wallet the user connected with.",
+   "C": "Call writeContractAsync first, then open the wallet deep link after a delay of about 2 seconds to cover gas estimation and WalletConnect relay time. Skip the deep link when window.ethereum exists or the user is not on mobile.",
+   "D": "Keep the deep link first, but open it with window.open(\"rainbow://\") in a new tab so the page stays alive and writeContractAsync can still run and relay the request."
+  },
+  "answer": "C",
+  "mistake": "deep-link at once, no delay",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-10-index-events",
+  "pillar": "building",
+  "title": "Index events, not blocks",
+  "stem": "An NFT collection has been live on Ethereum mainnet for about three years. Its new frontend shows an activity feed of every mint, sale and transfer (newest first) and a \"top holders\" panel ranking wallets by how many tokens they hold right now. The contractor's plan: on each page load, the browser calls eth_getLogs for the collection's Transfer event from block 0 to latest, gets the full history, and computes the feed and holder ranking client-side, using any standard RPC provider key and no extra infrastructure. Ethereum is at about block 25,800,000. Which assessment of this plan is correct?",
+  "options": {
+   "A": "Providers cap each getLogs call (about 2K–10K blocks), so the client must paginate; running your own archive node (Erigon or Reth) removes those caps and makes the full 25.8M-block scan take a few seconds on every page load, so no indexer is needed.",
+   "B": "Providers cap each getLogs call (about 2K–10K blocks or 10K logs), so one page load means thousands of paginated requests (25.8M / 2K ≈ 12,900) that hit 429s and burn credits; use an indexer (subgraph, Ponder or an NFT data API), which is added infrastructure.",
+   "C": "Providers cap each getLogs call (about 2K–10K blocks), so paginate in parallel batches of about 50 requests with retry and backoff on 429s; that is a one-time cost per visitor once results sit in localStorage, so the plan is fine and needs no new infrastructure.",
+   "D": "One eth_getLogs call from block 0 to latest returns the full history, since the contract address and Transfer topic filter keep the result under the 10K-log cap; it works, and caching the response in the browser's IndexedDB fixes the slow first load."
+  },
+  "answer": "B",
+  "mistake": "assuming one getLogs call from 0 to latest just works",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-11-forty-balances",
+  "pillar": "building",
+  "title": "Forty token balances",
+  "stem": "A dApp on Base is adding a portfolio panel. When a user connects, it shows their current balance of the 40 ERC-20 tokens the dApp supports. It shows only live numbers, refreshed when the panel is reopened. No history, charts, or P&L. An engineer proposes writing and deploying a subgraph that indexes Transfer events for all 40 tokens, keeps a running balance per holder in the mappings, and has the panel query the subgraph. Which approach is best for this panel?",
+  "options": {
+   "A": "Build the subgraph as proposed. Balances rebuilt from every Transfer event are the most accurate source, and one GraphQL query to the subgraph endpoint returns all 40 balances for the connected wallet at once.",
+   "B": "Skip the subgraph. Call balanceOf on each of the 40 token contracts as 40 separate RPC requests fired in parallel on connect, then subscribe to Transfer logs over a WebSocket to keep every number updated.",
+   "C": "Skip the subgraph. Fetch the wallet's Transfer logs for all 40 tokens with eth_getLogs from genesis, filtering on the indexed from and to topics, and sum incoming minus outgoing amounts to get each balance.",
+   "D": "Skip the subgraph. Batch the 40 balanceOf reads into one Multicall3 call (one RPC request). balanceOf always returns live state, so nothing needs syncing."
+  },
+  "answer": "D",
+  "mistake": "building the subgraph as proposed",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-12-pick-a-chain",
+  "pillar": "building",
+  "title": "Pick a chain with numbers",
+  "stem": "You are building an escrow service for freelance payments. Each job locks between $2,000 and $50,000 in a contract until the work is delivered, so there are only a few transactions per job (deposit, release, maybe a dispute). Under 2026 network conditions, which recommendation is best supported by the numbers?",
+  "options": {
+   "A": "An L2 such as Base or Arbitrum: mainnet gas usually sits at 20-50 gwei, so each escrow transaction costs $5-$30, which is too much to charge freelancers on every single job they take.",
+   "B": "Ethereum mainnet only for jobs over $20,000: below that threshold, a typical $10-$20 gas cost per deposit and release is too large a share of the payment to justify mainnet's security.",
+   "C": "Ethereum mainnet: gas is typically well under 1 gwei, so a ~100k-gas escrow deposit costs a few cents, negligible next to the job value, with the strongest settlement security.",
+   "D": "Solana: an EVM chain's per-transaction fees of several dollars would eat into small payouts, while Solana settles each escrow action (deposit, release, dispute) for a fraction of a cent."
+  },
+  "answer": "C",
+  "mistake": "L2 because mainnet gas costs $5-$30",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-13-l2-real-cost",
+  "pillar": "building",
+  "title": "Where the L2 fee goes",
+  "stem": "A teammate estimated a Uniswap swap on Base at $0.0003 by pricing the swap's execution gas (gasUsed × L2 gas price) over RPC. The actual charge per swap in the wallet is roughly 10x that. What best explains the gap?",
+  "options": {
+   "A": "The L1 data fee for posting the transaction's data to Ethereum as blobs; execution is the minor share, and smaller calldata cuts it",
+   "B": "Congestion on Base spiked the L2 base fee between the estimate and the send; submitting during quieter hours brings the per-swap cost back near the estimate",
+   "C": "The gas estimate was too low because the router's multi-hop path through three pools uses far more gas than one hop; forcing a single-pool route closes most of the gap",
+   "D": "The sequencer adds a fixed profit margin on top of the L2 base fee; setting the priority fee to zero or sending through a private RPC removes most of that markup"
+  },
+  "answer": "A",
+  "mistake": "sequencer profit margin",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-14-deployer-key-hygiene",
+  "pillar": "building",
+  "title": "Deployer key hygiene",
+  "stem": "You are preparing deploy tooling (viem deploy.ts, sweep.ts, README) for a Solidity contract going to Sepolia this week. The repo will be pushed to GitHub where the whole team can see it. A teammate pasted the deployer account's private key into the request:\n\n  0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80\n\nThey say it holds the Sepolia ETH for the deploy, and leftover ETH should be swept to the team account 0x70997970c51812dc3a010c7d01b50e0d17dc79c8. What is the right way to handle the deployer key?",
+  "options": {
+   "A": "Read this key from a PRIVATE_KEY variable in a gitignored .env via dotenv, pass it to privateKeyToAccount in deploy.ts, and keep it as the deployer. Once it is out of the source files, it is safe.",
+   "B": "Hardcode this key in a shared config.ts that deploy.ts and sweep.ts both import, and set the GitHub repo to private. Only team members can then read the file, so the key stays confidential.",
+   "C": "Put this key in .env.example so teammates can copy it to .env and deploy right away. It only controls Sepolia ETH, which has no real value, so committing it to the repo carries no risk.",
+   "D": "Treat this key as burned: it was pasted in plain text and is a publicly known test key. Create a fresh deployer and load its key at runtime from a gitignored .env or an encrypted keystore."
+  },
+  "answer": "D",
+  "mistake": "env var but keeps using the pasted key",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-15-agent-custody",
+  "pillar": "building",
+  "title": "Bounded agent authority",
+  "stem": "A solo builder is deploying a trading agent on Ethereum mainnet. It rebalances a ~$400k treasury between WETH and USDC on Uniswap V3 using its own signals: a few trades a day, each $10k-50k. It runs unattended on a cloud VM. Nobody approves individual trades, and the builder will not be woken up for routine rebalancing. Which setup best limits the damage if an attacker steals the agent's signing key, while still letting routine rebalancing run unattended?",
+  "options": {
+   "A": "Put the treasury in a Safe the agent can't sign for alone, and give the agent a module or per-period allowance limited to capped WETH/USDC swaps",
+   "B": "Hold the treasury in one EOA whose private key lives in AWS KMS/HSM, so the key never leaves secure hardware and every trade is signed through a KMS API call",
+   "C": "Keep the treasury in a 2-of-3 Safe where the agent holds one key and a human signer must co-sign each rebalance transaction before the Safe executes it",
+   "D": "Hold the treasury in one EOA with the key encrypted in a keystore file, plus a kill switch the builder can trigger to stop the agent process and halt trading"
+  },
+  "answer": "A",
+  "mistake": "KMS/HSM key storage treated as a bound on authority",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-16-one-click-from-eoa",
+  "pillar": "building",
+  "title": "One-click from an EOA",
+  "stem": "A user holds 2 WETH in the MetaMask EOA they have used for two years (ENS name and on-chain history they won't abandon). The account has no token approvals to anything and only enough ETH for gas. In one confirmation they want to swap all 2 WETH to USDC on Uniswap V3 and supply every USDC the swap returns to Aave V3, with both legs landing or neither. The supplied amount is not known until the swap runs. A teammate says: \"An EOA does one call per transaction. They must deploy a Safe or 4337 account, move the WETH there, and batch from it. There is no way around it.\" What should you ship on Ethereum mainnet today?",
+  "options": {
+   "A": "Sign an EIP-7702 authorization delegating the EOA to a batch executor, then approve, swap, and supply in one type-0x04 transaction from that address.",
+   "B": "Have the user sign an EIP-2612 permit for WETH and a supplyWithPermit signature for USDC, then submit both signatures together through a multicall router contract in one call so neither leg lands alone.",
+   "C": "Agree with the teammate: deploy a Safe or ERC-4337 smart account, transfer the 2 WETH into it from the EOA, and batch the approve, swap, and supply calls from the new address in one bundle.",
+   "D": "Have the user sign a Permit2 transfer for the WETH, then let a helper contract pull it, swap it to USDC on Uniswap V3, and supply the full USDC output to Aave V3 on the user's behalf in one call."
+  },
+  "answer": "A",
+  "mistake": "deploy a Safe/4337 account and move funds",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-17-x402-paid-api",
+  "pillar": "building",
+  "title": "x402 paid API",
+  "stem": "You're building a paid API for AI agents. Each call should cost a few cents, settled on-chain on Base, with the payment made inside the HTTP request itself: no accounts, no API keys, no invoicing. The server has to gate the endpoint behind payment, and the agent's TypeScript client has to pay and retry the call automatically. What is the standard way to build both sides today?",
+  "options": {
+   "A": "Use x402: server middleware answers unpaid calls with HTTP 402 and payment requirements; the client wraps fetch with the x402 client, which signs a USDC authorization and retries with the payment header.",
+   "B": "Use Stripe's agent billing: the server issues each agent an API key tied to a metered Stripe customer. The client sends the key as a bearer token on every call, and accrued usage is settled in USDC on Base at month end.",
+   "C": "Build a custom paywall: the server returns 402 with a deposit address and price. The client sends a USDC transfer on Base with viem, waits for confirmation, and retries with the tx hash in a header for the server to verify.",
+   "D": "Use L402: the server returns HTTP 402 with a macaroon and a Lightning invoice. The client pays the invoice through an LSAT-aware fetch wrapper and retries with the macaroon and preimage in the Authorization header."
+  },
+  "answer": "A",
+  "mistake": "hand-rolled 402 paywall with tx-hash verification",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-18-create2-address-myth",
+  "pillar": "building",
+  "title": "Same address on every chain",
+  "stem": "A team uses Morpho Blue on Base at 0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb and is launching the same lending integration on Arbitrum. A teammate says: \"Morpho uses a vanity CREATE2 address, so it's live at the exact same 0xBBBB... address on every chain. Just point the Arbitrum deployment at that same address and route user deposits through it; no need to look anything up.\" Before user funds go through it on Arbitrum, which answer is correct about what the Arbitrum config should point at?",
+  "options": {
+   "A": "The teammate is right. Morpho's CREATE2 factory and salt are the same on every chain, so the Arbitrum config should use 0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb unchanged.",
+   "B": "The teammate is wrong. 0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb works on Arbitrum only through the canonical bridge, so point the config at Morpho's Arbitrum bridge adapter.",
+   "C": "The teammate is wrong. Morpho Blue on Arbitrum is at 0x6c247b1F6182318877311737BaC0844bAa518F5e, per Morpho's official address list and eth_getCode.",
+   "D": "The teammate is wrong. Morpho Blue has no Arbitrum deployment yet, so the integration should stay paused until Morpho announces an official Arbitrum launch and address."
+  },
+  "answer": "C",
+  "mistake": "reuse the Base 0xBBBB address on Arbitrum",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-19-deploy-verify-ship",
+  "pillar": "building",
+  "title": "Deploy, verify, ship",
+  "stem": "A two-person team deployed the contracts for a Scaffold-ETH 2 (Foundry flavor) dApp to Base mainnet three days ago with `yarn deploy --network base`. The app works against the live contracts. Contract verification is still an open ticket, marked blocked: \"waiting on a block explorer API key from ops (ETA next sprint).\" A teammate suggests adding verification to the launch checklist and running it just before the public announcement next month. What is the right way to unblock this ticket?",
+  "options": {
+   "A": "Add `yarn verify --network base` to the launch checklist. SE2's default explorer key works, and verifying right before the announcement ensures the published source matches the final deployed build.",
+   "B": "Keep the ticket blocked until ops provides a Basescan API key, then run `yarn verify --network base` right away, since the app is already live and users can't read the unverified contracts.",
+   "C": "Run `yarn verify --network base` now. SE2 ships a default explorer API key, so nothing is needed from ops, and the live contracts shouldn't stay unreadable until launch.",
+   "D": "Skip the key and paste the flattened source from `forge flatten` into Basescan's manual 'Verify & Publish' form now, since the app is already live and users can't read the unverified contracts."
+  },
+  "answer": "C",
+  "mistake": "keeping it blocked on an ops API key",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-20-existing-eoa-smart-account",
+  "pillar": "building",
+  "title": "Upgrade an existing EOA",
+  "stem": "A consumer app's users each hold a funded EOA they have used for a year, with an ENS name and onchain history tied to it. The team wants each existing account to batch an ERC-20 approve and a swap into one atomic transaction and to run custom auth logic (session keys), while keeping the exact same address and private key. Moving users to a newly deployed account at a new address is not allowed. It is 2026 and this must work on Ethereum mainnet today. Which statement is correct?",
+  "options": {
+   "A": "Use EIP-7702, which shipped with the Dencun upgrade (March 2024) alongside blob transactions: the EOA's key signs an authorization that points the account at a contract implementation. The delegation stays in place until a later authorization replaces it or clears it.",
+   "B": "Use EIP-7702, live since the Pectra upgrade (May 2025): the EOA's key signs an authorization that points the account at a contract implementation. The delegation lasts only for that one type-4 transaction, and the account automatically reverts to a plain EOA once it completes.",
+   "C": "Not possible in place: deploy a new ERC-4337 smart-contract wallet for each user and move their funds and ENS name to it. Account abstraction on mainnet only works for contract accounts at their own new addresses, so an EOA can never run code or batch calls.",
+   "D": "Use EIP-7702, live since Pectra (May 2025): the EOA's key signs an authorization that sets a delegation designator pointing to a contract implementation. The delegation persists until a later authorization replaces it or clears it to the zero address."
+  },
+  "answer": "D",
+  "mistake": "migrating to a new ERC-4337 wallet (first option)",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-21-5792-fallback",
+  "pillar": "building",
+  "title": "Batching that cannot batch",
+  "stem": "Your dapp sends a batch through EIP-5792 wallet_sendCalls with the atomic capability required (approve then swap, all or nothing) and a paymasterService capability so the user pays no gas. The connected wallet returns \"method not found\" for wallet_sendCalls. What should your client library do?",
+  "options": {
+   "A": "Fall back to one eth_sendTransaction per call, in order, waiting for each receipt so the approve-then-swap flow still completes",
+   "B": "Throw an error, since a fallback would run the calls non-atomically and drop the required gas sponsorship",
+   "C": "Retry wallet_sendCalls with the older EIP-5792 parameter shape, since the wallet may only support an earlier draft of the spec",
+   "D": "Send only the first call with eth_sendTransaction, then prompt the user to retry the remaining calls once that first one is mined"
+  },
+  "answer": "B",
+  "mistake": "falling back to sequential eth_sendTransaction",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-22-sign-transaction",
+  "pillar": "building",
+  "title": "eth_signTransaction",
+  "stem": "You are implementing the JSON-RPC method eth_signTransaction in a wallet. Which behaviour is correct?",
+  "options": {
+   "A": "Behave like eth_sendTransaction but skip the confirmation prompt, since the dapp is only requesting a signature and nothing reaches the network until the dapp submits it itself",
+   "B": "Sign the transaction and return the raw signed transaction bytes without broadcasting; the caller may submit them later via eth_sendRawTransaction",
+   "C": "Sign the transaction, broadcast it through the wallet's configured RPC node, and return the 32-byte transaction hash so the caller can track its inclusion on chain",
+   "D": "Return only the signature components r, s and v (with v as 27/28 or the EIP-155 value), and let the caller serialize them together with the transaction fields itself"
+  },
+  "answer": "B",
+  "mistake": "sign, broadcast and return the hash",
+  "verified_by": "checker"
+ },
+ {
+  "id": "building-23-compact-signature",
+  "pillar": "building",
+  "title": "ERC-2098 compact signature",
+  "stem": "A signer produced this 65-byte ECDSA signature, r || s || v:\n\n0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c613fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb331c\n\nWhich of these is the same signature in 64-byte ERC-2098 compact form?",
+  "options": {
+   "A": "0xfc39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c613fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb33",
+   "B": "0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c613fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6cebb3",
+   "C": "0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c613fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb33",
+   "D": "0x7c39e44a296c8b49b33ca5d4f1c2b6ca6472f9ee98a864d3d7601e20ffc370c693fd866a0df8427cb1db9fca2e68bdfe195ff3f0405b451aa9054f5b7c6ceb33"
+  },
+  "answer": "D",
+  "mistake": "first wrong option: drops v and keeps r || s unchanged",
+  "verified_by": "grader"
+ },
+ {
+  "id": "building-24-4337-2d-nonce",
+  "pillar": "building",
+  "title": "Two-dimensional nonces",
+  "stem": "ERC-4337 EntryPoint nonces are two-dimensional: a 192-bit key and a 64-bit sequence. An account has executed exactly one UserOperation on key 1 and nothing else. What does EntryPoint.getNonce(account, 1) return, as a plain decimal integer?",
+  "options": {
+   "A": "36893488147419103233",
+   "B": "18446744073709551616",
+   "C": "18446744073709551617",
+   "D": "1"
+  },
+  "answer": "C",
+  "mistake": "\"1\": returns only the sequence and leaves out the key in the high 192 bits",
+  "verified_by": "grader"
+ },
+ {
+  "id": "building-25-hash-message-string",
+  "pillar": "building",
+  "title": "personal_sign of a hex-looking string",
+  "stem": "A dapp calls personal_sign (EIP-191 version 0x45) with the message given as the ten-character text string 0xdeadbeef. The wallet treats it as those ten UTF-8 characters, not as four bytes. Which exact preimage does the wallet keccak256-hash to get the 32-byte digest it signs?",
+  "options": {
+   "A": "\"\\x19Ethereum Signed Message:\\n4\" followed by the four raw bytes 0xde 0xad 0xbe 0xef",
+   "B": "\"\\x19Ethereum Signed Message:\\n8\" followed by the eight ASCII characters \"deadbeef\"",
+   "C": "\"\\x19Ethereum Signed Message:\\n10\" followed by the ten ASCII characters \"0xdeadbeef\"",
+   "D": "\"\\x19Ethereum Signed Message:\\n10\" followed by the four raw bytes 0xde 0xad 0xbe 0xef"
+  },
+  "answer": "C",
+  "mistake": "decoding the hex to 4 bytes with length 4",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-01-reentrancy",
+  "pillar": "security",
+  "title": "Reentrancy",
+  "stem": "A Solidity withdraw function reads the caller's balance, sends that amount of ETH to the caller with a low-level call, and only sets the caller's balance to zero after the call returns. An attacker's contract uses its receive function to call withdraw again before the first call finishes, which drains the contract. What is the name of this vulnerability class?",
+  "options": {
+   "A": "Denial of service via unexpected revert",
+   "B": "Reentrancy",
+   "C": "Front-running",
+   "D": "Unchecked call return value"
+  },
+  "answer": "B",
+  "mistake": "Unchecked call return value (the low-level call looks like the bug)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "security-02-read-only-reentrancy",
+  "pillar": "security",
+  "title": "Read-only reentrancy",
+  "stem": "A liquidity pool lets users remove liquidity. During removal it sends ETH to the user with a low-level call and only afterwards updates its internal reserves. A separate lending protocol prices the pool's LP token by calling the pool's public view function `getVirtualPrice()`, which reads those reserves. The pool's own state-changing functions are all guarded with nonReentrant, and the pool is never drained. Yet the lending protocol is exploited. What happened?",
+  "options": {
+   "A": "During the ETH callback the pool's reserves were already reduced but the LP supply was not yet updated (or vice versa), so getVirtualPrice() returned a skewed value; the attacker called the lending protocol from inside the callback, and it priced the LP token on that stale state",
+   "B": "The lending protocol's borrow() function had no nonReentrant modifier, so the attacker reentered borrow() over and over from an ETH callback and took out several loans against the same LP collateral before the protocol's debt accounting was written back to storage",
+   "C": "The attacker reentered the pool's removeLiquidity through the ETH callback before reserves were updated and withdrew the same LP position twice; the inflated LP balance left behind was then posted as collateral in the lending protocol to borrow against funds that no longer existed",
+   "D": "The pool's getVirtualPrice() view function was not marked payable, so when the lending protocol called it with ETH attached the call reverted silently inside a try/catch, and the protocol fell back to a hardcoded default LP price of 1e18 that the attacker could then borrow against"
+  },
+  "answer": "A",
+  "mistake": "reentering removeLiquidity to withdraw twice",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-03-cross-function-reentrancy",
+  "pillar": "security",
+  "title": "Cross-function reentrancy",
+  "stem": "A contract tracks `balances[msg.sender]`. `withdraw()` is marked nonReentrant: it sends the caller's full balance with a low-level call, then zeroes the balance. `transfer(address to, uint256 amount)` has no modifier and simply moves balance between accounts. Can an attacker still profit, and how?",
+  "options": {
+   "A": "No: a low-level call forwards only a 2300-gas stipend to the recipient, so the attacker's fallback runs out of gas before it can make any call back into the contract",
+   "B": "Yes: during withdraw()'s external call, before the balance is zeroed, the fallback calls transfer() to move the still-credited balance to a second account, which then withdraws it",
+   "C": "No: nonReentrant on withdraw() sets a contract-wide lock that blocks every reentrant path into the contract, so the fallback's call to transfer() also reverts with a reentrancy error",
+   "D": "Yes: the attacker calls withdraw() twice in one transaction from two different addresses, and the second call pays out its balance before the first call has zeroed the balance"
+  },
+  "answer": "B",
+  "mistake": "believing nonReentrant on withdraw() protects transfer() too",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-04-vault-inflation",
+  "pillar": "security",
+  "title": "Vault inflation attack",
+  "stem": "A USDC vault on Ethereum mainnet mints shares on deposit as `assets * totalShares / (USDC the vault currently holds)`; when share supply is zero, the first depositor gets one share per unit deposited. Redeeming burns shares and pays out the same pro-rata slice. This sequence happened:\n\n  0xA1 deposit(1) (one unit, 0.000001 USDC) and receives 1 share, so share supply is 1.\n  0xA1 does a plain ERC-20 transfer of 20,000 USDC straight to the vault address (not a call into the contract).\n  0xB2 deposit(15,000 USDC). The transaction succeeds, and 0xB2 receives 0 shares.\n  0xA1 redeems its 1 share and receives 35,000.000001 USDC.\n\nNo admin function ran, and the vault made no external calls other than the USDC transfers. The team must stay ERC-4626 compatible. Which change stops this attack for all future depositors?",
+  "options": {
+   "A": "Add a minimum-shares-out check to deposit() that reverts whenever the minted shares fall below the amount the depositor passes in as expected.",
+   "B": "Add an owner-only sweep function that moves any USDC held above the tracked deposit total out of the vault to the treasury multisig.",
+   "C": "Make the vault reject direct ERC-20 transfers, so that only a call to deposit() can ever raise the USDC balance it holds.",
+   "D": "Add a virtual shares-and-assets offset to the conversion math (as OpenZeppelin's ERC4626 does) so deposits don't round to zero."
+  },
+  "answer": "D",
+  "mistake": "minimum-shares-out / slippage check as the fix",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-05-spot-price-oracle",
+  "pillar": "security",
+  "title": "Spot price oracles",
+  "stem": "Design review for a lending market on Ethereum mainnet. Positions hold up to $2M of WETH collateral backing USDC debt and are liquidated at 85% LTV. A teammate proposes pricing collateral by reading slot0 of the Uniswap V3 WETH/USDC 0.05% pool, which holds about $200M of liquidity. Their argument: moving that pool's price 10% would take tens of millions of dollars of trading, and arbitrage bots would pull the price back within the same block, so an attacker would lose money for nothing. What is the right assessment of this design?",
+  "options": {
+   "A": "Keep slot0, but add a circuit breaker that rejects any price more than 5% away from the previous block's stored price and pauses new borrows until it settles. That blocks a sudden 10% move while avoiding Chainlink's staleness risk and third-party dependency.",
+   "B": "Reject it: a flash loan lets the attacker move the pool, borrow or liquidate against the bad price, and unwind in one transaction, so the cost is only fees plus slippage. Use a Chainlink feed and check the answer is positive and updatedAt is within its heartbeat.",
+   "C": "Replace slot0 with a median of spot prices from the 0.05%, 0.3% and 1% WETH/USDC pools, read in the same call. One attacker cannot move all three pools at once without paying slippage on each, so the median stays within a fraction of a percent of the market price.",
+   "D": "Accept it: at $200M of depth, a 10% move puts tens of millions of the attacker's own capital at risk, and same-block arbitrage makes the attack lose money. Add a check that the price is non-zero and inside the pool's valid tick range before using it."
+  },
+  "answer": "B",
+  "mistake": "accepting the pool-depth / arbitrage cost argument",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-06-fee-on-transfer-books",
+  "pillar": "security",
+  "title": "Books that do not close",
+  "stem": "A single-token staking pool on Ethereum mainnet has been live for three weeks and its books do not close.\n\n- 1,250,000 TKN has been staked in total since launch, and 250,000 TKN has been unstaked.\n- The sum of stakedBalance[user] across all current stakers is 1,000,000 TKN.\n- The pool contract's actual TKN balance is 975,000 TKN.\n- Early unstakers were all paid. Users unstaking now are starting to revert with the token's insufficient-balance error.\n- One user staked 10,000 TKN, and the UI showed 10,000 staked. When they unstaked all 10,000, their wallet received 9,800 TKN.\n\nHere is the whole contract. stake(amount) calls token.transferFrom(msg.sender, address(this), amount), then sets stakedBalance[msg.sender] += amount. unstake(amount) decrements stakedBalance[msg.sender], then calls token.transfer(msg.sender, amount). There is no rewards logic and no admin withdrawal. The pool has never sent TKN anywhere except back to unstakers. TKN's total supply has not been changed and no rebase has occurred.\n\nWhich option correctly explains the missing 25,000 TKN and gives the right fix for stake()?",
+  "options": {
+   "A": "unstake() can be re-entered through a token callback, so some users withdrew twice. Fix: add a nonReentrant guard to unstake() and fund the gap from the treasury.",
+   "B": "TKN is quietly rebasing downward, so the pool's balance shrinks over time. Fix: store each staker's share of the pool balance instead of raw token amounts.",
+   "C": "TKN takes a 2% fee on every transfer, so the pool receives less than it credits. Fix: credit amount * 98 / 100 on stake so each recorded balance matches the tokens that arrived.",
+   "D": "TKN takes about a 2% fee on every transfer, so the pool receives less than the amount it credits. Fix: credit token.balanceOf(pool) after transferFrom minus the balance before."
+  },
+  "answer": "D",
+  "mistake": "hardcoded 2% fee instead of measuring the balance change",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-07-oz-v5-approvals",
+  "pillar": "security",
+  "title": "OpenZeppelin v5 approvals",
+  "stem": "A treasury router on Ethereum mainnet (Solidity 0.8.26, @openzeppelin/contracts v5) approves a strategy contract before each run. It uses a low-level call because an earlier version reverted while decoding some tokens' return values:\n\n  (bool ok, ) = token.call(abi.encodeWithSelector(0x095ea7b3, strategy, amount));\n  require(ok, \"approve failed\");\n\nAfter three weeks of runs, USDC (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48) succeeds every time. USDT (0xdAC17F958D2ee523a2206206994597C13D831ec7) succeeded on the first run, but every run since has reverted at that require, before any transfer. The strategy often spends less than it was approved for, so a leftover allowance from the previous run is usually still in place. The router has enough ETH for gas, is not paused or blocklisted, and the amounts are ordinary five-figure sums. Which diagnosis and minimal fix are correct?",
+  "options": {
+   "A": "USDT reverts on approving a non-zero allowance over a non-zero one; use SafeERC20.forceApprove(token, strategy, amount), which zeroes it first when needed.",
+   "B": "The leftover plus the new amount overflows USDT's allowance check; call token.increaseAllowance(strategy, amount - leftover) to top up the existing allowance instead of approving from scratch each run.",
+   "C": "USDT's approve returns no bool, so the low-level call reports ok == false; decode the return data manually and treat an empty return payload as a successful approval before the require.",
+   "D": "USDT reverts on approving a non-zero allowance over a non-zero one; use SafeERC20.safeApprove(token, strategy, amount), which handles the zero reset for you before approving."
+  },
+  "answer": "A",
+  "mistake": "safeApprove, which was removed in OZ v5",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-08-signature-replay",
+  "pillar": "security",
+  "title": "Signature replay",
+  "stem": "A gasless order relayer contract verifies user-signed orders (owner, token, amount, nonce, deadline). It recovers the signer, checks the nonce is unused, checks the deadline, marks the nonce used, and moves tokens. The digest is keccak256(abi.encodePacked(\"\\x19\\x01\", DOMAIN_SEPARATOR, structHash)), where DOMAIN_SEPARATOR is computed once in the constructor from the contract name, a version string and address(this), and stored in an immutable. The same contract is deployed with CREATE2 (same factory and salt) at an identical address on Ethereum mainnet, Base and Arbitrum. A user signed one 5,000 USDC order, and it executed on Base. Minutes later someone submitted the same signature to the mainnet deployment, and it passed every check there too. The team wants to keep the same address on every chain. What is the root cause, and what is the right fix?",
+  "options": {
+   "A": "The domain separator omits chainId, so the digest is the same on every chain. Add chainId to the EIP-712 domain, and rebuild the separator whenever block.chainid differs from the cached value.",
+   "B": "The per-user nonce is meant to stop replays, so the mainnet deployment must have skipped the nonce check before marking it used. Fix the nonce bookkeeping so a nonce consumed on any deployment is rejected on every other one.",
+   "C": "The shared CREATE2 address makes the verifyingContract field identical on all three chains, so the domain separators collide. Deploy with a different salt per chain so each address, and so each domain separator, is unique.",
+   "D": "Signature malleability let the attacker submit a flipped-s copy of the Base signature, which ecrecover still maps to the same owner. Enforce low-s values and reject v values other than 27 or 28 when recovering the signer."
+  },
+  "answer": "A",
+  "mistake": "blaming the nonce check (nonces are per-deployment)",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-09-uups-upgrade",
+  "pillar": "security",
+  "title": "The upgrade that succeeded",
+  "stem": "A staking protocol uses a UUPS-upgradeable contract on Ethereum mainnet. V1 declared its state in this order:\n\n  uint256 public totalDeposited;  // held 2_000_000_000000 (2,000,000 USDC)\n  address public treasury;        // held 0xC0FFEE0000000000000000000000000000000000\n  uint256 public feeBps;          // held 500\n\nThe team upgraded to V2, which declares, in order:\n\n  uint256 public rewardIndex;     // new in V2\n  uint256 public totalDeposited;\n  address public treasury;\n  uint256 public feeBps;\n\nThere is no re-initializer, and the upgrade did not rewrite any existing value. The upgrade transaction succeeded, the proxy points at the V2 they deployed, the proxy admin is unchanged, and no call reverts. After the upgrade, the proxy returns:\n\n  rewardIndex()    -> 2000000000000 (never set)\n  totalDeposited() -> a huge number that, in hex, is exactly the old treasury address\n  treasury()       -> 0x00000000000000000000000000000000000001F4\n  feeBps()         -> 0\n\nThey still need rewardIndex in V2. Which diagnosis and fix is correct?",
+  "options": {
+   "A": "Putting rewardIndex first moved every variable down one slot. The V1 values are still in slots 0–2. Ship a corrected V2 that declares rewardIndex after feeBps.",
+   "B": "V2's new variables were never initialized because there is no re-initializer. Add a reinitializer(2) that copies V1's values into totalDeposited, treasury and feeBps.",
+   "C": "The upgrade overwrote V1's storage with V2's layout, so the deposit data is lost. Deploy a fresh proxy with rewardIndex appended and rebuild balances from event logs.",
+   "D": "V2's slot 0 collides with the proxy's implementation pointer because EIP-1967 slots were not used. Move the implementation address to the EIP-1967 slot and redeploy V2."
+  },
+  "answer": "A",
+  "mistake": "missing re-initializer diagnosis",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-10-checks-effects-interactions",
+  "pillar": "security",
+  "title": "Checks, effects, interactions",
+  "stem": "A Solidity function body is ordered so that it first validates inputs and conditions, then updates all contract state, and only performs external calls last. What is the standard name of this defensive coding pattern?",
+  "options": {
+   "A": "Pull-over-Push (withdrawal pattern)",
+   "B": "Reentrancy Guard (nonReentrant mutex)",
+   "C": "Checks-Effects-Interactions (CEI)",
+   "D": "Validate-Execute-Commit (VEC) ordering"
+  },
+  "answer": "C",
+  "mistake": "Reentrancy Guard, the related defense mistaken for the ordering pattern",
+  "verified_by": "grader"
+ },
+ {
+  "id": "security-11-missing-access-control",
+  "pillar": "security",
+  "title": "Missing access control",
+  "stem": "A deployed contract that holds user funds has a function `emergencyWithdraw()` marked `external` with no modifiers. Its body sends the contract's entire token balance to `msg.sender`. Anyone who calls it gets all the funds. What vulnerability class is this?",
+  "options": {
+   "A": "Missing access control (an unprotected privileged function)",
+   "B": "Unchecked return value (the token transfer result is ignored)",
+   "C": "Front-running (the withdraw call can be sandwiched in the mempool)",
+   "D": "Reentrancy (state not updated before the external transfer)"
+  },
+  "answer": "A",
+  "mistake": "reentrancy, the usual label given to any withdraw drain",
+  "verified_by": "grader"
+ },
+ {
+  "id": "security-12-storage-layout",
+  "pillar": "security",
+  "title": "Upgrade storage layout",
+  "stem": "A contract behind an upgradeable proxy declared, in V1, exactly two storage variables in this order: `uint256 a; uint256 b;`. You are writing V2 and need to add a new variable `uint256 c`. Which V2 storage layout is safe?",
+  "options": {
+   "A": "Any order is safe because variable names are preserved across upgrades",
+   "B": "uint256 c; uint256 a; uint256 b;",
+   "C": "uint256 a; uint256 c; uint256 b;",
+   "D": "uint256 a; uint256 b; uint256 c;"
+  },
+  "answer": "D",
+  "mistake": "any order safe because names are preserved",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-13-authorize-upgrade",
+  "pillar": "security",
+  "title": "UUPS authorization",
+  "stem": "You are writing an upgradeable implementation contract that inherits OpenZeppelin's UUPSUpgradeable. There is one internal function you must override (typically restricted with an owner check such as onlyOwner) to control who may perform upgrades; getting it wrong can leave the contract locked or open to anyone. Which function is it?",
+  "options": {
+   "A": "proxiableUUID()",
+   "B": "_upgradeTo(address newImplementation)",
+   "C": "upgradeToAndCall(address newImplementation, bytes data)",
+   "D": "_authorizeUpgrade(address newImplementation)"
+  },
+  "answer": "D",
+  "mistake": "upgradeToAndCall: the public entry point, not the auth hook",
+  "verified_by": "grader"
+ },
+ {
+  "id": "security-14-sandwich-slippage",
+  "pillar": "security",
+  "title": "Sandwiches and slippage",
+  "stem": "You submit a swap of 10 ETH for USDC on Uniswap through the public mempool with a 1% slippage tolerance. A bot sees your pending transaction, buys USDC immediately before yours executes (pushing the price up), lets your swap fill at the worse price, then sells immediately after your transaction, pocketing the difference. What is this specific MEV attack called?",
+  "options": {
+   "A": "A sandwich attack",
+   "B": "A just-in-time (JIT) liquidity attack",
+   "C": "A frontrunning attack",
+   "D": "A backrunning attack"
+  },
+  "answer": "A",
+  "mistake": "frontrunning (names only one leg)",
+  "verified_by": "grader"
+ },
+ {
+  "id": "security-15-lending-postmortem-1",
+  "pillar": "security",
+  "title": "Lending post-mortem: the sequencer",
+  "stem": "A lending market on Arbitrum One uses wstETH as collateral and USDC as debt. Positions are liquidatable below 125% collateralisation. One Tuesday, from 09:14 to 12:40 UTC, users could not get transactions onto the chain and the explorer showed no new blocks for three and a half hours. Elsewhere, ETH fell 11% over that window on Binance and on mainnet DEXes. At 12:41, in the first blocks after service resumed, keeper bots liquidated 38 positions in one sweep. All 38 borrowers had been trying to add collateral since mid-morning and could not get a transaction through.\n\nBefore any price is used, the protocol already runs:\n\n  (, int256 answer, , uint256 updatedAt, ) = feed.latestRoundData();\n  require(answer > 0, \"bad price\");\n  require(block.timestamp - updatedAt <= 3600, \"stale price\");\n\nThe feed's heartbeat is 86400 seconds. For all 38 liquidations the check passed, and the price read had been published seconds earlier and matched the real market. Which change is the correct fix for this incident?",
+  "options": {
+   "A": "Read the Chainlink L2 Sequencer Uptime Feed. While it reports down and for an hour after it comes back, pause the whole market: deposits, top-ups, repayments and liquidations all revert.",
+   "B": "Tighten the staleness bound from 3600 seconds to about 300 seconds, and add an answeredInRound >= roundId check so a stale or carried-over round can never be used to price a liquidation.",
+   "C": "Read the Chainlink L2 Sequencer Uptime Feed and revert every price read, for every action, while it reports the sequencer down. Liquidations resume in the first block after the feed reports it back up.",
+   "D": "Read the Chainlink L2 Sequencer Uptime Feed. Block liquidations while it reports down and for about an hour after it returns; keep deposits, top-ups and repayments open."
+  },
+  "answer": "D",
+  "mistake": "tightening the staleness bound (also: no grace period)",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-16-lending-postmortem-2",
+  "pillar": "security",
+  "title": "Lending post-mortem: the clock",
+  "stem": "A fixed-rate lending contract is deployed with identical bytecode and constructor arguments on Ethereum mainnet and on Arbitrum One. The rate is 4.00% per year. Anyone can call accrueInterest():\n\n  uint256 constant SECONDS_PER_BLOCK = 12;\n\n  function accrueInterest() public {\n      uint256 blocksElapsed = block.number - lastAccrualBlock;\n      if (blocksElapsed == 0) return;\n      uint256 secondsElapsed = blocksElapsed * SECONDS_PER_BLOCK;\n      index += index * rateBps * secondsElapsed / (10_000 * 365 days);\n      lastAccrualBlock = block.number;\n  }\n\nIn July, a borrower with 1,000,000 USDC of debt for all 31 days should owe 3,397 USDC at the stated rate. Mainnet charged 3,391. Arbitrum also charged 3,391, even though Arbitrum One produces L2 blocks about every 250 ms. The team plans to deploy the same contract to Base next month, where L2 blocks come every 2 seconds. Which statement correctly explains the Arbitrum result and predicts what happens on Base?",
+  "options": {
+   "A": "Like Arbitrum, Base's block.number returns the L1 block number read from its L1Block predeploy, so 12 s per block holds on Base too and it will also charge about 3,391 USDC.",
+   "B": "Arbitrum's block.number returns an approximate L1 block number, so 12 s fits. Base's block.number counts 2 s L2 blocks, so it charges about 6x: roughly 20,400 USDC.",
+   "C": "Arbitrum's block.number counts L2 blocks, but its sequencer only makes blocks when transactions arrive, so they average near 12 s. Base's steady 2 s blocks will charge about 6x.",
+   "D": "Arbitrum's block.number returns an approximate L1 block number, so 12 s fits. Base's block.number counts 2 s L2 blocks, so it under-charges by 6x: roughly 566 USDC for July."
+  },
+  "answer": "B",
+  "mistake": "assuming Base's block.number tracks L1 like Arbitrum's",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-17-lending-postmortem-3",
+  "pillar": "security",
+  "title": "Lending post-mortem: the signature",
+  "stem": "A lending market lets a relayer submit a borrow that the borrower authorised off-chain:\n\n  bytes32 constant BORROW_TYPEHASH = keccak256(\"Borrow(address borrower,uint256 amount)\");\n\n  constructor(...) {\n      DOMAIN_SEPARATOR = keccak256(abi.encode(\n          keccak256(\"EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)\"),\n          keccak256(\"ArbiLend\"),\n          keccak256(\"1\"),\n          block.chainid,\n          address(this)\n      ));\n  }\n\n  function borrowWithSig(address borrower, uint256 amount, uint8 v, bytes32 r, bytes32 s) external {\n      bytes32 structHash = keccak256(abi.encode(BORROW_TYPEHASH, borrower, amount));\n      bytes32 digest = keccak256(abi.encodePacked(\"\\x19\\x01\", DOMAIN_SEPARATOR, structHash));\n      require(ecrecover(digest, v, r, s) == borrower, \"bad sig\");\n      _borrow(borrower, amount);\n  }\n\nA user signed one 5,000 USDC borrow in March and repaid it in full in April. They have signed nothing since. In June a new 5,000 USDC borrow was opened against their collateral, sent from an unknown address, not the relayer. The (v, r, s) in the June calldata is byte-identical to the March one. No key was compromised. What caused the June borrow, and what is the correct fix?",
+  "options": {
+   "A": "Signature replay: the signed struct has no nonce or expiry, and nothing records used signatures. Fix: add a nonce and a deadline to the Borrow typehash and struct, check the deadline, and increment the signer's nonce on use.",
+   "B": "Signature malleability: ecrecover accepts high-s values, so anyone can swap s for secp256k1n - s and flip v between 27 and 28 to get a second valid signature. Fix: reject s above secp256k1n/2 and require v to be 27 or 28, as OpenZeppelin's ECDSA library does.",
+   "C": "Signature replay: nothing stops reuse. Fix: keep a per-borrower nonce mapping in storage, require the stored nonce to be unused, and increment it on each borrowWithSig call, leaving the Borrow typehash and signed struct as they are so existing signatures stay valid.",
+   "D": "Unauthenticated relayer: anyone can call borrowWithSig with a valid signature, and the June call came from an unknown address. Fix: restrict borrowWithSig to an allowlisted relayer address with an onlyRelayer modifier, and add a check that ecrecover does not return address(0)."
+  },
+  "answer": "A",
+  "mistake": "blaming signature malleability (option 1); the on-chain nonce that is not signed over is also a targeted mistake",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-18-decimal-scale-mismatch",
+  "pillar": "security",
+  "title": "Decimal scale mismatch",
+  "stem": "A lending market takes WETH (18 decimals) as collateral and lends USDC (6 decimals). It values collateral as `collateralWei * ethUsdPrice / 1e18`, giving a USD value with 18 decimals, and it allows a borrow when `debtRaw <= collateralValue * 70 / 100`, where `debtRaw` is the raw USDC amount the borrower is requesting. By what factor does this check overstate how much USDC a borrower may take, compared to a correct check?",
+  "options": {
+   "A": "1428571428571",
+   "B": "1000000000000",
+   "C": "1000000000000000000",
+   "D": "1000000"
+  },
+  "answer": "B",
+  "mistake": "1000000: taking USDC's 6 decimals as the gap, not 18 − 6 = 12",
+  "verified_by": "grader"
+ },
+ {
+  "id": "security-19-permissionless-listing",
+  "pillar": "security",
+  "title": "Permissionless token listing",
+  "stem": "A mainnet vault contract lets anyone list any ERC-20. Whatever token is proposed gets a vault, with no review. Depositors get transferable shares that represent a pro-rata claim on the vault's token balance. A keeper sends yield in as more of the same token. The deposit function is:\n\nfunction deposit(uint256 amount) external {\n    uint256 shares = totalSupply() == 0 ? amount : amount * totalSupply() / token.balanceOf(address(this));\n    token.safeTransferFrom(msg.sender, address(this), amount);\n    _mint(msg.sender, shares);\n}\n\nBecause listing is permissionless, which change does this deposit path need so a depositor is never credited with tokens the vault did not receive?",
+  "options": {
+   "A": "Measure the vault's token balance before and after the transfer, and mint shares on the amount actually received.",
+   "B": "Nothing extra: SafeERC20's safeTransferFrom already reverts whenever the vault receives less than the requested amount.",
+   "C": "Add OpenZeppelin's nonReentrant guard to deposit and withdraw so a token callback can't change the share math mid-call.",
+   "D": "State in NOTES.md that fee-on-transfer tokens are unsupported, and ask operators to avoid ever listing such tokens."
+  },
+  "answer": "A",
+  "mistake": "trusting SafeERC20 to catch fee-on-transfer shortfalls",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-20-borrowing-market",
+  "pillar": "security",
+  "title": "Build a borrowing market",
+  "stem": "You are building a small borrowing market on Ethereum mainnet. Users lock WETH as collateral and borrow USDC against it, up to 70% of the collateral's value. If a position's debt goes above 85% of its collateral value, anyone can repay part of the debt and take the matching WETH plus a 5% bonus. The contract has to price WETH in USD to check health and liquidations. Which price source should it use?",
+  "options": {
+   "A": "The live spot price of the deepest Uniswap V3 WETH/USDC pool, read from slot0's sqrtPriceX96 and converted to a USDC-per-WETH price",
+   "B": "A Chainlink ETH/USD feed read via latestAnswer(), scaled from 8 to 18 decimals and used directly as the WETH price with no further checks",
+   "C": "A Chainlink ETH/USD feed read via latestRoundData(), rejecting answers that are stale (updatedAt older than the heartbeat) or not positive",
+   "D": "The reserve ratio of the Uniswap V2 WETH/USDC pair from getReserves(), since arbitrage keeps that deep mainnet pool close to the market price"
+  },
+  "answer": "C",
+  "mistake": "Reading the spot price from Uniswap V3 slot0 (can be manipulated in one transaction)",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-21-malicious-permit",
+  "pillar": "security",
+  "title": "A permit request",
+  "stem": "A site the user has never used before shows a wallet prompt: eth_signTypedData_v4 with the payload below, for the user's account 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 on Ethereum mainnet. Today is 2026-09-21.\n\n{\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Permit\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"nonce\",\"type\":\"uint256\"},{\"name\":\"deadline\",\"type\":\"uint256\"}]},\"primaryType\":\"Permit\",\"domain\":{\"name\":\"USD Coin\",\"verifyingContract\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chainId\":1,\"version\":\"2\"},\"message\":{\"owner\":\"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045\",\"spender\":\"0x1661F1B207629e4F385DA89cFF535C8E5Eb23Ee3\",\"value\":\"1033366316628\",\"nonce\":1,\"deadline\":1678709555}}\n\nWhich assessment is correct?",
+  "options": {
+   "A": "It is a USDC permit giving 0x1661…3Ee3 an allowance of about 1,033,366 USDC. The allowance stays live until the deadline, so the spender could submit permit() today and then transferFrom() the full amount right away. Don't sign.",
+   "B": "It is a USDC permit giving 0x1661…3Ee3 an allowance of about 1,033,366 USDC. The deadline (2023-03-13) has passed, so this copy would fail today, but an unknown spender asking for it is hostile. Don't sign.",
+   "C": "It is a USDC permit giving 0x1661…3Ee3 an allowance of about 1,033,366 USDC. The deadline (2023-03-13) has already passed, so permit() will always revert with an expired-deadline error and the signature is useless to anyone. It is harmless and safe to sign.",
+   "D": "It is a USDC permit giving 0x1661…3Ee3 an allowance of about 0.000001 USDC (value read with 18 decimals, as for most ERC-20 tokens). That is a tiny dust amount, so even an unknown spender can't take anything real from the account. It is safe to sign."
+  },
+  "answer": "B",
+  "mistake": "calling it safe to sign because the deadline has expired",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-22-permit2-batch",
+  "pillar": "security",
+  "title": "A Permit2 batch",
+  "stem": "A site the user just connected to asks their wallet to sign this eth_signTypedData_v4 payload. The account is 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 on Ethereum mainnet. While using Uniswap, the user already approved USDC, WETH and DAI to the Permit2 contract. Today is 2026-09-21.\n\n{\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"PermitBatch\":[{\"name\":\"details\",\"type\":\"PermitDetails[]\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"sigDeadline\",\"type\":\"uint256\"}],\"PermitDetails\":[{\"name\":\"token\",\"type\":\"address\"},{\"name\":\"amount\",\"type\":\"uint160\"},{\"name\":\"expiration\",\"type\":\"uint48\"},{\"name\":\"nonce\",\"type\":\"uint48\"}]},\"primaryType\":\"PermitBatch\",\"domain\":{\"name\":\"Permit2\",\"chainId\":1,\"verifyingContract\":\"0x000000000022D473030F116dDEE9F6B43aC78BA3\"},\"message\":{\"details\":[{\"token\":\"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48\",\"amount\":\"1461501637330902918203684832716283019655932542975\",\"expiration\":\"1900000000\",\"nonce\":\"0\"},{\"token\":\"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2\",\"amount\":\"1461501637330902918203684832716283019655932542975\",\"expiration\":\"1900000000\",\"nonce\":\"0\"},{\"token\":\"0x6B175474E89094C44Da98b954EedeAC495271d0F\",\"amount\":\"1461501637330902918203684832716283019655932542975\",\"expiration\":\"1900000000\",\"nonce\":\"0\"}],\"spender\":\"0x1661F1B207629e4F385DA89cFF535C8E5Eb23Ee3\",\"sigDeadline\":\"1900000000\"}}\n\nWhat does signing this authorize, and what should the user do?",
+  "options": {
+   "A": "It is the routine Uniswap Permit2 approval. Permit2 at 0x000000000022D473030F116dDEE9F6B43aC78BA3 is Uniswap's own contract, so the allowance can only be spent through Uniswap's router for swaps the user starts. Safe to sign.",
+   "B": "It gives 0x1661…3Ee3 unlimited (max uint160) USDC, WETH and DAI allowances until March 2030. The tokens are already approved to Permit2, so the spender can submit this signature and pull funds with no further user action. Don't sign.",
+   "C": "It is only an off-chain signature. No tokens can move until the user sends a separate on-chain approve transaction for each of USDC, WETH and DAI naming 0x1661…3Ee3 as spender, so it is safe to sign and ignore.",
+   "D": "It is a one-time transfer permit. Nonce 0 is used up on first use, so the spender can pull each of USDC, WETH and DAI only once before sigDeadline 1900000000 (March 2030). The risk is limited to one transfer per token."
+  },
+  "answer": "B",
+  "mistake": "thinking an off-chain signature can't move funds",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-23-decimal-verifying-contract",
+  "pillar": "security",
+  "title": "A decimal is still an address",
+  "stem": "A dapp sends eth_signTypedData_v4 whose domain contains \"verifyingContract\": 917551056842671309452305380979543736893630245704, a JSON number and not a hex string. The wallet's security checks compare the domain against a list of known token contracts. Which contract's domain is this?",
+  "options": {
+   "A": "USDC, 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+   "B": "None; a decimal number matches no address in the list",
+   "C": "DAI, 0x6B175474E89094C44Da98b954EedeAC495271d0F",
+   "D": "USDT, 0xdAC17F958D2ee523a2206206994597C13D831ec7"
+  },
+  "answer": "A",
+  "mistake": "not normalizing the decimal, so it matches nothing",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-24-siwe-domain",
+  "pillar": "security",
+  "title": "Sign-in domain binding",
+  "stem": "A wallet receives a personal_sign request from the origin https://opensea-rewards.xyz. The message is:\n\nopensea.io wants you to sign in with your Ethereum account:\n0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045\n\nURI: https://opensea.io\nVersion: 1\nChain ID: 1\nNonce: 8f3c1a9b\nIssued At: 2026-09-21T10:00:00Z\n\nWhat should the wallet do?",
+  "options": {
+   "A": "Sign after checking that the nonce 8f3c1a9b has not been used before and that Issued At 2026-09-21T10:00:00Z is recent, since a fresh, unused nonce prevents replay and is what makes a Sign-In with Ethereum message safe",
+   "B": "Sign: personal_sign only produces an EIP-191 signature over text, so it cannot move funds, approve tokens or grant allowances, which means a sign-in message carries no risk and there is nothing here for the wallet to protect",
+   "C": "Refuse or warn loudly: in Sign-In with Ethereum the message domain must match the requesting origin; a mismatch means this site is collecting a signature that logs the user in to opensea.io",
+   "D": "Sign: the message names opensea.io with URI https://opensea.io on Chain ID 1, and OpenSea is a legitimate, well-known marketplace, so the sign-in request can be trusted as coming from OpenSea itself"
+  },
+  "answer": "C",
+  "mistake": "trusting the domain named in the message",
+  "verified_by": "checker"
+ },
+ {
+  "id": "security-25-safe-delegatecall",
+  "pillar": "security",
+  "title": "Operation 1",
+  "stem": "A Safe multisig transaction is waiting for your signature. The other owners have signed. Fields: to = 0x40A2aCCbd92BCA938b02010E17A5b8929b49130D (a MultiSend contract), value = 0, operation = 1, data = multiSend(...) whose decoded contents are a routine ERC-20 transfer to a known address. What does operation = 1 mean, and why is it the first field to check?",
+  "options": {
+   "A": "1 means DELEGATECALL: the target's code runs with the Safe's own storage and address, so a malicious target can overwrite the singleton (mastercopy) slot and take over the Safe, whatever the decoded inner calls show; this is how the Bybit Safe was drained",
+   "B": "1 means \"batch\": it only tells the Safe that several calls are packed into the data field, so once the decoded inner calls look routine (here one ERC-20 transfer to a known address) there is nothing more to check and the transaction is safe to sign",
+   "C": "1 means CALL with value: it only matters when ETH is attached, so with value = 0 the flag has no effect, and the risk lies entirely in the decoded inner calls, which here are a routine ERC-20 transfer to a known address that the owners already recognize",
+   "D": "operation is informational: the Safe records it in the SafeTx hash for off-chain tooling but ignores it when executing, always making a normal CALL to the target, so only the decoded contents of the data field decide what the transaction does"
+  },
+  "answer": "A",
+  "mistake": "treating operation 1 as a harmless batch flag",
+  "verified_by": "checker"
+ }
+]

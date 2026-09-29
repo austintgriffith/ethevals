@@ -1,0 +1,1906 @@
+{
+ "name": "sage-1.2",
+ "backend": "sage",
+ "model": null,
+ "cmd": "sage /decide reasoning=auto",
+ "questions_hash": "b317848522ed",
+ "errors": 0,
+ "summary": {
+  "n": 99,
+  "accuracy": 58.6,
+  "pillars": {
+   "concepts": 76.0,
+   "transactions": 41.7,
+   "building": 64.0,
+   "security": 52.0
+  },
+  "no_answer": 20,
+  "median_ms": 775,
+  "brier": 0.423,
+  "mean_p_right": 0.62,
+  "top_pick_accuracy": 64.6
+ },
+ "rows": [
+  {
+   "id": "concepts-01-nothing-is-automatic",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 653,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.9883,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-02-walkaway-test",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "B",
+   "correct": false,
+   "ms": 5652,
+   "probs": {
+    "A": 0.0308,
+    "B": 0.8728,
+    "C": 0.0368,
+    "D": 0.0595
+   },
+   "p_right": 0.0308,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "concepts-03-keeper-bounty-math",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 651,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.9883,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-04-hyperstructures",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": null,
+   "correct": false,
+   "ms": 5479,
+   "probs": {
+    "A": 0.4133,
+    "B": 0.2314,
+    "C": 0.1954,
+    "D": 0.1599
+   },
+   "p_right": 0.4133,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "concepts-05-fee-switch-fork",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 340,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.9883
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-06-sybil-resistance",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 824,
+   "probs": {
+    "A": 0.9012,
+    "B": 0.0469,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9012,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-07-crops-pillars",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 985,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.0632,
+    "D": 0.8694
+   },
+   "p_right": 0.8694,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-08-verified-is-not-open",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 490,
+   "probs": {
+    "A": 0.031,
+    "B": 0.0173,
+    "C": 0.0925,
+    "D": 0.8129
+   },
+   "p_right": 0.8129,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-09-eip1559-mechanics",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "A",
+   "correct": false,
+   "ms": 5110,
+   "probs": {
+    "A": 0.4797,
+    "B": 0.1837,
+    "C": 0.1227,
+    "D": 0.2139
+   },
+   "p_right": 0.2139,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "concepts-10-mev-backrun",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 369,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.9883
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-11-spot-price-oracle",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 378,
+   "probs": {
+    "A": 0.9836,
+    "B": 0.0067,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9836,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-12-blockhash-current",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 281,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.9883,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-13-eip712-replay",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 313,
+   "probs": {
+    "A": 0.9883,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-14-eip7702-delegation",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 394,
+   "probs": {
+    "A": 0.9837,
+    "B": 0.0072,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9837,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-15-paymaster-deposit",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 333,
+   "probs": {
+    "A": 0.9883,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-16-peerdas-eip",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 316,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.965,
+    "D": 0.016
+   },
+   "p_right": 0.965,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-17-forced-inclusion",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 275,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.9848,
+    "D": 0.0069
+   },
+   "p_right": 0.9848,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-18-admin-power-mechanisms",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 290,
+   "probs": {
+    "A": 0.0109,
+    "B": 0.7401,
+    "C": 0.1363,
+    "D": 0.0053
+   },
+   "p_right": 0.7401,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-19-why-slashing",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 296,
+   "probs": {
+    "A": 0.958,
+    "B": 0.0193,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.958,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-20-honesty-live-data",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 282,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.9883,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-21-7702-chainid-zero",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "A",
+   "correct": false,
+   "ms": 5155,
+   "probs": {
+    "A": 0.5083,
+    "B": 0.1942,
+    "C": 0.1615,
+    "D": 0.1361
+   },
+   "p_right": 0.1942,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "concepts-22-7702-no-recursion",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "B",
+   "correct": false,
+   "ms": 494,
+   "probs": {
+    "A": 0.0173,
+    "B": 0.8993,
+    "C": 0.0467,
+    "D": 0.0137
+   },
+   "p_right": 0.0467,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-23-7702-bad-tuple",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "B",
+   "correct": false,
+   "ms": 5326,
+   "probs": {
+    "A": 0.171,
+    "B": 0.5912,
+    "C": 0.171,
+    "D": 0.171
+   },
+   "p_right": 0.171,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "concepts-24-4337-banned-opcodes",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 451,
+   "probs": {
+    "A": 0.0201,
+    "B": 0.9306,
+    "C": 0.0295,
+    "D": 0.0053
+   },
+   "p_right": 0.9306,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "concepts-25-1271-replay-safe",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 311,
+   "probs": {
+    "A": 0.0149,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.9671
+   },
+   "p_right": 0.9671,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-01-selector-string",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "A",
+   "correct": false,
+   "ms": 5119,
+   "probs": {
+    "A": 0.653,
+    "B": 0.138,
+    "C": 0.0819,
+    "D": 0.1271
+   },
+   "p_right": 0.0819,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-02-abi-encode-static",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": null,
+   "correct": false,
+   "ms": 5061,
+   "probs": {
+    "A": 0.2284,
+    "B": 0.2943,
+    "C": 0.2495,
+    "D": 0.2279
+   },
+   "p_right": 0.2495,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-03-decode-calldata",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": null,
+   "correct": false,
+   "ms": 5162,
+   "probs": {
+    "A": 0.3335,
+    "B": 0.2738,
+    "C": 0.2049,
+    "D": 0.1878
+   },
+   "p_right": 0.2049,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-04-dynamic-types",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": null,
+   "correct": false,
+   "ms": 5387,
+   "probs": {
+    "A": 0.247,
+    "B": 0.3308,
+    "C": 0.2299,
+    "D": 0.1923
+   },
+   "p_right": 0.247,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-05-struct-argument",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "A",
+   "correct": false,
+   "ms": 5312,
+   "probs": {
+    "A": 0.5369,
+    "B": 0.218,
+    "C": 0.1122,
+    "D": 0.1329
+   },
+   "p_right": 0.218,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-06-token-decimals",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": null,
+   "correct": false,
+   "ms": 5222,
+   "probs": {
+    "A": 0.406,
+    "B": 0.2723,
+    "C": 0.1546,
+    "D": 0.1671
+   },
+   "p_right": 0.2723,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-07-bounded-approve",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "A",
+   "correct": false,
+   "ms": 5232,
+   "probs": {
+    "A": 0.5912,
+    "B": 0.171,
+    "C": 0.171,
+    "D": 0.171
+   },
+   "p_right": 0.171,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-08-permit-2612",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "A",
+   "correct": false,
+   "ms": 5339,
+   "probs": {
+    "A": 0.6667,
+    "B": 0.1386,
+    "C": 0.0552,
+    "D": 0.1395
+   },
+   "p_right": 0.0552,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-09-event-signature",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 300,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.006,
+    "C": 0.0053,
+    "D": 0.9852
+   },
+   "p_right": 0.9852,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-10-read-a-receipt",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 320,
+   "probs": {
+    "A": 0.0064,
+    "B": 0.0053,
+    "C": 0.0095,
+    "D": 0.9768
+   },
+   "p_right": 0.9768,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-11-internal-transactions",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 338,
+   "probs": {
+    "A": 0.0186,
+    "B": 0.0113,
+    "C": 0.9565,
+    "D": 0.0053
+   },
+   "p_right": 0.9565,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-12-effective-gas-price",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 396,
+   "probs": {
+    "A": 0.9645,
+    "B": 0.0066,
+    "C": 0.0066,
+    "D": 0.0154
+   },
+   "p_right": 0.9645,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-13-nonce-replacement",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 228,
+   "probs": {
+    "A": 0.8845,
+    "B": 0.0553,
+    "C": 0.0055,
+    "D": 0.0092
+   },
+   "p_right": 0.8845,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-14-gwei-to-wei",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 333,
+   "probs": {
+    "A": 0.0316,
+    "B": 0.6643,
+    "C": 0.1842,
+    "D": 0.043
+   },
+   "p_right": 0.6643,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-15-intrinsic-gas",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "D",
+   "correct": false,
+   "ms": 5058,
+   "probs": {
+    "A": 0.171,
+    "B": 0.171,
+    "C": 0.171,
+    "D": 0.5912
+   },
+   "p_right": 0.171,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-16-create2-truncation",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "D",
+   "correct": false,
+   "ms": 272,
+   "probs": {
+    "A": 0.1209,
+    "B": 0.0563,
+    "C": 0.1063,
+    "D": 0.7278
+   },
+   "p_right": 0.0563,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-17-eip55-checksum",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "A",
+   "correct": false,
+   "ms": 5037,
+   "probs": {
+    "A": 0.7314,
+    "B": 0.1018,
+    "C": 0.1015,
+    "D": 0.0653
+   },
+   "p_right": 0.0653,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-18-storage-packing",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4982,
+   "probs": {
+    "A": 0.0273,
+    "B": 0.0359,
+    "C": 0.8811,
+    "D": 0.0557
+   },
+   "p_right": 0.8811,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-20-decode-a-revert",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 441,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.9883
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-21-decode-raw-tx",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "D",
+   "correct": false,
+   "ms": 5180,
+   "probs": {
+    "A": 0.171,
+    "B": 0.171,
+    "C": 0.171,
+    "D": 0.5912
+   },
+   "p_right": 0.171,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-22-legacy-v-chainid",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "A",
+   "correct": false,
+   "ms": 8026,
+   "probs": {
+    "A": 0.4947,
+    "B": 0.1941,
+    "C": 0.1068,
+    "D": 0.2044
+   },
+   "p_right": 0.1068,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-23-serialize-zero-tx",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 5172,
+   "probs": {
+    "A": 0.171,
+    "B": 0.171,
+    "C": 0.5912,
+    "D": 0.171
+   },
+   "p_right": 0.5912,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "transactions-24-7702-self-nonce",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "B",
+   "correct": false,
+   "ms": 389,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.6689,
+    "C": 0.0752,
+    "D": 0.1787
+   },
+   "p_right": 0.1787,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "transactions-25-safe-tx-hash",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3919,
+   "probs": {
+    "A": 0.9807,
+    "B": 0.011,
+    "C": 0.0055,
+    "D": 0.0027
+   },
+   "p_right": 0.9807,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-01-no-infinite-approvals",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 307,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0133,
+    "C": 0.9708,
+    "D": 0.0053
+   },
+   "p_right": 0.9708,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-02-approve-flow-states",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5092,
+   "probs": {
+    "A": 0.789,
+    "B": 0.0679,
+    "C": 0.0467,
+    "D": 0.0963
+   },
+   "p_right": 0.789,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-03-usdc-decimals",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "A",
+   "correct": false,
+   "ms": 5105,
+   "probs": {
+    "A": 0.5491,
+    "B": 0.1803,
+    "C": 0.11,
+    "D": 0.1606
+   },
+   "p_right": 0.11,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-04-se2-staking-dapp",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 789,
+   "probs": {
+    "A": 0.1053,
+    "B": 0.7798,
+    "C": 0.0169,
+    "D": 0.0659
+   },
+   "p_right": 0.7798,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-05-button-lifecycle",
+   "pillar": "building",
+   "answer": "D",
+   "pick": null,
+   "correct": false,
+   "ms": 5333,
+   "probs": {
+    "A": 0.2958,
+    "B": 0.2193,
+    "C": 0.2818,
+    "D": 0.2031
+   },
+   "p_right": 0.2031,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-06-ens-input",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 592,
+   "probs": {
+    "A": 0.0089,
+    "B": 0.0113,
+    "C": 0.9714,
+    "D": 0.0053
+   },
+   "p_right": 0.9714,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-07-double-fire",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5274,
+   "probs": {
+    "A": 0.5067,
+    "B": 0.2124,
+    "C": 0.1266,
+    "D": 0.1543
+   },
+   "p_right": 0.5067,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-08-rpc-config",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 340,
+   "probs": {
+    "A": 0.9883,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-09-mobile-chain-switch",
+   "pillar": "building",
+   "answer": "C",
+   "pick": null,
+   "correct": false,
+   "ms": 4984,
+   "probs": {
+    "A": 0.1877,
+    "B": 0.435,
+    "C": 0.216,
+    "D": 0.1613
+   },
+   "p_right": 0.216,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-10-index-events",
+   "pillar": "building",
+   "answer": "B",
+   "pick": null,
+   "correct": false,
+   "ms": 5216,
+   "probs": {
+    "A": 0.3446,
+    "B": 0.2692,
+    "C": 0.1978,
+    "D": 0.1883
+   },
+   "p_right": 0.2692,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-11-forty-balances",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 474,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.9883
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-12-pick-a-chain",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "A",
+   "correct": false,
+   "ms": 5551,
+   "probs": {
+    "A": 0.565,
+    "B": 0.2113,
+    "C": 0.1255,
+    "D": 0.0983
+   },
+   "p_right": 0.1255,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-13-l2-real-cost",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 596,
+   "probs": {
+    "A": 0.9785,
+    "B": 0.0096,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9785,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-14-deployer-key-hygiene",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 549,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.9883
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-15-agent-custody",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5590,
+   "probs": {
+    "A": 0.8299,
+    "B": 0.0843,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.8299,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-16-one-click-from-eoa",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 318,
+   "probs": {
+    "A": 0.9643,
+    "B": 0.0142,
+    "C": 0.0053,
+    "D": 0.0112
+   },
+   "p_right": 0.9643,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-17-x402-paid-api",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 677,
+   "probs": {
+    "A": 0.9785,
+    "B": 0.0096,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9785,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-18-create2-address-myth",
+   "pillar": "building",
+   "answer": "C",
+   "pick": null,
+   "correct": false,
+   "ms": 5296,
+   "probs": {
+    "A": 0.3218,
+    "B": 0.3238,
+    "C": 0.1407,
+    "D": 0.2137
+   },
+   "p_right": 0.1407,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-19-deploy-verify-ship",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4021,
+   "probs": {
+    "A": 0.2009,
+    "B": 0.0416,
+    "C": 0.6407,
+    "D": 0.0098
+   },
+   "p_right": 0.6407,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-20-existing-eoa-smart-account",
+   "pillar": "building",
+   "answer": "D",
+   "pick": null,
+   "correct": false,
+   "ms": 5097,
+   "probs": {
+    "A": 0.2344,
+    "B": 0.2788,
+    "C": 0.2152,
+    "D": 0.2716
+   },
+   "p_right": 0.2716,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-21-5792-fallback",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 320,
+   "probs": {
+    "A": 0.01,
+    "B": 0.978,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.978,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-22-sign-transaction",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 775,
+   "probs": {
+    "A": 0.0114,
+    "B": 0.9749,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9749,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "building-23-compact-signature",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "A",
+   "correct": false,
+   "ms": 5415,
+   "probs": {
+    "A": 0.5912,
+    "B": 0.171,
+    "C": 0.171,
+    "D": 0.171
+   },
+   "p_right": 0.171,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-24-4337-2d-nonce",
+   "pillar": "building",
+   "answer": "C",
+   "pick": null,
+   "correct": false,
+   "ms": 5311,
+   "probs": {
+    "A": 0.4444,
+    "B": 0.1819,
+    "C": 0.1343,
+    "D": 0.2395
+   },
+   "p_right": 0.1343,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "building-25-hash-message-string",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 305,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.008,
+    "C": 0.9812,
+    "D": 0.0053
+   },
+   "p_right": 0.9812,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-01-reentrancy",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 942,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.9883,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-02-read-only-reentrancy",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 296,
+   "probs": {
+    "A": 0.9109,
+    "B": 0.042,
+    "C": 0.006,
+    "D": 0.0053
+   },
+   "p_right": 0.9109,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-03-cross-function-reentrancy",
+   "pillar": "security",
+   "answer": "B",
+   "pick": null,
+   "correct": false,
+   "ms": 4972,
+   "probs": {
+    "A": 0.2298,
+    "B": 0.2867,
+    "C": 0.2267,
+    "D": 0.2568
+   },
+   "p_right": 0.2867,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-04-vault-inflation",
+   "pillar": "security",
+   "answer": "D",
+   "pick": null,
+   "correct": false,
+   "ms": 5074,
+   "probs": {
+    "A": 0.1919,
+    "B": 0.3988,
+    "C": 0.1642,
+    "D": 0.2451
+   },
+   "p_right": 0.2451,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-05-spot-price-oracle",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 401,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.9883,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-06-fee-on-transfer-books",
+   "pillar": "security",
+   "answer": "D",
+   "pick": null,
+   "correct": false,
+   "ms": 5559,
+   "probs": {
+    "A": 0.1888,
+    "B": 0.2546,
+    "C": 0.291,
+    "D": 0.2656
+   },
+   "p_right": 0.2656,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-07-oz-v5-approvals",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "B",
+   "correct": false,
+   "ms": 5518,
+   "probs": {
+    "A": 0.1666,
+    "B": 0.523,
+    "C": 0.1925,
+    "D": 0.118
+   },
+   "p_right": 0.1666,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-08-signature-replay",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5329,
+   "probs": {
+    "A": 0.52,
+    "B": 0.1748,
+    "C": 0.1988,
+    "D": 0.1064
+   },
+   "p_right": 0.52,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-09-uups-upgrade",
+   "pillar": "security",
+   "answer": "A",
+   "pick": null,
+   "correct": false,
+   "ms": 5378,
+   "probs": {
+    "A": 0.3468,
+    "B": 0.2209,
+    "C": 0.1911,
+    "D": 0.2412
+   },
+   "p_right": 0.3468,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-10-checks-effects-interactions",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 448,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.9883,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-11-missing-access-control",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 405,
+   "probs": {
+    "A": 0.9883,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-12-storage-layout",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 329,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.9883
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-13-authorize-upgrade",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 253,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.0053,
+    "D": 0.9883
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-14-sandwich-slippage",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 327,
+   "probs": {
+    "A": 0.9243,
+    "B": 0.0203,
+    "C": 0.0329,
+    "D": 0.0053
+   },
+   "p_right": 0.9243,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-15-lending-postmortem-1",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "A",
+   "correct": false,
+   "ms": 5054,
+   "probs": {
+    "A": 0.6876,
+    "B": 0.1036,
+    "C": 0.0639,
+    "D": 0.1449
+   },
+   "p_right": 0.1449,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-16-lending-postmortem-2",
+   "pillar": "security",
+   "answer": "B",
+   "pick": null,
+   "correct": false,
+   "ms": 5108,
+   "probs": {
+    "A": 0.3741,
+    "B": 0.2259,
+    "C": 0.1664,
+    "D": 0.2336
+   },
+   "p_right": 0.2259,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-17-lending-postmortem-3",
+   "pillar": "security",
+   "answer": "A",
+   "pick": null,
+   "correct": false,
+   "ms": 5235,
+   "probs": {
+    "A": 0.3883,
+    "B": 0.2296,
+    "C": 0.1881,
+    "D": 0.194
+   },
+   "p_right": 0.3883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-18-decimal-scale-mismatch",
+   "pillar": "security",
+   "answer": "B",
+   "pick": null,
+   "correct": false,
+   "ms": 5332,
+   "probs": {
+    "A": 0.2323,
+    "B": 0.3069,
+    "C": 0.1546,
+    "D": 0.3061
+   },
+   "p_right": 0.3069,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-19-permissionless-listing",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 392,
+   "probs": {
+    "A": 0.9225,
+    "B": 0.0364,
+    "C": 0.0053,
+    "D": 0.0053
+   },
+   "p_right": 0.9225,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-20-borrowing-market",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 356,
+   "probs": {
+    "A": 0.0066,
+    "B": 0.0053,
+    "C": 0.9853,
+    "D": 0.0053
+   },
+   "p_right": 0.9853,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-21-malicious-permit",
+   "pillar": "security",
+   "answer": "B",
+   "pick": null,
+   "correct": false,
+   "ms": 5097,
+   "probs": {
+    "A": 0.2573,
+    "B": 0.3421,
+    "C": 0.183,
+    "D": 0.2176
+   },
+   "p_right": 0.3421,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-22-permit2-batch",
+   "pillar": "security",
+   "answer": "B",
+   "pick": null,
+   "correct": false,
+   "ms": 5311,
+   "probs": {
+    "A": 0.2449,
+    "B": 0.2308,
+    "C": 0.2444,
+    "D": 0.2799
+   },
+   "p_right": 0.2308,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": true
+   }
+  },
+  {
+   "id": "security-23-decimal-verifying-contract",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "B",
+   "correct": false,
+   "ms": 287,
+   "probs": {
+    "A": 0.1189,
+    "B": 0.7682,
+    "C": 0.0289,
+    "D": 0.0053
+   },
+   "p_right": 0.1189,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-24-siwe-domain",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 408,
+   "probs": {
+    "A": 0.0053,
+    "B": 0.0053,
+    "C": 0.9883,
+    "D": 0.0053
+   },
+   "p_right": 0.9883,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  },
+  {
+   "id": "security-25-safe-delegatecall",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 355,
+   "probs": {
+    "A": 0.9575,
+    "B": 0.0189,
+    "C": 0.0053,
+    "D": 0.0088
+   },
+   "p_right": 0.9575,
+   "note": {
+    "model": "levanto-sage-v1.2",
+    "reasoned": false
+   }
+  }
+ ]
+}

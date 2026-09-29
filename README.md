@@ -12,6 +12,7 @@ evals per pillar, each keyed to a mistake seen in real agent output.
 - `build.py` — regenerates the two index files after adding an eval or a result.
 - `RUN.md` — what an agent reads to score itself and submit a result.
 - `results/*.json` — one file per run: model, harness, skill, executor and judge commands, per-eval rows.
+- `mc/` — the same evals as 4-option multiple choice, for decision models that can't write text (Jev, Sage). See `mc/README.md`.
 
 ## Run it
 

@@ -1,0 +1,1111 @@
+{
+ "name": "claude-haiku",
+ "backend": "claude",
+ "model": "haiku",
+ "cmd": "claude -p --model haiku --dangerously-skip-permissions --strict-mcp-config",
+ "questions_hash": "b317848522ed",
+ "errors": 0,
+ "summary": {
+  "n": 99,
+  "accuracy": 84.8,
+  "pillars": {
+   "concepts": 92.0,
+   "transactions": 79.2,
+   "building": 80.0,
+   "security": 88.0
+  },
+  "no_answer": 4,
+  "median_ms": 9824
+ },
+ "rows": [
+  {
+   "id": "concepts-01-nothing-is-automatic",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 5761,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-02-walkaway-test",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 8622,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-03-keeper-bounty-math",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 6680,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "concepts-04-hyperstructures",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3904,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-05-fee-switch-fork",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 8303,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-06-sybil-resistance",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5803,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-07-crops-pillars",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 6696,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-08-verified-is-not-open",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 6445,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-09-eip1559-mechanics",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 10978,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-10-mev-backrun",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 5420,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-11-spot-price-oracle",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5978,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-12-blockhash-current",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 5272,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-13-eip712-replay",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5041,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-14-eip7702-delegation",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "D",
+   "correct": false,
+   "ms": 11163,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-15-paymaster-deposit",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 7936,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-16-peerdas-eip",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4596,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-17-forced-inclusion",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3787,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-18-admin-power-mechanisms",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 6912,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "concepts-19-why-slashing",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 7450,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-20-honesty-live-data",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4576,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-21-7702-chainid-zero",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 16675,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "concepts-22-7702-no-recursion",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "B",
+   "correct": false,
+   "ms": 11224,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "concepts-23-7702-bad-tuple",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 31371,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-24-4337-banned-opcodes",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 13045,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "concepts-25-1271-replay-safe",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 5958,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-01-selector-string",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4590,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-02-abi-encode-static",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "D",
+   "correct": false,
+   "ms": 66664,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-03-decode-calldata",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 5785,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-04-dynamic-types",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 75685,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "transactions-05-struct-argument",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": null,
+   "correct": false,
+   "ms": 128926,
+   "note": {
+    "reply": "Looking at this ABI encoding problem, I need to verify the key parameters:\n\n**Converting values:**\n- tokenIn: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \u2713\n- tokenOut: 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 \u2713\n- fee: 500 = 0x01f4 (crucial to check)\n- recipient: 0xd8dA6BF26964aF9D7eEd9e03E53415D37a"
+   }
+  },
+  {
+   "id": "transactions-06-token-decimals",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 11267,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "transactions-07-bounded-approve",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 15974,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-08-permit-2612",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 57129,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-09-event-signature",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 4215,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-10-read-a-receipt",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 8637,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-11-internal-transactions",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 5296,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-12-effective-gas-price",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5772,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "transactions-13-nonce-replacement",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 13670,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "transactions-14-gwei-to-wei",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 5378,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "transactions-15-intrinsic-gas",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": null,
+   "correct": false,
+   "ms": 16198,
+   "note": {
+    "reply": "Looking at the calldata: `0x0046be6100d30000677700c4000000960022ac00009f76123a0000e8001b00ec00b54500e699`\n\nBreaking into bytes and counting:\n- Total bytes: 38\n- Zero bytes (00): 17\n- Non-zero bytes: 21\n\nEIP-2028 calldata cost:\n- 17 zeros \u00d7 16 gas = 272 gas\n- 21 non-zeros \u00d7 4 gas = 84 gas\n- Calldata "
+   }
+  },
+  {
+   "id": "transactions-16-create2-truncation",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 18470,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "transactions-17-eip55-checksum",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 35952,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-18-storage-packing",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 5791,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-20-decode-a-revert",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 5565,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-21-decode-raw-tx",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 46488,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "transactions-22-legacy-v-chainid",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4932,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-23-serialize-zero-tx",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 16930,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-24-7702-self-nonce",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "B",
+   "correct": false,
+   "ms": 14120,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "transactions-25-safe-tx-hash",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "D",
+   "correct": false,
+   "ms": 9976,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-01-no-infinite-approvals",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 7644,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-02-approve-flow-states",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 9647,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-03-usdc-decimals",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 10129,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-04-se2-staking-dapp",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 18548,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-05-button-lifecycle",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 32355,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-06-ens-input",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 8099,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-07-double-fire",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "C",
+   "correct": false,
+   "ms": 45261,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-08-rpc-config",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5948,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-09-mobile-chain-switch",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "B",
+   "correct": false,
+   "ms": 59445,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-10-index-events",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 9912,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-11-forty-balances",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 7934,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-12-pick-a-chain",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "B",
+   "correct": false,
+   "ms": 79486,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-13-l2-real-cost",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 8902,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-14-deployer-key-hygiene",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 8166,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-15-agent-custody",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 13576,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-16-one-click-from-eoa",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "D",
+   "correct": false,
+   "ms": 18010,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-17-x402-paid-api",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "D",
+   "correct": false,
+   "ms": 13451,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-18-create2-address-myth",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 8274,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-19-deploy-verify-ship",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 15960,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-20-existing-eoa-smart-account",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 10599,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-21-5792-fallback",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 7878,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-22-sign-transaction",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 4720,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-23-compact-signature",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 32560,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-24-4337-2d-nonce",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 8696,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-25-hash-message-string",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 10258,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "security-01-reentrancy",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 4785,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-02-read-only-reentrancy",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 67209,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-03-cross-function-reentrancy",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 110381,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-04-vault-inflation",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 109226,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-05-spot-price-oracle",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 12798,
+   "note": {
+    "reply": "B\n\nFlash loans are the attack vector the proposal overlooks. An attacker can:\n1. Flash borrow massive amounts\n2. Dump into slot0 to move the price\n3. Liquidate or borrow against the corrupted price\n4. Repay the loan atomically in the same block\n\nThe cost is just flash fees (~0.05%) and slippage, not"
+   }
+  },
+  {
+   "id": "security-06-fee-on-transfer-books",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 53154,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-07-oz-v5-approvals",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "C",
+   "correct": false,
+   "ms": 36244,
+   "note": {
+    "reply": "C\n\nActually, let me reconsider. \n\nThe symptoms point to USDT's well-known quirk: it reverts when you try to approve a non-zero amount when an existing non-zero allowance is already set. On run 1, allowance is 0\u2192X (works). On run 2+, allowance is (X-Y) \u2192 X (reverts).\n\nHowever, option C is specificall"
+   }
+  },
+  {
+   "id": "security-08-signature-replay",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 18876,
+   "note": {
+    "reply": "A\n\nThe root cause is that the DOMAIN_SEPARATOR omits `chainId`, making it identical across all three chains. Since the contract is at the same address on each chain (via CREATE2) and the domain separator is the same, the signature digest is the same, allowing cross-chain replay. The fix is to includ"
+   }
+  },
+  {
+   "id": "security-09-uups-upgrade",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 12457,
+   "note": {
+    "reply": "A\n\nThe issue is a storage layout mismatch. V1's values sit physically in slots 0\u20132. When V2 adds `rewardIndex` at the beginning, the layout shifts: V2 reads from slots 0\u20133, but the physical data is still in 0\u20132. So `rewardIndex` reads slot 0 (V1's `totalDeposited`), `totalDeposited` reads slot 1 (V1"
+   }
+  },
+  {
+   "id": "security-10-checks-effects-interactions",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3984,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "security-11-missing-access-control",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5792,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-12-storage-layout",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 6136,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-13-authorize-upgrade",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 4662,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-14-sandwich-slippage",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5985,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-15-lending-postmortem-1",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 13560,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-16-lending-postmortem-2",
+   "pillar": "security",
+   "answer": "B",
+   "pick": null,
+   "correct": false,
+   "ms": 38194,
+   "note": {
+    "reply": "Looking at this problem, I need to understand how block.number works on each chain and why the interest calculation came out to 3,391 USDC on both Ethereum and Arbitrum.\n\n**Key observation**: On both Arbitrum and Ethereum mainnet, the contract charged ~3,391 USDC for 31 days at 4% annual rate. This "
+   }
+  },
+  {
+   "id": "security-17-lending-postmortem-3",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 70601,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-18-decimal-scale-mismatch",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 49577,
+   "note": {
+    "reply": "B\n\nThe fundamental issue is a decimal mismatch. `collateralValue` has 18 decimals (USD value), while `debtRaw` has 6 decimals (raw USDC). \n\nThe incorrect check compares:\n- Left: `debtRaw` (6 decimals)  \n- Right: `collateralValue * 70 / 100` (18 decimals)\n\nThis allows `debtRaw` up to `collateralValue"
+   }
+  },
+  {
+   "id": "security-19-permissionless-listing",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 9824,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-20-borrowing-market",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 8454,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "security-21-malicious-permit",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 26547,
+   "note": {
+    "reply": "B\n\nThe deadline 1678709555 is March 13, 2023\u2014nearly 3.5 years in the past (today is 2026-09-21). An unknown site asking you to sign a permit for ~1,033,366 USDC (the value 1033366316628 / 10^6, since USDC uses 6 decimals, not 18) to an unfamiliar spender is hostile behavior. Even though the permit w"
+   }
+  },
+  {
+   "id": "security-22-permit2-batch",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 17041,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-23-decimal-verifying-contract",
+   "pillar": "security",
+   "answer": "A",
+   "pick": null,
+   "correct": false,
+   "ms": 88629,
+   "note": {
+    "reply": "To solve this, I need to determine which Ethereum address in hex, when converted to decimal, equals the given number.\n\nThe key insight is to check the last digit of the decimal representation for each address. I can find this by computing each hex address modulo 10.\n\nFor a hex number, since 16 \u2261 6 ("
+   }
+  },
+  {
+   "id": "security-24-siwe-domain",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 6826,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "security-25-safe-delegatecall",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 7920,
+   "note": {
+    "reply": "A"
+   }
+  }
+ ]
+}

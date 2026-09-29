@@ -2,3 +2,4 @@ __pycache__/
 .ethevals-reply.txt
 .DS_Store
 .preview/
+.env

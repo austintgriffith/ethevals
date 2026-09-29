@@ -1,0 +1,1906 @@
+{
+ "name": "jev-1.13",
+ "backend": "jev",
+ "model": null,
+ "cmd": "typesafe jev-latest",
+ "questions_hash": "b317848522ed",
+ "errors": 0,
+ "summary": {
+  "n": 99,
+  "accuracy": 82.8,
+  "pillars": {
+   "concepts": 92.0,
+   "transactions": 79.2,
+   "building": 80.0,
+   "security": 80.0
+  },
+  "no_answer": 0,
+  "median_ms": 186,
+  "brier": 0.251,
+  "mean_p_right": 0.761,
+  "top_pick_accuracy": 82.8
+ },
+ "rows": [
+  {
+   "id": "concepts-01-nothing-is-automatic",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 339,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 1.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 446
+   }
+  },
+  {
+   "id": "concepts-02-walkaway-test",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 308,
+   "probs": {
+    "A": 1.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 496
+   }
+  },
+  {
+   "id": "concepts-03-keeper-bounty-math",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 342,
+   "probs": {
+    "A": 0.01,
+    "B": 0.99,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 0.99,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 478
+   }
+  },
+  {
+   "id": "concepts-04-hyperstructures",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "C",
+   "correct": false,
+   "ms": 313,
+   "probs": {
+    "A": 0.26,
+    "B": 0.03,
+    "C": 0.7,
+    "D": 0.01
+   },
+   "p_right": 0.26,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 400
+   }
+  },
+  {
+   "id": "concepts-05-fee-switch-fork",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 316,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 528
+   }
+  },
+  {
+   "id": "concepts-06-sybil-resistance",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 331,
+   "probs": {
+    "A": 1.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 416
+   }
+  },
+  {
+   "id": "concepts-07-crops-pillars",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 344,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 446
+   }
+  },
+  {
+   "id": "concepts-08-verified-is-not-open",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 307,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 449
+   }
+  },
+  {
+   "id": "concepts-09-eip1559-mechanics",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 183,
+   "probs": {
+    "A": 0.08,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.92
+   },
+   "p_right": 0.92,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 441
+   }
+  },
+  {
+   "id": "concepts-10-mev-backrun",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 146,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 445
+   }
+  },
+  {
+   "id": "concepts-11-spot-price-oracle",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 117,
+   "probs": {
+    "A": 1.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 400
+   }
+  },
+  {
+   "id": "concepts-12-blockhash-current",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 148,
+   "probs": {
+    "A": 0.02,
+    "B": 0.01,
+    "C": 0.97,
+    "D": 0.0
+   },
+   "p_right": 0.97,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 444
+   }
+  },
+  {
+   "id": "concepts-13-eip712-replay",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 189,
+   "probs": {
+    "A": 0.99,
+    "B": 0.01,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 0.99,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 404
+   }
+  },
+  {
+   "id": "concepts-14-eip7702-delegation",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 132,
+   "probs": {
+    "A": 0.86,
+    "B": 0.02,
+    "C": 0.02,
+    "D": 0.1
+   },
+   "p_right": 0.86,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 415
+   }
+  },
+  {
+   "id": "concepts-15-paymaster-deposit",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 173,
+   "probs": {
+    "A": 1.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 545
+   }
+  },
+  {
+   "id": "concepts-16-peerdas-eip",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 183,
+   "probs": {
+    "A": 0.01,
+    "B": 0.21,
+    "C": 0.52,
+    "D": 0.26
+   },
+   "p_right": 0.52,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 389
+   }
+  },
+  {
+   "id": "concepts-17-forced-inclusion",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 259,
+   "probs": {
+    "A": 0.15,
+    "B": 0.0,
+    "C": 0.85,
+    "D": 0.0
+   },
+   "p_right": 0.85,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 405
+   }
+  },
+  {
+   "id": "concepts-18-admin-power-mechanisms",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 257,
+   "probs": {
+    "A": 0.0,
+    "B": 1.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 470
+   }
+  },
+  {
+   "id": "concepts-19-why-slashing",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 289,
+   "probs": {
+    "A": 1.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 523
+   }
+  },
+  {
+   "id": "concepts-20-honesty-live-data",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 269,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 1.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 457
+   }
+  },
+  {
+   "id": "concepts-21-7702-chainid-zero",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 263,
+   "probs": {
+    "A": 0.12,
+    "B": 0.84,
+    "C": 0.04,
+    "D": 0.0
+   },
+   "p_right": 0.84,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 542
+   }
+  },
+  {
+   "id": "concepts-22-7702-no-recursion",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 243,
+   "probs": {
+    "A": 0.05,
+    "B": 0.32,
+    "C": 0.63,
+    "D": 0.0
+   },
+   "p_right": 0.63,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 560
+   }
+  },
+  {
+   "id": "concepts-23-7702-bad-tuple",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "A",
+   "correct": false,
+   "ms": 263,
+   "probs": {
+    "A": 0.45,
+    "B": 0.01,
+    "C": 0.17,
+    "D": 0.37
+   },
+   "p_right": 0.17,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 492
+   }
+  },
+  {
+   "id": "concepts-24-4337-banned-opcodes",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 255,
+   "probs": {
+    "A": 0.07,
+    "B": 0.72,
+    "C": 0.21,
+    "D": 0.0
+   },
+   "p_right": 0.72,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 558
+   }
+  },
+  {
+   "id": "concepts-25-1271-replay-safe",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 203,
+   "probs": {
+    "A": 0.01,
+    "B": 0.01,
+    "C": 0.05,
+    "D": 0.93
+   },
+   "p_right": 0.93,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 581
+   }
+  },
+  {
+   "id": "transactions-01-selector-string",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 199,
+   "probs": {
+    "A": 0.06,
+    "B": 0.01,
+    "C": 0.93,
+    "D": 0.0
+   },
+   "p_right": 0.93,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 437
+   }
+  },
+  {
+   "id": "transactions-02-abi-encode-static",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 197,
+   "probs": {
+    "A": 0.05,
+    "B": 0.05,
+    "C": 0.89,
+    "D": 0.01
+   },
+   "p_right": 0.89,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 1224
+   }
+  },
+  {
+   "id": "transactions-03-decode-calldata",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 294,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 1.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 888
+   }
+  },
+  {
+   "id": "transactions-04-dynamic-types",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 238,
+   "probs": {
+    "A": 0.79,
+    "B": 0.08,
+    "C": 0.12,
+    "D": 0.01
+   },
+   "p_right": 0.79,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 2217
+   }
+  },
+  {
+   "id": "transactions-05-struct-argument",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 197,
+   "probs": {
+    "A": 0.07,
+    "B": 0.75,
+    "C": 0.08,
+    "D": 0.1
+   },
+   "p_right": 0.75,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 2718
+   }
+  },
+  {
+   "id": "transactions-06-token-decimals",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 224,
+   "probs": {
+    "A": 0.04,
+    "B": 0.94,
+    "C": 0.01,
+    "D": 0.01
+   },
+   "p_right": 0.94,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 1265
+   }
+  },
+  {
+   "id": "transactions-07-bounded-approve",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "B",
+   "correct": false,
+   "ms": 372,
+   "probs": {
+    "A": 0.04,
+    "B": 0.46,
+    "C": 0.32,
+    "D": 0.18
+   },
+   "p_right": 0.32,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 956
+   }
+  },
+  {
+   "id": "transactions-08-permit-2612",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 401,
+   "probs": {
+    "A": 0.1,
+    "B": 0.25,
+    "C": 0.58,
+    "D": 0.07
+   },
+   "p_right": 0.58,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 2417
+   }
+  },
+  {
+   "id": "transactions-09-event-signature",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 430,
+   "probs": {
+    "A": 0.01,
+    "B": 0.32,
+    "C": 0.21,
+    "D": 0.46
+   },
+   "p_right": 0.46,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 417
+   }
+  },
+  {
+   "id": "transactions-10-read-a-receipt",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 549,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 463
+   }
+  },
+  {
+   "id": "transactions-11-internal-transactions",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 479,
+   "probs": {
+    "A": 0.0,
+    "B": 0.01,
+    "C": 0.99,
+    "D": 0.0
+   },
+   "p_right": 0.99,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 461
+   }
+  },
+  {
+   "id": "transactions-12-effective-gas-price",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 820,
+   "probs": {
+    "A": 0.99,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.01
+   },
+   "p_right": 0.99,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 501
+   }
+  },
+  {
+   "id": "transactions-13-nonce-replacement",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 1080,
+   "probs": {
+    "A": 0.98,
+    "B": 0.01,
+    "C": 0.0,
+    "D": 0.01
+   },
+   "p_right": 0.98,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 566
+   }
+  },
+  {
+   "id": "transactions-14-gwei-to-wei",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 1387,
+   "probs": {
+    "A": 0.01,
+    "B": 0.92,
+    "C": 0.0,
+    "D": 0.07
+   },
+   "p_right": 0.92,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 402
+   }
+  },
+  {
+   "id": "transactions-15-intrinsic-gas",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 1197,
+   "probs": {
+    "A": 0.25,
+    "B": 0.25,
+    "C": 0.35,
+    "D": 0.15
+   },
+   "p_right": 0.35,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 479
+   }
+  },
+  {
+   "id": "transactions-16-create2-truncation",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "A",
+   "correct": false,
+   "ms": 460,
+   "probs": {
+    "A": 0.78,
+    "B": 0.15,
+    "C": 0.02,
+    "D": 0.05
+   },
+   "p_right": 0.15,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 564
+   }
+  },
+  {
+   "id": "transactions-17-eip55-checksum",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "A",
+   "correct": false,
+   "ms": 416,
+   "probs": {
+    "A": 0.67,
+    "B": 0.21,
+    "C": 0.05,
+    "D": 0.07
+   },
+   "p_right": 0.07,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 515
+   }
+  },
+  {
+   "id": "transactions-18-storage-packing",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 413,
+   "probs": {
+    "A": 0.06,
+    "B": 0.31,
+    "C": 0.36,
+    "D": 0.27
+   },
+   "p_right": 0.36,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 397
+   }
+  },
+  {
+   "id": "transactions-20-decode-a-revert",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 361,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 573
+   }
+  },
+  {
+   "id": "transactions-21-decode-raw-tx",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 283,
+   "probs": {
+    "A": 0.61,
+    "B": 0.09,
+    "C": 0.29,
+    "D": 0.01
+   },
+   "p_right": 0.61,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 1218
+   }
+  },
+  {
+   "id": "transactions-22-legacy-v-chainid",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "B",
+   "correct": false,
+   "ms": 284,
+   "probs": {
+    "A": 0.27,
+    "B": 0.49,
+    "C": 0.19,
+    "D": 0.05
+   },
+   "p_right": 0.19,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 382
+   }
+  },
+  {
+   "id": "transactions-23-serialize-zero-tx",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 285,
+   "probs": {
+    "A": 0.04,
+    "B": 0.03,
+    "C": 0.9,
+    "D": 0.03
+   },
+   "p_right": 0.9,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 696
+   }
+  },
+  {
+   "id": "transactions-24-7702-self-nonce",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "B",
+   "correct": false,
+   "ms": 260,
+   "probs": {
+    "A": 0.37,
+    "B": 0.51,
+    "C": 0.03,
+    "D": 0.09
+   },
+   "p_right": 0.09,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 396
+   }
+  },
+  {
+   "id": "transactions-25-safe-tx-hash",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 276,
+   "probs": {
+    "A": 0.79,
+    "B": 0.15,
+    "C": 0.02,
+    "D": 0.04
+   },
+   "p_right": 0.79,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 1155
+   }
+  },
+  {
+   "id": "building-01-no-infinite-approvals",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 195,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.98,
+    "D": 0.02
+   },
+   "p_right": 0.98,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 553
+   }
+  },
+  {
+   "id": "building-02-approve-flow-states",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 208,
+   "probs": {
+    "A": 0.96,
+    "B": 0.01,
+    "C": 0.0,
+    "D": 0.03
+   },
+   "p_right": 0.96,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 712
+   }
+  },
+  {
+   "id": "building-03-usdc-decimals",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "B",
+   "correct": false,
+   "ms": 202,
+   "probs": {
+    "A": 0.01,
+    "B": 0.95,
+    "C": 0.04,
+    "D": 0.0
+   },
+   "p_right": 0.04,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 666
+   }
+  },
+  {
+   "id": "building-04-se2-staking-dapp",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 183,
+   "probs": {
+    "A": 0.01,
+    "B": 0.98,
+    "C": 0.0,
+    "D": 0.01
+   },
+   "p_right": 0.98,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 572
+   }
+  },
+  {
+   "id": "building-05-button-lifecycle",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "C",
+   "correct": false,
+   "ms": 225,
+   "probs": {
+    "A": 0.14,
+    "B": 0.06,
+    "C": 0.49,
+    "D": 0.31
+   },
+   "p_right": 0.31,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 859
+   }
+  },
+  {
+   "id": "building-06-ens-input",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 172,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 1.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 701
+   }
+  },
+  {
+   "id": "building-07-double-fire",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 143,
+   "probs": {
+    "A": 0.87,
+    "B": 0.01,
+    "C": 0.06,
+    "D": 0.06
+   },
+   "p_right": 0.87,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 692
+   }
+  },
+  {
+   "id": "building-08-rpc-config",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 157,
+   "probs": {
+    "A": 1.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 631
+   }
+  },
+  {
+   "id": "building-09-mobile-chain-switch",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 132,
+   "probs": {
+    "A": 0.31,
+    "B": 0.13,
+    "C": 0.54,
+    "D": 0.02
+   },
+   "p_right": 0.54,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 618
+   }
+  },
+  {
+   "id": "building-10-index-events",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 134,
+   "probs": {
+    "A": 0.0,
+    "B": 1.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 743
+   }
+  },
+  {
+   "id": "building-11-forty-balances",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 135,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 614
+   }
+  },
+  {
+   "id": "building-12-pick-a-chain",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "A",
+   "correct": false,
+   "ms": 149,
+   "probs": {
+    "A": 0.52,
+    "B": 0.07,
+    "C": 0.26,
+    "D": 0.15
+   },
+   "p_right": 0.26,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 601
+   }
+  },
+  {
+   "id": "building-13-l2-real-cost",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 149,
+   "probs": {
+    "A": 0.99,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.01
+   },
+   "p_right": 0.99,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 523
+   }
+  },
+  {
+   "id": "building-14-deployer-key-hygiene",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 157,
+   "probs": {
+    "A": 0.01,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.99
+   },
+   "p_right": 0.99,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 712
+   }
+  },
+  {
+   "id": "building-15-agent-custody",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 120,
+   "probs": {
+    "A": 0.99,
+    "B": 0.0,
+    "C": 0.01,
+    "D": 0.0
+   },
+   "p_right": 0.99,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 587
+   }
+  },
+  {
+   "id": "building-16-one-click-from-eoa",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "D",
+   "correct": false,
+   "ms": 120,
+   "probs": {
+    "A": 0.29,
+    "B": 0.21,
+    "C": 0.11,
+    "D": 0.39
+   },
+   "p_right": 0.29,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 682
+   }
+  },
+  {
+   "id": "building-17-x402-paid-api",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 148,
+   "probs": {
+    "A": 0.93,
+    "B": 0.0,
+    "C": 0.05,
+    "D": 0.02
+   },
+   "p_right": 0.93,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 615
+   }
+  },
+  {
+   "id": "building-18-create2-address-myth",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 123,
+   "probs": {
+    "A": 0.04,
+    "B": 0.0,
+    "C": 0.95,
+    "D": 0.01
+   },
+   "p_right": 0.95,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 698
+   }
+  },
+  {
+   "id": "building-19-deploy-verify-ship",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 122,
+   "probs": {
+    "A": 0.03,
+    "B": 0.03,
+    "C": 0.85,
+    "D": 0.09
+   },
+   "p_right": 0.85,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 600
+   }
+  },
+  {
+   "id": "building-20-existing-eoa-smart-account",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 111,
+   "probs": {
+    "A": 0.13,
+    "B": 0.2,
+    "C": 0.02,
+    "D": 0.65
+   },
+   "p_right": 0.65,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 690
+   }
+  },
+  {
+   "id": "building-21-5792-fallback",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 168,
+   "probs": {
+    "A": 0.02,
+    "B": 0.98,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 0.98,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 514
+   }
+  },
+  {
+   "id": "building-22-sign-transaction",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 164,
+   "probs": {
+    "A": 0.01,
+    "B": 0.9,
+    "C": 0.07,
+    "D": 0.02
+   },
+   "p_right": 0.9,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 495
+   }
+  },
+  {
+   "id": "building-23-compact-signature",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "C",
+   "correct": false,
+   "ms": 170,
+   "probs": {
+    "A": 0.05,
+    "B": 0.1,
+    "C": 0.84,
+    "D": 0.01
+   },
+   "p_right": 0.01,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 945
+   }
+  },
+  {
+   "id": "building-24-4337-2d-nonce",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 108,
+   "probs": {
+    "A": 0.03,
+    "B": 0.17,
+    "C": 0.79,
+    "D": 0.01
+   },
+   "p_right": 0.79,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 465
+   }
+  },
+  {
+   "id": "building-25-hash-message-string",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 145,
+   "probs": {
+    "A": 0.0,
+    "B": 0.01,
+    "C": 0.99,
+    "D": 0.0
+   },
+   "p_right": 0.99,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 526
+   }
+  },
+  {
+   "id": "security-01-reentrancy",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 126,
+   "probs": {
+    "A": 0.0,
+    "B": 1.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 421
+   }
+  },
+  {
+   "id": "security-02-read-only-reentrancy",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 175,
+   "probs": {
+    "A": 0.82,
+    "B": 0.15,
+    "C": 0.03,
+    "D": 0.0
+   },
+   "p_right": 0.82,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 650
+   }
+  },
+  {
+   "id": "security-03-cross-function-reentrancy",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 160,
+   "probs": {
+    "A": 0.02,
+    "B": 0.97,
+    "C": 0.01,
+    "D": 0.0
+   },
+   "p_right": 0.97,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 558
+   }
+  },
+  {
+   "id": "security-04-vault-inflation",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "C",
+   "correct": false,
+   "ms": 142,
+   "probs": {
+    "A": 0.07,
+    "B": 0.01,
+    "C": 0.78,
+    "D": 0.14
+   },
+   "p_right": 0.14,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 705
+   }
+  },
+  {
+   "id": "security-05-spot-price-oracle",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 131,
+   "probs": {
+    "A": 0.02,
+    "B": 0.95,
+    "C": 0.02,
+    "D": 0.01
+   },
+   "p_right": 0.95,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 722
+   }
+  },
+  {
+   "id": "security-06-fee-on-transfer-books",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 119,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.31,
+    "D": 0.69
+   },
+   "p_right": 0.69,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 816
+   }
+  },
+  {
+   "id": "security-07-oz-v5-approvals",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "D",
+   "correct": false,
+   "ms": 131,
+   "probs": {
+    "A": 0.11,
+    "B": 0.04,
+    "C": 0.17,
+    "D": 0.68
+   },
+   "p_right": 0.11,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 770
+   }
+  },
+  {
+   "id": "security-08-signature-replay",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 183,
+   "probs": {
+    "A": 0.78,
+    "B": 0.04,
+    "C": 0.18,
+    "D": 0.0
+   },
+   "p_right": 0.78,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 724
+   }
+  },
+  {
+   "id": "security-09-uups-upgrade",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 141,
+   "probs": {
+    "A": 0.91,
+    "B": 0.08,
+    "C": 0.01,
+    "D": 0.0
+   },
+   "p_right": 0.91,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 884
+   }
+  },
+  {
+   "id": "security-10-checks-effects-interactions",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 127,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 1.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 419
+   }
+  },
+  {
+   "id": "security-11-missing-access-control",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 120,
+   "probs": {
+    "A": 1.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 440
+   }
+  },
+  {
+   "id": "security-12-storage-layout",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 173,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 0.0,
+    "D": 1.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 461
+   }
+  },
+  {
+   "id": "security-13-authorize-upgrade",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 141,
+   "probs": {
+    "A": 0.0,
+    "B": 0.03,
+    "C": 0.0,
+    "D": 0.97
+   },
+   "p_right": 0.97,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 447
+   }
+  },
+  {
+   "id": "security-14-sandwich-slippage",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 137,
+   "probs": {
+    "A": 0.98,
+    "B": 0.0,
+    "C": 0.02,
+    "D": 0.0
+   },
+   "p_right": 0.98,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 441
+   }
+  },
+  {
+   "id": "security-15-lending-postmortem-1",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 151,
+   "probs": {
+    "A": 0.24,
+    "B": 0.11,
+    "C": 0.15,
+    "D": 0.5
+   },
+   "p_right": 0.5,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 798
+   }
+  },
+  {
+   "id": "security-16-lending-postmortem-2",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "A",
+   "correct": false,
+   "ms": 162,
+   "probs": {
+    "A": 0.46,
+    "B": 0.15,
+    "C": 0.03,
+    "D": 0.36
+   },
+   "p_right": 0.15,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 824
+   }
+  },
+  {
+   "id": "security-17-lending-postmortem-3",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 153,
+   "probs": {
+    "A": 0.76,
+    "B": 0.02,
+    "C": 0.14,
+    "D": 0.08
+   },
+   "p_right": 0.76,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 958
+   }
+  },
+  {
+   "id": "security-18-decimal-scale-mismatch",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "A",
+   "correct": false,
+   "ms": 184,
+   "probs": {
+    "A": 0.64,
+    "B": 0.25,
+    "C": 0.05,
+    "D": 0.06
+   },
+   "p_right": 0.25,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 501
+   }
+  },
+  {
+   "id": "security-19-permissionless-listing",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 201,
+   "probs": {
+    "A": 0.92,
+    "B": 0.08,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 0.92,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 601
+   }
+  },
+  {
+   "id": "security-20-borrowing-market",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 161,
+   "probs": {
+    "A": 0.01,
+    "B": 0.0,
+    "C": 0.99,
+    "D": 0.0
+   },
+   "p_right": 0.99,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 577
+   }
+  },
+  {
+   "id": "security-21-malicious-permit",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 157,
+   "probs": {
+    "A": 0.04,
+    "B": 0.55,
+    "C": 0.38,
+    "D": 0.03
+   },
+   "p_right": 0.55,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 1023
+   }
+  },
+  {
+   "id": "security-22-permit2-batch",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 234,
+   "probs": {
+    "A": 0.0,
+    "B": 1.0,
+    "C": 0.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 1332
+   }
+  },
+  {
+   "id": "security-23-decimal-verifying-contract",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "B",
+   "correct": false,
+   "ms": 186,
+   "probs": {
+    "A": 0.04,
+    "B": 0.87,
+    "C": 0.05,
+    "D": 0.04
+   },
+   "p_right": 0.04,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 575
+   }
+  },
+  {
+   "id": "security-24-siwe-domain",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 166,
+   "probs": {
+    "A": 0.0,
+    "B": 0.0,
+    "C": 1.0,
+    "D": 0.0
+   },
+   "p_right": 1.0,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 680
+   }
+  },
+  {
+   "id": "security-25-safe-delegatecall",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 203,
+   "probs": {
+    "A": 0.91,
+    "B": 0.01,
+    "C": 0.07,
+    "D": 0.01
+   },
+   "p_right": 0.91,
+   "note": {
+    "model": "jev-1.13.0",
+    "tokens": 665
+   }
+  }
+ ]
+}

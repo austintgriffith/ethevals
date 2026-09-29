@@ -1,0 +1,1111 @@
+{
+ "name": "claude-opus",
+ "backend": "claude",
+ "model": "opus",
+ "cmd": "claude -p --model opus --dangerously-skip-permissions --strict-mcp-config",
+ "questions_hash": "b317848522ed",
+ "errors": 0,
+ "summary": {
+  "n": 99,
+  "accuracy": 99.0,
+  "pillars": {
+   "concepts": 100.0,
+   "transactions": 95.8,
+   "building": 100.0,
+   "security": 100.0
+  },
+  "no_answer": 1,
+  "median_ms": 2982
+ },
+ "rows": [
+  {
+   "id": "concepts-01-nothing-is-automatic",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3844,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-02-walkaway-test",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3600,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-03-keeper-bounty-math",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 4063,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "concepts-04-hyperstructures",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 4354,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-05-fee-switch-fork",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 3830,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-06-sybil-resistance",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3732,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-07-crops-pillars",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 4626,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-08-verified-is-not-open",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 3700,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-09-eip1559-mechanics",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2780,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-10-mev-backrun",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2638,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "concepts-11-spot-price-oracle",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2587,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-12-blockhash-current",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2767,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-13-eip712-replay",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2506,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-14-eip7702-delegation",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2603,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-15-paymaster-deposit",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 4250,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-16-peerdas-eip",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2589,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-17-forced-inclusion",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3359,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-18-admin-power-mechanisms",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2698,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "concepts-19-why-slashing",
+   "pillar": "concepts",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2670,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "concepts-20-honesty-live-data",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2290,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-21-7702-chainid-zero",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2591,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "concepts-22-7702-no-recursion",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4097,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-23-7702-bad-tuple",
+   "pillar": "concepts",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3234,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "concepts-24-4337-banned-opcodes",
+   "pillar": "concepts",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2592,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "concepts-25-1271-replay-safe",
+   "pillar": "concepts",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2788,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-01-selector-string",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2526,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-02-abi-encode-static",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4632,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-03-decode-calldata",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3453,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-04-dynamic-types",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3294,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "transactions-05-struct-argument",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 5801,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "transactions-06-token-decimals",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 3936,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "transactions-07-bounded-approve",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3792,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-08-permit-2612",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4834,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-09-event-signature",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2430,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-10-read-a-receipt",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2704,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-11-internal-transactions",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2348,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-12-effective-gas-price",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2631,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "transactions-13-nonce-replacement",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2511,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "transactions-14-gwei-to-wei",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2495,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "transactions-15-intrinsic-gas",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 5354,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-16-create2-truncation",
+   "pillar": "transactions",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 3790,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "transactions-17-eip55-checksum",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": null,
+   "correct": false,
+   "ms": 9694,
+   "note": {
+    "reply": "None of the four is valid. The correct checksum is `0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045` (checked with `cast`).\n\n- A and D are the same string. Both have `Af9D` where the checksum needs `aF9D`.\n- B has `6bF` where it needs `6BF`.\n- C has `d8da` where it needs `d8dA`.\n\nA and D look like they w"
+   }
+  },
+  {
+   "id": "transactions-18-storage-packing",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2601,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-20-decode-a-revert",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 3259,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-21-decode-raw-tx",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 7015,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "transactions-22-legacy-v-chainid",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3107,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-23-serialize-zero-tx",
+   "pillar": "transactions",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3209,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "transactions-24-7702-self-nonce",
+   "pillar": "transactions",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 3001,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "transactions-25-safe-tx-hash",
+   "pillar": "transactions",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2412,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-01-no-infinite-approvals",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2689,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-02-approve-flow-states",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2522,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-03-usdc-decimals",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2257,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-04-se2-staking-dapp",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2459,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-05-button-lifecycle",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2800,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-06-ens-input",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 4279,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-07-double-fire",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2558,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-08-rpc-config",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2411,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-09-mobile-chain-switch",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3767,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-10-index-events",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2434,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-11-forty-balances",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 3064,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-12-pick-a-chain",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3383,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-13-l2-real-cost",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3591,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-14-deployer-key-hygiene",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2546,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-15-agent-custody",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3021,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-16-one-click-from-eoa",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3476,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-17-x402-paid-api",
+   "pillar": "building",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2453,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "building-18-create2-address-myth",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3535,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-19-deploy-verify-ship",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3174,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-20-existing-eoa-smart-account",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2580,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-21-5792-fallback",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2386,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-22-sign-transaction",
+   "pillar": "building",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2415,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "building-23-compact-signature",
+   "pillar": "building",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 4019,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "building-24-4337-2d-nonce",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3225,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "building-25-hash-message-string",
+   "pillar": "building",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2644,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "security-01-reentrancy",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2537,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-02-read-only-reentrancy",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3287,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-03-cross-function-reentrancy",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2728,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-04-vault-inflation",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 3855,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-05-spot-price-oracle",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 2617,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-06-fee-on-transfer-books",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 4427,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-07-oz-v5-approvals",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 3040,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-08-signature-replay",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2571,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-09-uups-upgrade",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2824,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-10-checks-effects-interactions",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2437,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "security-11-missing-access-control",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2396,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-12-storage-layout",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2415,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-13-authorize-upgrade",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2322,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-14-sandwich-slippage",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2559,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-15-lending-postmortem-1",
+   "pillar": "security",
+   "answer": "D",
+   "pick": "D",
+   "correct": true,
+   "ms": 2555,
+   "note": {
+    "reply": "D"
+   }
+  },
+  {
+   "id": "security-16-lending-postmortem-2",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 3450,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-17-lending-postmortem-3",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2982,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-18-decimal-scale-mismatch",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 4337,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-19-permissionless-listing",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 2465,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-20-borrowing-market",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 3111,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "security-21-malicious-permit",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 11919,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-22-permit2-batch",
+   "pillar": "security",
+   "answer": "B",
+   "pick": "B",
+   "correct": true,
+   "ms": 3157,
+   "note": {
+    "reply": "B"
+   }
+  },
+  {
+   "id": "security-23-decimal-verifying-contract",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 4411,
+   "note": {
+    "reply": "A"
+   }
+  },
+  {
+   "id": "security-24-siwe-domain",
+   "pillar": "security",
+   "answer": "C",
+   "pick": "C",
+   "correct": true,
+   "ms": 2361,
+   "note": {
+    "reply": "C"
+   }
+  },
+  {
+   "id": "security-25-safe-delegatecall",
+   "pillar": "security",
+   "answer": "A",
+   "pick": "A",
+   "correct": true,
+   "ms": 5225,
+   "note": {
+    "reply": "A"
+   }
+  }
+ ]
+}
