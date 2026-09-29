@@ -1,0 +1,31 @@
+id: rpc-12-7702-tuples
+pillar: rpc
+title: Five authorization tuples
+kind: quiz
+summary: Tuples apply in order against the running nonce. chainId 0 is any chain; address 0 clears the delegation.
+prompt: |
+  On Ethereum mainnet (chain ID 1), EOA X has nonce 0 and no code. A sponsor, not X, sends one type-4 transaction whose authorization list holds five tuples, all validly signed by X, in this order:
+
+    1. chainId 1, address 0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, nonce 0
+    2. chainId 5, address 0xcccccccccccccccccccccccccccccccccccccccc, nonce 1
+    3. chainId 0, address 0xdddddddddddddddddddddddddddddddddddddddd, nonce 1
+    4. chainId 1, address 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, nonce 1
+    5. chainId 1, address 0x0000000000000000000000000000000000000000, nonce 2
+
+  The transaction is included. What do eth_getTransactionCount(X, "latest") and eth_getCode(X, "latest") return afterwards?
+  Reply with JSON only: {"nonce": <integer>, "code": "0x..."}
+grader:
+  type: json
+  expect:
+    nonce: 3
+    code: 0x
+reference: '{"nonce": 3, "code": "0x"}'
+checks:
+  must_fail:
+  - '{"nonce": 2, "code": "0xef0100dddddddddddddddddddddddddddddddddddddddd"}'
+  - '{"nonce": 5, "code": "0x"}'
+  - '{"nonce": 1, "code": "0xef0100bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}'
+  - '{"nonce": 3, "code": "0xef01000000000000000000000000000000000000000000"}'
+source:
+  repo: austintgriffith/ethevals
+  task: rpc-12-7702-tuples

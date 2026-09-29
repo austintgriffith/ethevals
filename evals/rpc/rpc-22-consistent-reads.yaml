@@ -1,0 +1,19 @@
+id: rpc-22-consistent-reads
+pillar: rpc
+title: Three reads, one block
+kind: quiz
+summary: Each 'latest' can be a different block. Pin a block hash (EIP-1898).
+prompt: |
+  A dashboard prices an LP token from three reads: eth_call getReserves() at "latest", eth_call totalSupply() at "latest" 300 ms later, and eth_getBalance of the pool at "latest". The RPC URL is a load balancer. The computed price sometimes spikes for one refresh and then returns to normal.
+
+  Why, and how do you make the three reads come from the same state? Write your answer to answer.md in this directory.
+expect:
+- answer.md explains that each 'latest' request can resolve to a different block, because a new block arrives between
+  calls or a different backend node answers, so the three values come from different states.
+- 'It fixes this by pinning every read to the same block by hash, as an EIP-1898 block object {"blockHash": ...}
+  (requireCanonical is optional), or by combining the reads into one eth_call through Multicall3. A pinned block
+  number passes only if the answer also guards against a reorg (for example, checks the block hash); a bare number
+  fails, because after a reorg the same number can name a different block.'
+source:
+  repo: ethereum/execution-apis
+  task: src/schemas/block.yaml

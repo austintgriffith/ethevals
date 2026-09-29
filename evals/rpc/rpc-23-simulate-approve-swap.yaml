@@ -1,0 +1,18 @@
+id: rpc-23-simulate-approve-swap
+pillar: rpc
+title: Preview two transactions
+kind: quiz
+summary: Separate eth_calls do not share state. eth_simulateV1 chains calls in one block.
+prompt: |
+  A wallet previews a two-step action: approve(router, 100 USDC), then router.swap(...). The preview runs eth_call for each transaction separately at "latest". The swap preview always reverts with "insufficient allowance", even though the approve preview succeeds.
+
+  Explain why, and how to preview the pair correctly with standard JSON-RPC. Write your answer to answer.md in this directory.
+expect:
+- answer.md explains that each eth_call runs alone against the state of the given block and changes nothing, so
+  the approve's effect is not visible to the separate swap call.
+- It uses eth_simulateV1 with both calls in order in one blockStateCalls entry, so state carries over from the approve
+  to the swap; setting validation true (nonce, fee and balance checks) or traceTransfers true is a plus, not required.
+  A state-override eth_call that writes the allowance slot counts only if it is presented as an approximation.
+source:
+  repo: ethereum/execution-apis
+  task: src/eth/execute.yaml

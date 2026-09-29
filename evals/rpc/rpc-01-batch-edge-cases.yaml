@@ -1,0 +1,38 @@
+id: rpc-01-batch-edge-cases
+pillar: rpc
+title: A batch, exactly
+kind: quiz
+summary: 'A notification is a request without an id member. id: null is not a notification.'
+prompt: |
+  A server implements JSON-RPC 2.0 exactly. It knows eth_blockNumber and eth_chainId, and no method named eth_fooBar. It receives this batch in one HTTP request:
+
+    [{"jsonrpc": "2.0", "method": "eth_blockNumber", "id": 1}, {"jsonrpc": "2.0", "method": "eth_chainId"}, {"jsonrpc": "2.0", "method": "eth_fooBar"}, {"jsonrpc": "2.0", "method": "eth_blockNumber", "id": null}, {"foo": "boo"}, 1, {"jsonrpc": "2.0", "method": "eth_fooBar", "id": "7"}]
+
+  How many response objects does it send back, how many of them carry a `result`, and how many carry each error code? Then: what does it send back for the batch `[]`, and for a batch that contains only notifications? Use "array", "object" or "nothing" for those two.
+  Reply with JSON only: {"responses": <int>, "results": <int>, "invalid_request": <count of -32600>, "method_not_found": <count of -32601>, "empty_batch": "array|object|nothing", "all_notifications_batch": "array|object|nothing"}
+grader:
+  type: json
+  expect:
+    responses: 5
+    results: 2
+    invalid_request: 2
+    method_not_found: 1
+    empty_batch: object
+    all_notifications_batch: nothing
+reference: '{"responses": 5, "results": 2, "invalid_request": 2, "method_not_found": 1, "empty_batch": "object",
+  "all_notifications_batch": "nothing"}'
+checks:
+  must_fail:
+  - '{"responses": 4, "results": 1, "invalid_request": 2, "method_not_found": 1, "empty_batch": "object", "all_notifications_batch":
+    "nothing"}'
+  - '{"responses": 6, "results": 2, "invalid_request": 2, "method_not_found": 2, "empty_batch": "object", "all_notifications_batch":
+    "nothing"}'
+  - '{"responses": 5, "results": 2, "invalid_request": 2, "method_not_found": 1, "empty_batch": "array", "all_notifications_batch":
+    "nothing"}'
+  - '{"responses": 5, "results": 2, "invalid_request": 2, "method_not_found": 1, "empty_batch": "object", "all_notifications_batch":
+    "array"}'
+  - '{"responses": 4, "results": 2, "invalid_request": 1, "method_not_found": 1, "empty_batch": "object", "all_notifications_batch":
+    "nothing"}'
+source:
+  repo: austintgriffith/ethevals
+  task: rpc-01-batch-edge-cases

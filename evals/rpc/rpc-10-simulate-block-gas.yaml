@@ -1,0 +1,33 @@
+id: rpc-10-simulate-block-gas
+pillar: rpc
+title: Gas in a simulated block
+kind: quiz
+summary: A gasLimit override carries to the next simulated block, and a call without gas gets only what is left
+  in the block.
+prompt: |
+  The chain's blocks have gasLimit 200000000. A client sends eth_simulateV1 at "latest" to a node that passes the execution-apis conformance fixtures (the Hive rpc-compat suite), with two blocks and "validation" omitted.
+  - Block 1 has blockOverrides {"gasLimit": "0x16e360"} and no calls.
+  - Block 2 has no overrides. It makes two identical calls from a funded account to a contract, with no `gas` field. The contract's function loops, burning gas, until it has used 1,000,000 gas since it started, then returns. If it runs out of gas first, the call fails.
+  The first call in block 2 succeeds, and its gasUsed is 1022015. What gasLimit does block 2 report, and what status, gasUsed and error code does the second call get?
+  Reply with JSON only (integers or 0x-hex): {"block2_gasLimit": ..., "call1_status": ..., "call2_status": ..., "call2_gasUsed": ..., "call2_error_code": <integer, or null if none>}
+grader:
+  type: json
+  expect:
+    block2_gasLimit: 1500000
+    call1_status: 1
+    call2_status: 0
+    call2_gasUsed: 477985
+    call2_error_code: -32015
+reference: '{"block2_gasLimit": 1500000, "call1_status": 1, "call2_status": 0, "call2_gasUsed": 477985, "call2_error_code":
+  -32015}'
+checks:
+  must_fail:
+  - '{"block2_gasLimit": 200000000, "call1_status": 1, "call2_status": 1, "call2_gasUsed": 1022015, "call2_error_code":
+    null}'
+  - '{"block2_gasLimit": 1500000, "call1_status": 1, "call2_status": 0, "call2_gasUsed": 477985, "call2_error_code":
+    -38015}'
+  - '{"block2_gasLimit": 200000000, "call1_status": 1, "call2_status": 0, "call2_gasUsed": 477985, "call2_error_code":
+    -32015}'
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_simulateV1/ethSimulate-run-out-of-gas-in-block-38015.io

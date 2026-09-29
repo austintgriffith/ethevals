@@ -1,0 +1,26 @@
+id: rpc-21-getlogs-range
+pillar: rpc
+title: Scanning history with eth_getLogs
+kind: quiz
+summary: An eth_getLogs error is not 'no logs'. Chunk the range and stop at the head.
+prompt: |
+  A script collects every Transfer from a token deployed three years ago:
+
+      try {
+        return await rpc("eth_getLogs", [{ address: TOKEN, fromBlock: "0x0", toBlock: "latest" }]);
+      } catch {
+        return []; // no logs
+      }
+
+  On our provider it always returns []. A second version passes an explicit toBlock, computed as fromBlock + 100000, and also sometimes returns []. Explain what goes wrong and write a scanning approach that is correct. Write your answer to answer.md in this directory.
+expect:
+- 'answer.md says that returning [] on error is wrong: the error means the query failed (for example the provider''s
+  block-range or result-size limit), not that there are no logs.'
+- It scans in chunks that shrink when the node rejects a range as too large. Starting from the token's deployment
+  block instead of block 0 is a plus, not required.
+- It caps toBlock at the current head (eth_blockNumber) or at the finalized block, because a toBlock above the head
+  is an error (the spec returns -32602 'block range extends beyond current head block'), and it keeps a cursor so
+  each block is scanned exactly once.
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_getLogs/filter-error-future-block-range.io

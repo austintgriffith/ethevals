@@ -1,6 +1,6 @@
 {
- "generated": "2026-09-29T17:13:13+00:00",
- "manifest": "4aa67fc4f695",
+ "generated": "2026-09-29T20:46:33+00:00",
+ "manifest": "98a6a7dd0692",
  "pillars": [
   {
    "id": "concepts",
@@ -24,6 +24,12 @@
    "id": "security",
    "name": "Security",
    "desc": "Everyone catches reentrancy. Inflation attacks, stale oracles, signature replay, upgrade collisions, rounding, and the rest.",
+   "count": 25
+  },
+  {
+   "id": "rpc",
+   "name": "RPC",
+   "desc": "Talking to a node. Block tags, log filters, batches, fee history, blob fees, eth_simulateV1, 7702 accounts, what a response does and does not promise.",
    "count": 25
   }
  ],
@@ -1286,6 +1292,306 @@
    "source": {
     "repo": "austintgriffith/ethevals",
     "task": "security-25-safe-delegatecall"
+   }
+  },
+  {
+   "id": "rpc-01-batch-edge-cases",
+   "pillar": "rpc",
+   "title": "A batch, exactly",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A notification is a request without an id member. id: null is not a notification.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "rpc-01-batch-edge-cases"
+   }
+  },
+  {
+   "id": "rpc-02-simulate-timestamps",
+   "pillar": "rpc",
+   "title": "Simulated timestamps",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "An unset simulated timestamp is parent + 12, and timestamps must strictly increase.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_simulateV1/ethSimulate-block-timestamp-auto-increment.io"
+   }
+  },
+  {
+   "id": "rpc-03-simulate-gap-blocks",
+   "pillar": "rpc",
+   "title": "Simulated block numbers",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A jump in block number is filled with empty blocks. Every later block is parent + 1 and parent + 12 s.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_simulateV1/ethSimulate-blocknumber-increment.io"
+   }
+  },
+  {
+   "id": "rpc-04-topic-filter",
+   "pillar": "rpc",
+   "title": "eth_getLogs topic filters",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Topics match by position. null is a wildcard; an inner array is OR.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_getLogs/topic-null-wildcard.io"
+   }
+  },
+  {
+   "id": "rpc-05-move-precompile",
+   "pillar": "rpc",
+   "title": "Moving a precompile",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "movePrecompileToAddress moves ecrecover. The old address is left empty: a call to it succeeds and returns nothing.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_simulateV1/ethSimulate-move-ecrecover-and-call.io"
+   }
+  },
+  {
+   "id": "rpc-06-beyond-head",
+   "pillar": "rpc",
+   "title": "Past the head",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A block past the head is null. A log range past the head is an error, never clamped.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/eth/filter.yaml"
+   }
+  },
+  {
+   "id": "rpc-07-fee-history-rewards",
+   "pillar": "rpc",
+   "title": "eth_feeHistory reward percentiles",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Percentiles are weighted by gas used, over effective tips, not by transaction count over tip fields.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/eth/fee_market.yaml"
+   }
+  },
+  {
+   "id": "rpc-08-next-blob-fee",
+   "pillar": "rpc",
+   "title": "The next block's blob fee",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Post-Osaka, EIP-7918: when blobs are priced below the reserve, excess blob gas does not fall.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_config/get-config.io"
+   }
+  },
+  {
+   "id": "rpc-09-next-base-fee",
+   "pillar": "rpc",
+   "title": "Integer base fees",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "EIP-1559 is integer arithmetic: an increase is at least 1 wei, and a small decrease can round to 0.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/eth/fee_market.yaml"
+   }
+  },
+  {
+   "id": "rpc-10-simulate-block-gas",
+   "pillar": "rpc",
+   "title": "Gas in a simulated block",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A gasLimit override carries to the next simulated block, and a call without gas gets only what is left in the block.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_simulateV1/ethSimulate-run-out-of-gas-in-block-38015.io"
+   }
+  },
+  {
+   "id": "rpc-11-7702-get-code",
+   "pillar": "rpc",
+   "title": "eth_getCode of a delegated EOA",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "A 7702 EOA has code: the 23-byte delegation designator, not the delegate's bytecode.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_getCode/get-code-eip7702-delegation.io"
+   }
+  },
+  {
+   "id": "rpc-12-7702-tuples",
+   "pillar": "rpc",
+   "title": "Five authorization tuples",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Tuples apply in order against the running nonce. chainId 0 is any chain; address 0 clears the delegation.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "rpc-12-7702-tuples"
+   }
+  },
+  {
+   "id": "rpc-13-simulate-transfer-logs",
+   "pillar": "rpc",
+   "title": "ETH transfers as logs",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "eth_simulateV1 with traceTransfers reports ETH moves as ERC-20 Transfer logs from 0xeeee\u2026eeee.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_simulateV1/ethSimulate-eth-send-should-produce-logs.io"
+   }
+  },
+  {
+   "id": "rpc-14-simulate-no-validation",
+   "pillar": "rpc",
+   "title": "What validation off still checks",
+   "kind": "quiz",
+   "graded": "deterministic",
+   "summary": "Without validation, eth_simulateV1 skips nonce and fee checks, and the base fee is 0. It still checks balance and intrinsic gas.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_simulateV1/ethSimulate-transaction-too-high-nonce.io"
+   }
+  },
+  {
+   "id": "rpc-15-block-tags-for-credit",
+   "pillar": "rpc",
+   "title": "Which block tag credits a deposit",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "latest can reorg under normal conditions. finalized cannot, and it moves in jumps.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/schemas/block.yaml"
+   }
+  },
+  {
+   "id": "rpc-16-removed-logs",
+   "pillar": "rpc",
+   "title": "removed: true",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "A removed log is a reorged-out event. It must be undone, not applied.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/schemas/filter.yaml"
+   }
+  },
+  {
+   "id": "rpc-17-estimate-gas-revert",
+   "pillar": "rpc",
+   "title": "estimateGas failed; send anyway",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "An execution-reverted error from eth_estimateGas predicts an on-chain revert. It is not a gas-limit problem.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_estimateGas/estimate-call-abi-error.io"
+   }
+  },
+  {
+   "id": "rpc-18-sendraw-not-included",
+   "pillar": "rpc",
+   "title": "A hash is not a payment",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "eth_sendRawTransaction returns a hash on pool admission. The transaction can still be dropped, replaced or reorged.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/eth/submit.yaml"
+   }
+  },
+  {
+   "id": "rpc-19-pending-nonce",
+   "pillar": "rpc",
+   "title": "Nonces behind a load balancer",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "latest counts mined transactions only, and pending is one node's mempool.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/schemas/block.yaml"
+   }
+  },
+  {
+   "id": "rpc-20-delegated-eoa",
+   "pillar": "rpc",
+   "title": "An EOA with code",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "After EIP-7702 an EOA can have code. Code checks, isContract and transfer() break for delegated users.",
+   "source": {
+    "repo": "austintgriffith/ethevals",
+    "task": "rpc-20-delegated-eoa"
+   }
+  },
+  {
+   "id": "rpc-21-getlogs-range",
+   "pillar": "rpc",
+   "title": "Scanning history with eth_getLogs",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "An eth_getLogs error is not 'no logs'. Chunk the range and stop at the head.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "tests/eth_getLogs/filter-error-future-block-range.io"
+   }
+  },
+  {
+   "id": "rpc-22-consistent-reads",
+   "pillar": "rpc",
+   "title": "Three reads, one block",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Each 'latest' can be a different block. Pin a block hash (EIP-1898).",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/schemas/block.yaml"
+   }
+  },
+  {
+   "id": "rpc-23-simulate-approve-swap",
+   "pillar": "rpc",
+   "title": "Preview two transactions",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Separate eth_calls do not share state. eth_simulateV1 chains calls in one block.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/eth/execute.yaml"
+   }
+  },
+  {
+   "id": "rpc-24-get-proof",
+   "pillar": "rpc",
+   "title": "Verify a balance with eth_getProof",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "Account proof against stateRoot, storage proof against storageHash, slot from the mapping.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/eth/state.yaml"
+   }
+  },
+  {
+   "id": "rpc-25-fee-fields",
+   "pillar": "rpc",
+   "title": "Fee fields from JSON-RPC",
+   "kind": "quiz",
+   "graded": "judge",
+   "summary": "eth_gasPrice is a legacy price. Type-2 fees come from base fee and tip; blob fees from eth_blobBaseFee.",
+   "source": {
+    "repo": "ethereum/execution-apis",
+    "task": "src/eth/fee_market.yaml"
    }
   }
  ]

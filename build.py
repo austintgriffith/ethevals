@@ -12,6 +12,7 @@ PILLAR_META = {
     "transactions": ("Transactions", "Reading the chain. Calldata, selectors, ABIs, events, receipts, gas, what a block explorer is really showing you."),
     "building": ("Building", "Shipping a dApp real users can touch. Approvals, decimals, USD context, RPCs, indexing, keys, and the whole way to production."),
     "security": ("Security", "Everyone catches reentrancy. Inflation attacks, stale oracles, signature replay, upgrade collisions, rounding, and the rest."),
+    "rpc": ("RPC", "Talking to a node. Block tags, log filters, batches, fee history, blob fees, eth_simulateV1, 7702 accounts, what a response does and does not promise."),
 }
 
 MODEL_LABELS = {"fable-5.1": "Fable 5.1", "opus-5": "Opus 5", "opus-5.5": "Opus 5.5", "sonnet-5": "Sonnet 5", "sonnet-5.5": "Sonnet 5.5", "haiku-4.5": "Haiku 4.5", "gpt-6-astra": "GPT-6 Astra",

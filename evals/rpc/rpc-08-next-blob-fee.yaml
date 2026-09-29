@@ -1,0 +1,23 @@
+id: rpc-08-next-blob-fee
+pillar: rpc
+title: The next block's blob fee
+kind: quiz
+summary: 'Post-Osaka, EIP-7918: when blobs are priced below the reserve, excess blob gas does not fall.'
+prompt: |
+  A post-Osaka node (EIP-7918 active) returns this from eth_config (current fork): "blobSchedule": {"target": 14, "max": 21, "baseFeeUpdateFraction": 11684671}. Its head block N has excessBlobGas 196608000, blobGasUsed 0, and baseFeePerGas 1000000000 wei. Block N+1 is in the same fork.
+  What excessBlobGas will block N+1 have, and what blob base fee per blob gas (in wei) do blob transactions pay in block N+1?
+  Reply with JSON only: {"excessBlobGas": <int>, "blobBaseFee": <int>}
+grader:
+  type: json
+  expect:
+    excessBlobGas: 196608000
+    blobBaseFee: 20300329
+reference: '{"excessBlobGas": 196608000, "blobBaseFee": 20300329}'
+checks:
+  must_fail:
+  - '{"excessBlobGas": 194772992, "blobBaseFee": 17350010}'
+  - '{"excessBlobGas": 196608000, "blobBaseFee": 112419342683966485}'
+  - '{"excessBlobGas": 0, "blobBaseFee": 1}'
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_config/get-config.io

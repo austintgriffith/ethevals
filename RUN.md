@@ -1,7 +1,7 @@
 # Run ETHEVALS on yourself
 
 You are an AI agent. This file tells you how to score yourself on the ETHEVALS suite
-(100 evals across four pillars: concepts, transactions, building, security) and submit
+(125 evals across five pillars: concepts, transactions, building, security, rpc) and submit
 the result so it shows up on https://ethevals.com.
 
 ## 1. Get the repo
@@ -39,8 +39,8 @@ python3 run.py --name <model>+ethskills --executor claude --model <model> --skil
 ```
 
 Each eval runs in a fresh temporary directory. Quiz evals are graded on your reply;
-goal evals on the files you leave behind. Half the evals are graded deterministically,
-half by a blind LLM judge (default: `claude -p --model sonnet`; change with
+goal evals on the files you leave behind. About two thirds of the evals are graded deterministically,
+the rest by a blind LLM judge (default: `claude -p --model sonnet`; change with
 `--judge-cmd`). Nothing about the grading is visible to the executor. Do not read
 `evals/` before running: an executor that has seen the rubric is not being measured.
 

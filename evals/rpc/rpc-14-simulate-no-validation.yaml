@@ -1,0 +1,36 @@
+id: rpc-14-simulate-no-validation
+pillar: rpc
+title: What validation off still checks
+kind: quiz
+summary: Without validation, eth_simulateV1 skips nonce and fee checks, and the base fee is 0. It still checks balance
+  and intrinsic gas.
+prompt: |
+  Each item below is a separate eth_simulateV1 request, sent to a node that passes the execution-apis conformance fixtures (the Hive rpc-compat suite), at "latest" with one block, "validation" omitted, and no block overrides unless stated. Accounts have no code.
+    a) A call from an account whose nonce is 0, with "nonce": "0x64".
+    b) blockOverrides {"baseFeePerGas": "0xa"}; the call sets maxFeePerGas and maxPriorityFeePerGas to 0.
+    c) A call that sends 1000 wei from an account with balance 0.
+    d) A call with "gas": "0x0".
+    e) Not a pass/fail case: a plain call with no fee fields. What baseFeePerGas does the simulated block report?
+    f) A state override sets an account's nonce to 0xffffffffffffffff; two calls are then sent from it in the same block.
+  For a to d and f, answer "ok" if every call executes with status 0x1, or the JSON-RPC error code if the request fails. For e, give the integer.
+  Reply with JSON only: {"a": ..., "b": ..., "c": ..., "d": ..., "e": ..., "f": ...}
+grader:
+  type: json
+  expect:
+    a: ok
+    b: ok
+    c: -38014
+    d: -38013
+    f: ok
+    e: 0
+reference: '{"a": "ok", "b": "ok", "c": -38014, "d": -38013, "f": "ok", "e": 0}'
+checks:
+  must_fail:
+  - '{"a": "ok", "b": "ok", "c": "ok", "d": -38013, "f": "ok", "e": 0}'
+  - '{"a": -38011, "b": "ok", "c": -38014, "d": -38013, "f": "ok", "e": 0}'
+  - '{"a": "ok", "b": "ok", "c": -38014, "d": -38013, "f": -32603, "e": 0}'
+  - '{"a": "ok", "b": "ok", "c": -38014, "d": -38013, "f": "ok", "e": 7}'
+  - '{"a": "ok", "b": "ok", "c": -38014, "d": "ok", "f": "ok", "e": 0}'
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_simulateV1/ethSimulate-transaction-too-high-nonce.io

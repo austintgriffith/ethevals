@@ -1,6 +1,6 @@
 {
- "generated": "2026-09-29T17:13:13+00:00",
- "manifest": "4aa67fc4f695",
+ "generated": "2026-09-29T20:46:33+00:00",
+ "manifest": "98a6a7dd0692",
  "runs": [
   {
    "name": "fable-5.1+ethskills",
@@ -15,7 +15,7 @@
      "total": 25
     },
     "transactions": {
-     "pass": 23,
+     "pass": 24,
      "total": 25
     },
     "building": {
@@ -28,7 +28,7 @@
     }
    },
    "total": {
-    "pass": 93,
+    "pass": 94,
     "total": 100
    },
    "label": "Fable 5.1 + ethskills",
@@ -128,7 +128,7 @@
     "transactions-16-create2-truncation": true,
     "transactions-17-eip55-checksum": true,
     "transactions-18-storage-packing": true,
-    "transactions-19-nested-calldata": false,
+    "transactions-19-nested-calldata": true,
     "transactions-20-decode-a-revert": true,
     "transactions-21-decode-raw-tx": true,
     "transactions-22-legacy-v-chainid": true,

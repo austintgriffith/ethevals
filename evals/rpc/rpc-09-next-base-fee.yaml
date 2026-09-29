@@ -1,0 +1,26 @@
+id: rpc-09-next-base-fee
+pillar: rpc
+title: Integer base fees
+kind: quiz
+summary: 'EIP-1559 is integer arithmetic: an increase is at least 1 wei, and a small decrease can round to 0.'
+prompt: |
+  Three consecutive post-London blocks N-2, N-1 and N each have gasLimit 36000000. Block N-2 has baseFeePerGas 7 wei. Their gasUsed values are 18000001, 3141592 and 36000000, in that order.
+  A client calls eth_feeHistory with blockCount 3 and newestBlock N. What is the baseFeePerGas array in the result, in wei?
+  Reply with JSON only: a list of integers.
+grader:
+  type: json
+  expect:
+  - 7
+  - 8
+  - 8
+  - 9
+reference: '[7, 8, 8, 9]'
+checks:
+  must_fail:
+  - '[7, 7, 7, 8]'
+  - '[7, 8, 8]'
+  - '[7, 8, 7, 8]'
+  - '[7, 7, 6, 7]'
+source:
+  repo: ethereum/execution-apis
+  task: src/eth/fee_market.yaml

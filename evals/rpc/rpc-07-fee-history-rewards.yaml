@@ -1,0 +1,34 @@
+id: rpc-07-fee-history-rewards
+pillar: rpc
+title: eth_feeHistory reward percentiles
+kind: quiz
+summary: Percentiles are weighted by gas used, over effective tips, not by transaction count over tip fields.
+prompt: |
+  A block has baseFeePerGas 100 wei and gasUsed 500000. It contains exactly these transactions (fees in wei):
+
+    tx0: type 0x2, maxFeePerGas 150, maxPriorityFeePerGas 30, receipt gasUsed 21000
+    tx1: type 0x0, gasPrice 180, receipt gasUsed 50000
+    tx2: type 0x2, maxFeePerGas 105, maxPriorityFeePerGas 20, receipt gasUsed 100000
+    tx3: type 0x2, maxFeePerGas 300, maxPriorityFeePerGas 2, receipt gasUsed 29000
+    tx4: type 0x2, maxFeePerGas 200, maxPriorityFeePerGas 60, receipt gasUsed 300000
+
+  A client calls eth_feeHistory for this one block with rewardPercentiles [10, 25, 50, 88, 99]. What reward values does the node return for this block, in wei?
+  Reply with JSON only: a list of 5 integers, one per percentile, in order.
+grader:
+  type: json
+  expect:
+  - 5
+  - 5
+  - 60
+  - 60
+  - 80
+reference: '[5, 5, 60, 60, 80]'
+checks:
+  must_fail:
+  - '[2, 5, 30, 60, 80]'
+  - '[2, 20, 60, 60, 80]'
+  - '[5, 5, 60, 80, 80]'
+  - '[2, 2, 30, 80, 80]'
+source:
+  repo: ethereum/execution-apis
+  task: src/eth/fee_market.yaml

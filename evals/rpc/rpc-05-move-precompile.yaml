@@ -1,0 +1,35 @@
+id: rpc-05-move-precompile
+pillar: rpc
+title: Moving a precompile
+kind: quiz
+summary: 'movePrecompileToAddress moves ecrecover. The old address is left empty: a call to it succeeds and returns
+  nothing.'
+prompt: |
+  A client sends eth_simulateV1 at "latest" with two blocks. In block 1, a call to ecrecover at 0x0000000000000000000000000000000000000001 with this input returns 0x000000000000000000000000b11cad98ad3f8114e0b3a1f6e7228bc8424df48a:
+
+    0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8000000000000000000000000000000000000000000000000000000000000001cb7cf302145348387b9e69fde82d8e634a0f8761e78da3bfa059efced97cbed0d2a66b69167cafe0ccfc726aec6ee393fea3cf0e4f3f9c394705e0f56d9bfe1c9
+
+  Block 2 applies the state override {"0x0000000000000000000000000000000000000001": {"movePrecompileToAddress": "0x0000000000000000000000000000000000123456"}}, then sends that same input twice: first to 0x0000000000000000000000000000000000123456, then to 0x0000000000000000000000000000000000000001. No other overrides apply.
+  What status and returnData does each of the two block-2 calls get?
+  Reply with JSON only: {"call_new_address": {"status": <0 or 1>, "returnData": "0x..."}, "call_0x01": {"status": <0 or 1>, "returnData": "0x..."}}
+grader:
+  type: json
+  expect:
+    call_new_address:
+      status: 1
+      returnData: '0x000000000000000000000000b11cad98ad3f8114e0b3a1f6e7228bc8424df48a'
+    call_0x01:
+      status: 1
+      returnData: 0x
+reference: '{"call_new_address": {"status": 1, "returnData": "0x000000000000000000000000b11cad98ad3f8114e0b3a1f6e7228bc8424df48a"},
+  "call_0x01": {"status": 1, "returnData": "0x"}}'
+checks:
+  must_fail:
+  - '{"call_new_address": {"status": 1, "returnData": "0x000000000000000000000000b11cad98ad3f8114e0b3a1f6e7228bc8424df48a"},
+    "call_0x01": {"status": 1, "returnData": "0x000000000000000000000000b11cad98ad3f8114e0b3a1f6e7228bc8424df48a"}}'
+  - '{"call_new_address": {"status": 1, "returnData": "0x000000000000000000000000b11cad98ad3f8114e0b3a1f6e7228bc8424df48a"},
+    "call_0x01": {"status": 0, "returnData": "0x"}}'
+  - '{"call_new_address": {"status": 1, "returnData": "0x"}, "call_0x01": {"status": 1, "returnData": "0x000000000000000000000000b11cad98ad3f8114e0b3a1f6e7228bc8424df48a"}}'
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_simulateV1/ethSimulate-move-ecrecover-and-call.io

@@ -1,0 +1,33 @@
+id: rpc-06-beyond-head
+pillar: rpc
+title: Past the head
+kind: quiz
+summary: A block past the head is null. A log range past the head is an error, never clamped.
+prompt: |
+  A node's head is block 0x36. A client sends three requests:
+
+    eth_getBlockByNumber("0x40", false)
+    eth_getBlockReceipts("0x40")
+    eth_getLogs({"fromBlock": "0x30", "toBlock": "0x40"})
+
+  What does a spec-conformant node return?
+  A) An error for all three: block 0x40 does not exist yet
+  B) `result: null` for all three
+  C) `result: null` for the two block methods; an invalid-params error (-32602) for eth_getLogs, because its range extends beyond the head
+  D) `result: null` for the two block methods; for eth_getLogs, the logs from 0x30 to 0x36, with the range clamped to the head
+  End your reply with a line of the form "Answer: <letter>".
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: C
+  - type: regex
+    pattern: ^\(?C\b
+reference: 'Answer: C'
+checks:
+  must_fail:
+  - 'Answer: D'
+  - 'Answer: B'
+source:
+  repo: ethereum/execution-apis
+  task: src/eth/filter.yaml

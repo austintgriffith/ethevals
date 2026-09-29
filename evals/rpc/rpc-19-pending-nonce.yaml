@@ -1,0 +1,21 @@
+id: rpc-19-pending-nonce
+pillar: rpc
+title: Nonces behind a load balancer
+kind: quiz
+summary: latest counts mined transactions only, and pending is one node's mempool.
+prompt: |
+  A payout service sends 20 transactions in a loop from one hot wallet. For each one it calls eth_getTransactionCount(wallet, "latest") and uses the result as the nonce. Its RPC URL is a load balancer in front of three nodes. We see "nonce too low" and "replacement transaction underpriced" errors, and some payouts never arrive.
+
+  Explain the failure and give a nonce strategy that works. Write your answer to answer.md in this directory.
+expect:
+- 'answer.md explains that ''latest'' counts only transactions in mined blocks, so transactions sent before the
+  next block reuse the same nonce and collide: later ones replace earlier ones or are rejected, and payouts are
+  lost.'
+- 'It proposes a single local nonce manager per sender: read the starting nonce once, then assign sequential nonces
+  locally and serialize sends.'
+- It notes that 'pending' reflects each node's own mempool, so behind a load balancer different nodes can return
+  different pending counts; the fix must not depend on a fresh eth_getTransactionCount per send to a load-balanced
+  URL (pinning one node and serializing sends also passes).
+source:
+  repo: ethereum/execution-apis
+  task: src/schemas/block.yaml

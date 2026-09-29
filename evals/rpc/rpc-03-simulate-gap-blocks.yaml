@@ -1,0 +1,30 @@
+id: rpc-03-simulate-gap-blocks
+pillar: rpc
+title: Simulated block numbers
+kind: quiz
+summary: A jump in block number is filled with empty blocks. Every later block is parent + 1 and parent + 12 s.
+prompt: |
+  The node's head is block 0x36 with timestamp 0x21c. A client sends eth_simulateV1 at "latest" with:
+
+    {"blockStateCalls": [{"blockOverrides": {"number": "0x40", "time": "0x410"}}, {}, {}, {}, {}, {}, {"blockOverrides": {"number": "0x54"}}, {}, {}, {}], "traceTransfers": true, "returnFullTransactions": true}
+
+  On a node that passes the execution-apis conformance fixtures (the Hive rpc-compat suite), the request succeeds. How many blocks does the result array contain, what are the number and timestamp of the last one, and what are the timestamps of blocks 0x3f and 0x41?
+  Reply with JSON only (integers or 0x-hex): {"blocks": ..., "last_number": ..., "last_timestamp": ..., "timestamp_of_0x3f": ..., "timestamp_of_0x41": ...}
+grader:
+  type: json
+  expect:
+    blocks: 33
+    last_number: 87
+    last_timestamp: 1316
+    timestamp_of_0x3f: 648
+    timestamp_of_0x41: 1052
+reference: '{"blocks": 33, "last_number": 87, "last_timestamp": 1316, "timestamp_of_0x3f": 648, "timestamp_of_0x41":
+  1052}'
+checks:
+  must_fail:
+  - '{"blocks": 10, "last_number": 87, "last_timestamp": 1316, "timestamp_of_0x3f": 648, "timestamp_of_0x41": 1052}'
+  - '{"blocks": 10, "last_number": 87, "last_timestamp": 668, "timestamp_of_0x3f": 648, "timestamp_of_0x41": 1052}'
+  - '{"blocks": 33, "last_number": 87, "last_timestamp": 1316, "timestamp_of_0x3f": 648, "timestamp_of_0x41": 1041}'
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_simulateV1/ethSimulate-blocknumber-increment.io

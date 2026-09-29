@@ -1,0 +1,21 @@
+id: rpc-16-removed-logs
+pillar: rpc
+title: 'removed: true'
+kind: quiz
+summary: A removed log is a reorged-out event. It must be undone, not applied.
+prompt: |
+  Our indexer subscribes with eth_subscribe("logs", {"address": TOKEN}) and, for every Transfer log it receives, moves the amount between holders in a balances table. Sometimes a log arrives with "removed": true, and the code handles it like any other Transfer.
+
+  What does "removed": true mean, what must the indexer do with such a log, and how do we make the indexer correct across reorgs? Write your answer to answer.md in this directory.
+expect:
+- 'answer.md explains that removed: true means the log belonged to a block that was reorged out of the canonical
+  chain, so the event no longer happened on the canonical chain (the same transaction may reappear in another block,
+  with a new block hash).'
+- It says the indexer must reverse the effect of that log (undo the balance move). An answer that skips the removed
+  log, or applies it again as a new Transfer, fails.
+- 'It gives a structural fix for reorgs, any one of: store applied logs keyed by block hash so a reorg can be rolled
+  back; track block hashes and rewind and replay on a parent-hash mismatch; or apply balances only at finalized
+  depth.'
+source:
+  repo: ethereum/execution-apis
+  task: src/schemas/filter.yaml

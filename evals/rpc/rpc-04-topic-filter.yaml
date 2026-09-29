@@ -1,0 +1,37 @@
+id: rpc-04-topic-filter
+pillar: rpc
+title: eth_getLogs topic filters
+kind: quiz
+summary: Topics match by position. null is a wildcard; an inner array is OR.
+prompt: |
+  Let
+    A = 0x0000000000000000000000001111111111111111111111111111111111111111
+    B = 0x0000000000000000000000002222222222222222222222222222222222222222
+    C = 0x0000000000000000000000003333333333333333333333333333333333333333
+    TRANSFER = 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+    APPROVAL = 0x8c5be1e5ebec7d5bd14f71427b1e84f3dd0314c0f7b2291e5b200ac8c7c3b925
+
+  Five logs from the same contract have these topics:
+    L1: [TRANSFER, A, C]
+    L2: [TRANSFER, C, A]
+    L3: [APPROVAL, B, A]
+    L4: [TRANSFER]
+    L5: [TRANSFER, C, B]
+
+  An eth_getLogs request covers their blocks with "topics": [null, [A, B]]. Which logs does a spec-conformant node return?
+  Reply with JSON only: a list of the matching labels in the order listed above.
+grader:
+  type: json
+  expect:
+  - L1
+  - L3
+reference: '["L1", "L3"]'
+checks:
+  must_fail:
+  - '["L1", "L2", "L3", "L5"]'
+  - '["L1", "L3", "L4"]'
+  - '["L1"]'
+  - '["L1", "L2", "L3"]'
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_getLogs/topic-null-wildcard.io

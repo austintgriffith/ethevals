@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ETHEVALS — How much does your AI actually know about Ethereum?</title>
-<meta name="description" content="Evals for LLMs, agents, skills and harnesses across the four pillars of Ethereum knowledge: concepts, transactions, building, security.">
+<meta name="description" content="Evals for LLMs, agents, skills and harnesses across the five pillars of Ethereum knowledge: concepts, transactions, building, security, rpc.">
 <meta property="og:title" content="ETHEVALS">
-<meta property="og:description" content="How much does your AI actually know about Ethereum? Evals across concepts, transactions, building and security.">
+<meta property="og:description" content="How much does your AI actually know about Ethereum? Evals across concepts, transactions, building, security and rpc.">
 <meta property="og:image" content="https://ethevals.com/og-image.png">
 <meta property="og:url" content="https://ethevals.com">
 <meta property="og:type" content="website">
@@ -33,6 +33,7 @@
   --p-transactions: #627eea;
   --p-building: #62d3e5;
   --p-security: #c1a6ff;
+  --p-rpc: #e5b862;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -98,7 +99,7 @@ h2 {
 .copy-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
 
 /* pillars */
-.pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+.pillars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; }
 .pillar {
   border: 1px solid var(--border); border-radius: 4px; padding: 0.85rem 0.9rem;
   border-top: 2px solid var(--pc); background: transparent; transition: background 0.1s; cursor: pointer;
@@ -210,7 +211,7 @@ details.pillar-list summary:hover { background: var(--hover); }
 
 <p class="tagline">How much does your AI actually know about Ethereum?<span class="cursor"></span></p>
 
-<p class="clarifier">Models, agents, skills and harnesses, scored on the four pillars of Ethereum knowledge: <b>concepts</b>, <b>transactions</b>, <b>building</b> and <b>security</b>. Every eval targets something LLMs get wrong today. Bring your own AI.</p>
+<p class="clarifier">Models, agents, skills and harnesses, scored on the five pillars of Ethereum knowledge: <b>concepts</b>, <b>transactions</b>, <b>building</b>, <b>security</b> and <b>rpc</b>. Every eval targets something LLMs get wrong today. Bring your own AI.</p>
 
 <div class="pillars" id="pillars"></div>
 
@@ -223,6 +224,7 @@ details.pillar-list summary:hover { background: var(--hover); }
   <span style="--pc:var(--p-transactions)">Transactions</span>
   <span style="--pc:var(--p-building)">Building</span>
   <span style="--pc:var(--p-security)">Security</span>
+  <span style="--pc:var(--p-rpc)">RPC</span>
 </div>
 
 <h2>Run it on your AI</h2>
@@ -253,13 +255,14 @@ details.pillar-list summary:hover { background: var(--hover); }
 </div>
 
 <h2>The evals</h2>
-<p class="section-text">Twenty-five per pillar, a hundred total. Each one is keyed to a mistake seen in real agent output. <span class="eval-k">quiz</span> is a question with a written answer. <span class="eval-k">goal</span> is a build task judged on the files left behind. <span class="eval-k">deterministic</span> evals have a computed answer and a regex or exact grader. <span class="eval-k">judge</span> evals are graded by a blind LLM against written conditions. Ported evals link to their source task.</p>
+<p class="section-text">Twenty-five per pillar, a hundred and twenty-five total. Each one is keyed to a mistake seen in real agent output. <span class="eval-k">quiz</span> is a question with a written answer. <span class="eval-k">goal</span> is a build task judged on the files left behind. <span class="eval-k">deterministic</span> evals have a computed answer and a regex or exact grader. <span class="eval-k">judge</span> evals are graded by a blind LLM against written conditions. Ported evals link to their source task.</p>
 <div id="catalog" style="margin-top:1.25rem"></div>
 
 <h2>Sources</h2>
 <ul class="links">
   <li><a href="https://github.com/BuidlGuidl/ethskills-evals">BuidlGuidl/ethskills-evals</a> <span class="dim">— goal and quiz tasks with a blind LLM judge, one per ethskills claim. Most of the building and security evals come from here.</span></li>
   <li><a href="https://github.com/clawdbotatg/eth-evals">clawdbotatg/eth-evals</a> <span class="dim">— 242 closed-book tasks, deterministic graders, computed calldata. Most of the concepts and transactions evals come from here.</span></li>
+  <li><a href="https://github.com/ethereum/execution-apis">ethereum/execution-apis</a> <span class="dim">— the JSON-RPC spec and its conformance fixtures. Every deterministic rpc answer is read from a fixture.</span></li>
   <li><a href="https://ethskills.com">ethskills.com</a> <span class="dim">— the skill library these evals grade against. Every eval names the claim it tests.</span></li>
 </ul>
 
@@ -268,7 +271,7 @@ details.pillar-list summary:hover { background: var(--hover); }
 </div>
 
 <script>
-const PILLAR_COLOR = { concepts: 'var(--p-concepts)', transactions: 'var(--p-transactions)', building: 'var(--p-building)', security: 'var(--p-security)' };
+const PILLAR_COLOR = { concepts: 'var(--p-concepts)', transactions: 'var(--p-transactions)', building: 'var(--p-building)', security: 'var(--p-security)', rpc: 'var(--p-rpc)' };
 function el(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
 function esc(s) { return String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 
@@ -309,10 +312,10 @@ function renderCards(cat, res) {
         <div class="card-tags">${tags.join('')}</div>
       </div>
       <div class="card-total"><b>${pct}%</b><small>${c.total.pass} / ${c.total.total}</small></div>
-      <div class="bars">${cat.pillars.map(p => { const s = c.pillars[p.id] || { pass: 0, total: p.count }; return `
+      <div class="bars">${cat.pillars.map(p => { const s = c.pillars[p.id]; return `
         <span class="lbl">${esc(p.name)}</span>
-        <span class="trk"><span class="fil" style="--pc:${PILLAR_COLOR[p.id]};width:${100 * s.pass / (s.total || 1)}%"></span></span>
-        <span class="val">${s.pass} / ${s.total}</span>`; }).join('')}</div>`;
+        <span class="trk"><span class="fil" style="--pc:${PILLAR_COLOR[p.id]};width:${s ? 100 * s.pass / (s.total || 1) : 0}%"></span></span>
+        <span class="val">${s ? `${s.pass} / ${s.total}` : 'not run'}</span>`; }).join('')}</div>`;
     d.title = `${c.model} · ${c.harness} · ${c.started || ''} · click for the eval-by-eval breakdown`;
     const v = c.verdicts || {};
     const missed = cat.evals.filter(e => v[e.id] === false);

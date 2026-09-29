@@ -19,7 +19,7 @@ import yaml
 ROOT = os.path.dirname(os.path.abspath(__file__))
 EVALS_DIR = os.path.join(ROOT, "evals")
 RESULTS_DIR = os.path.join(ROOT, "results")
-PILLARS = ["concepts", "transactions", "building", "security"]
+PILLARS = ["concepts", "transactions", "building", "security", "rpc"]
 EXEC_TIMEOUT = 1800
 GOAL_TIMEOUT = 3600  # a goal eval installs and builds a project
 JUDGE_TIMEOUT = 600
@@ -85,19 +85,34 @@ def extract_bigints(r):
         except ValueError: pass
     return out
 
-def jload(r):
+def _shape(exp, got):
+    if isinstance(exp, dict): return 2 + len(set(exp) & set(got)) if isinstance(got, dict) else 0
+    if isinstance(exp, list): return 2 + (len(exp) == len(got)) if isinstance(got, list) else 0
+    return 1
+
+def json_pick(r, exp=None):
+    # prose around the answer can quote a filter, a request or a citation: take the best shape match, the last on a tie
     r = (r or "").strip()
-    fenced = re.findall(r"```(?:json)?\s*(.*?)```", r, re.S)
-    for c in ([fenced[-1]] if fenced else []) + [r]:
-        c = c.strip()
-        try: return json.loads(c)
+    fenced = list(re.finditer(r"```(?:json)?\s*(.*?)```", r, re.S))
+    for m in ([fenced[-1]] if fenced else []) + [None]:
+        c, off = (m.group(1), m.start(1)) if m else (r, 0)
+        try:
+            v = json.loads(c); lead = len(c) - len(c.lstrip())
+            return v, off + lead, off + len(c.rstrip())
         except Exception: pass
-        for op, cl in (("{", "}"), ("[", "]")):
-            i, j = c.find(op), c.rfind(cl)
-            if 0 <= i < j:
-                try: return json.loads(c[i:j + 1])
-                except Exception: pass
+        best, i, dec = None, 0, json.JSONDecoder()
+        while i < len(c):
+            if c[i] in "{[":
+                try:
+                    v, end = dec.raw_decode(c, i)
+                    if best is None or _shape(exp, v) >= _shape(exp, best[0]): best = (v, off + i, off + end)
+                    i = end; continue
+                except ValueError: pass
+            i += 1
+        if best is not None: return best
     raise ValueError("no JSON found in response")
+
+def jload(r, exp=None): return json_pick(r, exp)[0]
 
 def jmatch(exp, got):
     if isinstance(exp, bool): return isinstance(got, bool) and exp == got
@@ -116,6 +131,7 @@ def jmatch(exp, got):
     return exp == got
 
 _NEG_RE = re.compile(r"(?i)(?<![\w-])(not|isn'?t|aren'?t|doesn'?t|don'?t|won'?t|wasn'?t|weren'?t|never|cannot|can'?t|neither|nor|rather than|instead of|no longer|wrong|incorrect)(?![\w-])|!=|≠")
+_DISCLAIM_RE = re.compile(r"(?i)\b(the|this|that|my)\s+(json|answer|result|output)(\s+above)?\s+(is|was)\s+(not\b|wrong|incorrect|invalid)|\bignore\s+(the|this|that|my)\s+(json|answer)")
 
 def _grade_one(g, resp):
     t = g["type"]
@@ -147,7 +163,7 @@ def _grade_one(g, resp):
         misses = [p for p in g["patterns"] if not re.search(p, scope, flags)]
         return not misses, (f"missing {misses[:3]}" if misses else "")
     if t == "json":
-        got = jload(resp); ok = jmatch(g["expect"], got)
+        got = jload(resp, g["expect"]); ok = jmatch(g["expect"], got)
         return ok, "" if ok else f"got {json.dumps(got)[:120]}"
     if t == "any_of":
         details = []
@@ -158,11 +174,24 @@ def _grade_one(g, resp):
         return False, ("; ".join(details))[:140]
     raise ValueError(f"unknown grader type {t}")
 
+def json_scope(r, exp=None):
+    # a negation applies to the answer only next to it on its line; a note on a later line does not count
+    try: _, start, end = json_pick(r, exp)
+    except ValueError: return ans_line(r)
+    r = (r or "").strip()
+    before = r[r.rfind("\n", 0, start) + 1:start].split()[-3:]
+    after = r[end:].split("\n", 1)[0]
+    return " ".join(before) + " " + after
+
 def grade_deterministic(ev, resp):
     try:
         ok, detail = _grade_one(ev["grader"], resp)
-        if ok and _NEG_RE.search(ans_line(resp)) and not _NEG_RE.search(ev.get("reference", "")):
-            return False, f"negated answer line: {ans_line(resp)[:80]!r}"
+        is_json = ev["grader"]["type"] == "json"
+        scope = json_scope(resp, ev["grader"].get("expect")) if is_json else ans_line(resp)
+        if ok and is_json and _DISCLAIM_RE.search(resp or ""):
+            return False, "the reply disclaims its answer"
+        if ok and _NEG_RE.search(scope) and not _NEG_RE.search(ev.get("reference", "")):
+            return False, f"negated answer line: {scope[:80]!r}"
         return ok, detail
     except Exception as e:
         return False, f"{type(e).__name__}: {e}"[:140]
@@ -350,9 +379,10 @@ def main():
             r["pass"], r["detail"] = ok, detail
         for p in PILLARS:
             rs = [r for r in doc["rows"] if r["pillar"] == p]
+            if not rs: continue
             doc["pillars"][p] = {"pass": sum(r["pass"] for r in rs), "total": sum(1 for e in by_id.values() if e["pillar"] == p)}
         doc["total"] = {"pass": sum(v["pass"] for v in doc["pillars"].values()), "total": sum(v["total"] for v in doc["pillars"].values())}
-        doc["manifest"] = manifest(load_evals())
+        if {r["id"] for r in doc["rows"]} >= set(by_id): doc["manifest"] = manifest(load_evals())
         json.dump(doc, open(path, "w"), indent=1)
         print(f"{a.name}: regraded, {flips} verdicts changed, now {doc['total']['pass']}/{doc['total']['total']}"); return
     cmd = a.cmd or (EXECUTORS[a.executor](a.model) if a.executor and a.model else None)

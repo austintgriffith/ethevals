@@ -1,0 +1,24 @@
+id: rpc-20-delegated-eoa
+pillar: rpc
+title: An EOA with code
+kind: quiz
+summary: After EIP-7702 an EOA can have code. Code checks, isContract and transfer() break for delegated users.
+prompt: |
+  Since Pectra, two support problems keep coming in:
+  1. Our backend refuses withdrawals to "contracts", which it detects with eth_getCode(address) != "0x". Some ordinary users, who hold their own keys, are now flagged as contracts.
+  2. Our payout contract pays users with payable(user).transfer(amount). Payouts to some of those same users now revert.
+
+  Explain what changed and how to fix both. Write your answer to answer.md in this directory.
+expect:
+- 'answer.md explains that an EIP-7702-delegated EOA has code: eth_getCode returns the 23-byte delegation designator
+  0xef0100 followed by the delegate address, so ''has code'' no longer means ''is a contract without a private key'';
+  the account still has its key and can sign.'
+- It explains that a call or value transfer to a delegated EOA runs the delegate contract's code, so transfer()'s
+  2300-gas stipend can be too little (or the delegate may have no payable receive/fallback), and the payout reverts.
+  The fix sends value with a low-level call and handles failure, or uses pull payments.
+- It fixes the detection, either by recognizing the 0xef0100 designator prefix instead of treating any code as a
+  contract, or by dropping the code check as unreliable; and it notes that a delegation can be set, changed or cleared
+  at any time, so a code check describes one moment and is not a durable property of the address.
+source:
+  repo: austintgriffith/ethevals
+  task: rpc-20-delegated-eoa

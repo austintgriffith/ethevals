@@ -1,0 +1,18 @@
+id: rpc-24-get-proof
+pillar: rpc
+title: Verify a balance with eth_getProof
+kind: quiz
+summary: Account proof against stateRoot, storage proof against storageHash, slot from the mapping.
+prompt: |
+  A light wallet shows a user's balance of a token that is a plain, non-upgradeable OpenZeppelin ERC20, with its _balances mapping at storage slot 0. The wallet must not trust its RPC provider. It has a block hash it trusts from a light client. Describe, step by step, how to verify the balance with eth_getProof and eth_getBlockByHash. Write your answer to answer.md in this directory.
+expect:
+- answer.md fetches the header for the trusted block hash, checks that the header hashes to that hash (keccak256
+  of the RLP-encoded header), and takes its stateRoot.
+- It calls eth_getProof for the token contract address with the storage slot of balances[user], at that block, and
+  verifies accountProof against stateRoot (a Merkle-Patricia path keyed by keccak256(address)) to obtain the contract's
+  storageHash.
+- It verifies the storageProof entry against that storageHash, and derives the slot for the balance as keccak256(abi.encode(user,
+  0)), the mapping entry for slot 0.
+source:
+  repo: ethereum/execution-apis
+  task: src/eth/state.yaml

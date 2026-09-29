@@ -1,0 +1,25 @@
+id: rpc-02-simulate-timestamps
+pillar: rpc
+title: Simulated timestamps
+kind: quiz
+summary: An unset simulated timestamp is parent + 12, and timestamps must strictly increase.
+prompt: |
+  The node's head is block 0x36 with timestamp 0x21c. A wallet sends eth_simulateV1 at "latest" with:
+
+    {"blockStateCalls": [{"blockOverrides": {"time": "0x227"}}, {"blockOverrides": {}}, {"blockOverrides": {"time": "0x228"}}, {"blockOverrides": {}}]}
+
+  What does a node that passes the execution-apis conformance fixtures (the Hive rpc-compat suite) return? If the request succeeds, list the timestamp of every simulated block; if it fails, give the JSON-RPC error code.
+  Reply with JSON only: {"timestamps": ["0x...", ...]} or {"error": <integer code>}
+grader:
+  type: json
+  expect:
+    error: -38021
+reference: '{"error": -38021}'
+checks:
+  must_fail:
+  - '{"timestamps": ["0x227", "0x228", "0x228", "0x229"]}'
+  - '{"timestamps": ["0x227", "0x233", "0x228", "0x234"]}'
+  - '{"error": -38020}'
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_simulateV1/ethSimulate-block-timestamp-auto-increment.io

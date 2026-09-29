@@ -1,0 +1,21 @@
+id: rpc-18-sendraw-not-included
+pillar: rpc
+title: A hash is not a payment
+kind: quiz
+summary: eth_sendRawTransaction returns a hash on pool admission. The transaction can still be dropped, replaced
+  or reorged.
+prompt: |
+  A checkout backend receives a signed transaction from the buyer's wallet, calls eth_sendRawTransaction, and when the node returns a transaction hash it marks the order paid and ships.
+
+  What does the returned hash actually guarantee? What must the backend check before it marks the order paid? Write your answer to answer.md in this directory.
+expect:
+- answer.md explains that the hash only shows that this node accepted the transaction (for example into its pool),
+  and that the transaction can still be dropped, never propagate, or be replaced by another transaction with the
+  same nonce.
+- 'It requires a receipt from eth_getTransactionReceipt with status 0x1 and a check of the payment itself: the recipient
+  and the amount (value, or the token Transfer log), not just the status.'
+- It waits until the including block is safe or finalized, or a stated number of confirmations, before it ships,
+  because an included transaction can still be reorged out.
+source:
+  repo: ethereum/execution-apis
+  task: src/eth/submit.yaml

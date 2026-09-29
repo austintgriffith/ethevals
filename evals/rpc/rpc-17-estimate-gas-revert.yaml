@@ -1,0 +1,28 @@
+id: rpc-17-estimate-gas-revert
+pillar: rpc
+title: estimateGas failed; send anyway
+kind: quiz
+summary: An execution-reverted error from eth_estimateGas predicts an on-chain revert. It is not a gas-limit problem.
+prompt: |
+  Users say our dApp sends transactions that fail on-chain and still cost them gas. The send path is:
+
+      let gas;
+      try {
+        gas = await publicClient.estimateGas(tx);
+      } catch {
+        gas = 500_000n; // estimation is flaky, use a safe default
+      }
+      await walletClient.sendTransaction({ ...tx, gas });
+
+  What does an error from eth_estimateGas with code 3 mean, why is this fallback wrong, and how should the code handle estimation errors? Write your answer to answer.md in this directory.
+expect:
+- answer.md explains that an eth_estimateGas error with code 3 (execution reverted) means the transaction reverts
+  when executed against current state, so sending it with a fixed gas limit almost certainly reverts on-chain and
+  the user still pays for the gas used.
+- The fix stops the send on a revert error and shows the user the reason, decoding error.data (for example Error(string),
+  Panic(uint256) or a custom error selector) instead of hiding it.
+- It separates revert errors from transport or node errors (timeouts, rate limits, 5xx), and allows a retry only
+  for the second group. An answer that keeps a blanket fallback gas limit for all errors fails.
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_estimateGas/estimate-call-abi-error.io

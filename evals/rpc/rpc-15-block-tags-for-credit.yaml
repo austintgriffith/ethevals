@@ -1,0 +1,23 @@
+id: rpc-15-block-tags-for-credit
+pillar: rpc
+title: Which block tag credits a deposit
+kind: quiz
+summary: latest can reorg under normal conditions. finalized cannot, and it moves in jumps.
+prompt: |
+  An exchange backend credits ETH deposits on Ethereum mainnet. It polls eth_getBlockByNumber("latest", true) every 12 seconds and credits every deposit it sees in that block. Support tickets report deposits that were credited and then vanished from the chain.
+
+  Which block tag should the crediting logic use? Explain what latest, safe and finalized mean on post-merge Ethereum and the tradeoff between them. Then say what else must change in the polling loop when it moves off latest. Write your answer to answer.md in this directory.
+expect:
+- answer.md explains that a block returned for 'latest' can be reorged out of the canonical chain under normal conditions,
+  so deposits credited from it can disappear.
+- It distinguishes safe (safe from reorgs under honest-majority and synchrony assumptions) from finalized (cannot
+  be reverted without a large share of stake being slashed or manual community intervention), and says finalized
+  lags the head by roughly two epochs, about 13 minutes (anything in the 12-20 minute range counts).
+- It recommends crediting at finalized (or at safe with an explicit, stated risk limit), while the UI may show the
+  deposit as pending before that.
+- It notes that the finalized (or safe) head advances many blocks at a time, so the loop must keep a cursor and
+  process every block between the last processed block and the new head, instead of reading only the tagged block.
+  An answer that polls only the single block the tag returns fails this condition.
+source:
+  repo: ethereum/execution-apis
+  task: src/schemas/block.yaml

@@ -1,0 +1,26 @@
+id: rpc-11-7702-get-code
+pillar: rpc
+title: eth_getCode of a delegated EOA
+kind: quiz
+summary: 'A 7702 EOA has code: the 23-byte delegation designator, not the delegate''s bytecode.'
+prompt: |
+  The EOA 0xeda8645ba6948855e3b3cd596bbb07596d59c603 set an EIP-7702 delegation to the contract 0x8c2319620d7c348bb4e2b2a0b230c81f310e9561. What does eth_getCode("0xeda8645ba6948855e3b3cd596bbb07596d59c603", "latest") return?
+  Answer with only the full 0x-prefixed hex string on the last line, as: Answer: 0x...
+grader:
+  type: any_of
+  options:
+  - type: exact
+    expect: '0xef01008c2319620d7c348bb4e2b2a0b230c81f310e9561'
+  - type: regex
+    pattern: ^`?0xef01008c2319620d7c348bb4e2b2a0b230c81f310e9561\b
+reference: 'Answer: 0xef01008c2319620d7c348bb4e2b2a0b230c81f310e9561'
+checks:
+  must_pass:
+  - 'Answer: 0xef01008c2319620d7c348bb4e2b2a0b230c81f310e9561 (0xef0100 followed by the delegate address)'
+  must_fail:
+  - 'Answer: 0x'
+  - 'Answer: 0x8c2319620d7c348bb4e2b2a0b230c81f310e9561'
+  - 'Answer: 0xef00008c2319620d7c348bb4e2b2a0b230c81f310e9561'
+source:
+  repo: ethereum/execution-apis
+  task: tests/eth_getCode/get-code-eip7702-delegation.io

@@ -1,0 +1,20 @@
+id: rpc-25-fee-fields
+pillar: rpc
+title: Fee fields from JSON-RPC
+kind: quiz
+summary: eth_gasPrice is a legacy price. Type-2 fees come from base fee and tip; blob fees from eth_blobBaseFee.
+prompt: |
+  A bot builds type-2 transactions with maxFeePerGas = maxPriorityFeePerGas = the result of eth_gasPrice. It overpays tips when the chain is quiet and gets stuck when the base fee spikes. It must also start sending type-3 blob transactions.
+
+  How should the bot set each fee field, using which JSON-RPC methods? Write your answer to answer.md in this directory.
+expect:
+- answer.md explains that eth_gasPrice returns one legacy price (roughly base fee plus a suggested tip), so using
+  it as the tip overpays the proposer, and using it as maxFeePerGas leaves no headroom when the base fee rises.
+- It sets maxPriorityFeePerGas from eth_maxPriorityFeePerGas or from eth_feeHistory reward percentiles, and sets
+  maxFeePerGas from the next block's base fee (the last baseFeePerGas entry of eth_feeHistory, or the pending block)
+  with headroom, for example 2 x base fee + tip.
+- For blob transactions it sets maxFeePerBlobGas from eth_blobBaseFee (or baseFeePerBlobGas from eth_feeHistory)
+  with headroom, and notes that blob gas is priced in a separate fee market from execution gas.
+source:
+  repo: ethereum/execution-apis
+  task: src/eth/fee_market.yaml
